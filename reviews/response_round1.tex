@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\newcounter{comment}
+\newenvironment{revcomment}%
+{\refstepcounter{comment}\par\medskip\noindent\begin{quote}\itshape\color{black!70}}%
+{\end{quote}\medskip}
+\newcommand{\response}{\par\noindent\textbf{Response.}\ }
+
+\title{Response to Reviewers \\ \large Manuscript MDY-2026-0066: ``Climate-Contingent Sovereign Finance: Extending Fiscal Limits to Logistical Climate Risk Transmission to Global Assets''}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+We thank both reviewers for unusually constructive and detailed reports. Their central diagnosis was the same: the paper announced more than it delivered, and the framing obscured its two real contributions. We have restructured the manuscript around that diagnosis. The main changes are:
+
+\begin{enumerate}
+\item \textbf{Restructure.} Former Sections 1 and 2 are merged into a single introduction that leads with the two actual contributions; former Section 4 is retitled ``Extensions to the baseline framework'' and split---the extensions carried through the simulations (the disaster-jump process, the liability portfolio, the logistics wedge and premium) remain in the main text as Section~3, while the extensions that are analytical only (maturity, positive recovery, endogenous risk-free rate, state-dependent volatility) move to Appendix~A. The PE/VC pricing block moves to Appendix~B, the monetary block to Appendix~C, and former Sections 11--12 are merged into a single plain-language discussion-and-conclusion section. The abstract is rewritten accordingly.
+\item \textbf{Expanded quantitative section.} The quantitative section (now Section~5) reports the percentage gain in the MSB analogue for each instrument and traces it across the rollover need $d$, surplus capacity $\alpha$, mean growth $\mu$, and logistics amplification $\psi$; adds a $Z=1$ scenario; carries the temperature-linked coupon and the temperature-dependent jump intensity $\lambda(\cdot)$ through the simulations; and adds a collateral-haircut comparative static (Appendix~C). All announced extensions are now either simulated or explicitly relegated to appendices as analytical extensions.
+\item \textbf{Regenerated numbers.} All quantitative results were regenerated from the archived replication code (a new script, \texttt{revision\_simulations.py}, added to the OSF archive, produces every table and figure in Section~5 and Appendix~C from a fixed seed). In doing so we discovered that the previous draft's figures had been generated with a \emph{fixed} disaster jump while the archived code documents an \emph{exponential} disaster-size distribution; the revision uses the exponential specification throughout, so paper and code now agree exactly. Levels differ modestly from the previous draft as a result; no qualitative conclusion changes, and one finding (the small gain of the disaster clause) becomes more interesting, as explained under Reviewer~1, Comment~2.
+\item \textbf{Machine-checked verification of the analytical results.} As a final check on the revision, the manuscript's closed-form content---the default-condition and pricing identities (with and without recovery), the damage and transition wedges, the homogeneity property (Remark~1), the threshold lemma, the $Z=1$ payoff-equivalence, the stochastic-dominance lemma, the clause-generosity trade-off derivative, and the calibration arithmetic of Table~1---was formally verified in the Lean~4 theorem prover (with \texttt{mathlib}); the Lean project is included in the OSF replication archive (\texttt{replication/lean\_verification/}). The verification surfaced two errors in the proofs appendix, both corrected in the revised manuscript: (i) the footnote to the threshold lemma (now Lemma~1) had the monotonicity class inverted---a step-down clause is weakly non-\emph{de}creasing, so it is not covered by the monotone-contract case; Lemma~1(ii) now characterizes exactly when the GDP clause's survival set is a threshold set (it fails on $d\in(\alpha\bar g,\,\alpha\bar g/(1-\kappa))$, which is precisely the region of the sharp default-probability rise in Figure~4, with the proceeds maximizer $\widehat d^{\,*}=\alpha\bar g$ at the boundary of the threshold branch); and (ii) the survival-gain term in the generosity trade-off decomposition (proof of Proposition~1) now carries its marginal-payoff weight $(1-\kappa)$, which is unity in the main-text sufficient condition and only strengthens the interior-optimum logic. No numerical result or conclusion is affected.
+\end{enumerate}
+
+Below, reviewer comments are in italics; our responses follow. Section, table, and figure numbers refer to the revised manuscript unless stated otherwise.
+
+\section*{Reviewer 1}
+
+\subsection*{Major Comment 1: Restructure around what is actually derived and quantified; refocus the introduction}
+
+\begin{revcomment}
+The paper has too many sections, and the announced scope is wider than the delivered scope\ldots I would propose the following reorganisation\ldots
+\end{revcomment}
+
+\response We adopted the proposed reorganisation essentially in full:
+
+\begin{itemize}
+\item \emph{Sections 1 and 2 merged into a single, sharper introduction.} The new introduction leads with the two contributions the reviewer identified: (a) a portfolio of state-contingent liabilities embedded in the MSB/MSD calculation, and (b) the extension from chronic to acute physical risk in the NGFS terminology, via the Barro-style disaster process and the disaster-clause simulations. The disaster-clause adopters are now named in the opening paragraph (Grenada 2015; Barbados 2018--19 and 2022; official-sector CRDCs from UK Export Finance and the IDB), and we clarify that euro-area sovereigns are \emph{not} adopters to date and enter only through the ECB collateral interface. A worked example (the Barbados 2022 clause: verified disaster $\to$ two-year suspension of debt service, deferred amounts capitalized) replaces the abstract ``state-contingent mapping'' language. The ``MSB/MSD depend on how repayments load on tails'' sentence is now the lead mechanic, tied directly to a new Figure~1 that plots repayment schedules against capacity and shades the default region. A quantitative preview and a one-paragraph roadmap close the introduction.
+\item \emph{Former Section 4 retitled and split.} The surviving content is titled ``Extensions to the baseline framework'' and explicitly presents the baseline assumptions as deliberate tractability choices flagged by Seghini (2026), not flaws. Only the extensions used in the quantitative exercise remain in the main text; maturity, recovery, the general-equilibrium risk-free rate, and state-dependent volatility move to Appendix~A. The phrase ``mathematical critique'' has been removed throughout, including from the abstract, and the ``comparative statics of climate policy and debt instruments'' sentence has been rephrased.
+\item \emph{Former Sections 4--6 merged.} The surviving extensions now form one section (Section~3) with subsections, opened by a plain-language ``transmission channels at a glance'' overview (also responding to Reviewer~2's Comment~3).
+\item \emph{Temperature-linked clause: simulated rather than dropped.} See response to Comment~2.
+\item \emph{Former Section 6 split at the reviewer's proposed point.} The logistics-amplification specification and the premium equation remain in the main text (with the requested economic discussion; see Comment~3); the PE/VC pricing block moves to Appendix~B.
+\item \emph{Former Section 7 (monetary block) moved to Appendix~C and paired with a quantitative exercise}---the comparative static on collateral haircuts the reviewer suggested. See Comment~5.
+\item \emph{Former Sections 11 and 12 merged} into a single discussion-and-conclusion section written in plain language, with no equation references and no undefined acronyms.
+\item \emph{Abstract rewritten} to match the delivered scope, including the headline quantitative magnitudes and an explicit statement that the logistics channel and monetary block are analytical extensions.
+\end{itemize}
+
+\subsection*{Major Comment 2: Expand Section 10 to communicate the quantitative impact on the fiscal limit}
+
+\begin{revcomment}
+At minimum, please report the percentage gain in the maximum sustainable debt when moving from straight debt to GDP-linked debt and from straight debt to a disaster clause, and trace how this gain varies with (i) the initial sovereign debt level; (ii) the level of $\alpha$; (iii) the level of mean growth $\mu$; and (iv) the calibration of the logistics amplification $\psi$.
+\end{revcomment}
+
+\response The quantitative section (now Section~5) has been expanded from two figures and one table to four figures and six tables, organised around exactly these questions. Headline result (Table~2): at the baseline, the GDP clause raises the MSB analogue by 10.5--11.9\% and cuts default probability at the optimum from ${\sim}11\%$ to ${\sim}3\%$; the disaster clause gains 1.8--1.9\%. The requested comparative statics:
+
+\begin{itemize}
+\item[(i)] \emph{Debt level} (Table~3). The advantage of the GDP clause is strongly increasing in the rollover need: it is \emph{negative} ($-10\%$) at low face values, turns positive just below the straight-debt peak, and reaches $+29\%$ at $d=0.15$ and $+49\%$ at $d=0.16$. Contingency pays for sovereigns operating near their fiscal limits, not for those with headroom.
+\item[(ii)] \emph{Surplus capacity $\alpha$} (Table~4, top panel; Remark~1). Here the model delivers an exact answer rather than a numerical one: the one-period problem is homogeneous of degree one in $(\alpha,d)$, so the \emph{relative} gain is invariant to $\alpha$ (confirmed numerically at $11.0\%\pm0.2$pp across $\alpha\in[0.10,0.22]$), while the \emph{level} gain scales with $\alpha$. We also note that once $\alpha$ becomes stress-dependent (former equation for fiscal fatigue, retained in Section~3.4), the homogeneity breaks in favour of contingency; quantifying that requires the dynamic model.
+\item[(iii)] \emph{Mean growth $\mu$} (Table~4, bottom panel). With a \emph{fixed} trigger, the gain modestly \emph{declines} as $\mu$ falls (11.5\% to 10.3\% over $\mu\in[0.03,-0.02]$)---the opposite of the natural intuition---because a fixed trigger fires in more non-default states for slow-growing issuers. We flag the design implication (index the trigger to trend growth) explicitly.
+\item[(iv)] \emph{Logistics amplification $\psi$} (Table~2, Figure~5). Straight-debt capacity falls 3.1\% as $\psi$ goes $0\to3$ while GDP-clause capacity falls only 1.9\%, so the contingency gain rises from 10.5\% to 11.9\%; this is the quantitative counterpart of the appendix proposition on tail thickening.
+\end{itemize}
+
+The smaller disaster-clause gain deserves comment because it changed relative to the previous draft (from ${\sim}7\%$ to ${\sim}2\%$) once the disaster-size distribution was aligned with the archived code (exponential rather than fixed jumps). The economics is now cleaner: with variable disaster sizes, an event trigger fires for many small disasters (relief wasted in survival states) and provides no relief in severe non-disaster downturns, so the gap between the GDP clause and the disaster clause is a direct quantification of \emph{basis risk}---which the revised text develops, including the observation that parametric triggers buy verification convenience at a measurable cost in fiscal space.
+
+\subsection*{Major Comment 3: Economic discipline in the surviving Section 6 (premium specification; does eq.\ (29) relax i.i.d.?)}
+
+\begin{revcomment}
+The premium specification $\pi_{i,t} = \theta_d PD_{i,t} + \theta_T T_t + \theta_\ell \ell_{i,t} + \theta_x FXFrag_{i,t}$ is introduced without explanation of why each term enters or what the sign of each coefficient should be\ldots Does equation (29) relax the i.i.d.\ assumption that you criticized?
+\end{revcomment}
+
+\response Section~3.4 now walks through the premium term by term: $\theta_d>0$ is default compensation (actuarial under risk neutrality, larger under risk aversion); $\theta_T>0$ prices \emph{systematic} climate exposure that cannot be diversified because the driver is global; $\theta_\ell>0$ reflects tax-base fragility priced over and above model-implied PD; and $\theta_x>0$ captures currency mismatch raising loss given stress and run risk. $\mathrm{FXFrag}$ is defined at first use.
+
+On the i.i.d.\ question: the reviewer is right, and we now say so explicitly. If the global shock and idiosyncratic noise are i.i.d., the logistics wedge is i.i.d.\ too; the specification thickens the within-period left tail but does not introduce serial dependence. The revised text states this in a dedicated paragraph (``One clarification is important\ldots''), notes that the quantitative exercise is therefore a statement about tail thickness rather than persistence, and points to Appendix~A for the serially-correlated intensity case, which interacts with maturity structure.
+
+\subsection*{Major Comment 4: The logistics-amplification channel is asserted but not quantified}
+
+\begin{revcomment}
+The ``key prediction'' that high-centrality countries face premium amplification\ldots is not tied to any plot or table. The caveat should appear in the introduction and abstract\ldots $\psi$ should be given a clearer interpretation in terms of network centrality\ldots in Figure 5 the case $\psi = 1.5$ does not visibly change outcomes, which deserves comment.
+\end{revcomment}
+
+\response Four changes. (1) The scope caveat---that a full numerical solution and empirical calibration of the logistics channel are beyond this paper---now appears in both the abstract and the introduction (``Two further channels are developed analytically but not calibrated, and it is important to state this scope limitation up front''). (2) $\psi$ is now explicitly interpreted as the reduced-form composite $\psi_i\,\mathrm{NetCen}_i$, with its empirical counterpart identified as eigenvector/Katz--Bonacich centrality from input-output or trade-network data, tied to the propagation literature (Barrot--Sauvagnat 2016; Inoue--Todo 2019; Boehm et al.\ 2019). (3) The prediction about high-centrality countries is now tied to a table and a figure: the $\psi$ sweep in Table~2 and Figure~5 shows the contingency gain rising monotonically in $\psi$. (4) The near-coincidence of the $\psi=1.5$ curves is now commented on directly in Section~5.3 rather than left unexplained: the unconditional logistics drag at that parameterization is $p_{\log}\times\psi\times\mathbb{E}[L]\approx 0.7\%$ of output, so the figure cannot visibly move; the informative object is the systematic sweep.
+
+\subsection*{Major Comment 5: The monetary block cannot stay in the main text in its current form}
+
+\begin{revcomment}
+Section 7 should either go to an appendix or be paired with a related quantitative exercise\ldots the pricing--default-rate fixed point is never solved\ldots the claim that inflation variance rises with large purchases needs a reference or a derivation\ldots ``monetary backstops should be conditional on hedging instruments'' is not proven\ldots Please cite Collard, Habib, Panizza and Rochet (2024).
+\end{revcomment}
+
+\response We did both of the reviewer's options: the block moves to Appendix~C \emph{and} is paired with the suggested quantitative exercise. Specifically:
+
+\begin{itemize}
+\item \emph{Fixed point.} Appendix~C now contains a subsection (``The pricing--default fixed point'') that states the system in $(\pi, PD, R_f, \sigma_\pi)$ explicitly and explains what is and is not solved: with one-period zero-coupon debt the system is \emph{recursive} (the default event does not involve the issuance price, so PD is determined before pricing), which is what licenses the comparative static; with long-maturity or interest-bearing debt the simultaneity is restored and is explicitly left to future work. The main text and Section~5.1 now also state explicitly that $R_f$ is constant in all simulations.
+\item \emph{Comparative static} (Table~C1). Sweeping the collateral haircut from 1 (ineligible) to 0 (full collateral value) for the eligible GDP clause raises the MSB analogue by up to 2.0\% through the pricing channel, with the default set unchanged---sharpening the sense in which collateral support complements, but cannot substitute for, trigger design.
+\item \emph{Inflation variance.} The claim is now labelled an assumption/conjecture, motivated by the fiscal-dominance arithmetic of Sargent and Wallace (1981) (now cited), with the mechanism spelled out (central-bank losses with uncertain fiscal backing raise price-level variance through the consolidated budget constraint).
+\item \emph{Conditionality claim.} ``Monetary backstops should be conditional on hedging instruments'' is now explicitly presented as a conjecture supported by the comparative static and the sufficient condition, ``not as a theorem.''
+\item \emph{Citation.} Collard, Habib, Panizza and Rochet (2024) is cited at the start of Appendix~C and in the introduction.
+\end{itemize}
+
+\subsection*{Major Comment 6: Calibration and labelling in Section 10}
+
+\begin{revcomment}
+`y' is labelled ``Output'' but used as a growth factor\ldots calibration values reported without provenance\ldots annual or 5-year frequency?\ldots $d=0.13$ appears very low for a debt-to-GDP threshold\ldots please simulate a $Z=1$ scenario.
+\end{revcomment}
+
+\response All addressed:
+\begin{itemize}
+\item \emph{Notation.} The symbol $y$ has been eliminated from the quantitative section and appendix proofs; the growth factor is now $g$ throughout, defined at first use in Section~5.1 as $g \equiv Y_{t+1}/Y_t$, consistent with Sections~2--4.
+\item \emph{Provenance.} Table~1 now has a ``Source / rationale'' column justifying every parameter (Barro 2006 for disaster intensity and size; Ghosh et al.\ 2013 and Collard et al.\ 2015 for $\alpha$; UNCTAD shipping-disruption frequencies for $p_{\log}$; ICMA CRDC terms for the clause parameters; and so on), and the text explains the clause-parameter anchoring ($\kappa_Z=0.35$: a two-year suspension is ${\approx}40\%$ of five-year debt service) and the grid choices, including the $\kappa\in[0.1,0.8]$ sweep range.
+\item \emph{Frequency.} The model period is five years, following Seghini; this is now stated in the table caption and text, and Table~1 reports every parameter both per period and in annual terms (e.g.\ $R_f = 1.08$ per period $=1.55\%$/yr; $p_{\mathrm{dis}}=0.15$ per period $=3.2\%$/yr hazard). Table~1 is now referenced from the main text.
+\item \emph{Units of $d$.} A dedicated paragraph in Section~5.2 explains that $d$ is the face value \emph{due within the period} (the one-period rollover analogue), not the debt stock, and that with continuation borrowing set to zero the peak near $d\approx0.13$--$0.15$ corresponds to about 2.6--3\% of GDP per year of maturing debt service---explicitly not a claim that fiscal limits are 13\% of GDP.
+\item \emph{$Z=1$ scenario} (Section~5.5, Table~5). This turned out to be one of the most instructive additions: with a certain trigger, the disaster clause is \emph{exactly} payoff-equivalent to rescaled straight debt (identical $\widehat b^M$ and default probability; $\widehat d^*$ scales by $1/(1-\kappa_Z)$), while the GDP clause retains a $+12.7\%$ gain. The ordering principle---a trigger creates fiscal space only insofar as it is informative about the default set---is now stated as such. We thank the reviewer for the suggestion.
+\end{itemize}
+
+\subsection*{Minor comments}
+
+\begin{itemize}
+\item \emph{Which sovereigns; euro area?} Named in the opening paragraph (Grenada, Barbados; UKEF/IDB CRDCs); euro-area treated explicitly as non-adopters entering via the collateral framework.
+\item \emph{Figures 1--3 reproduced from other documents.} Reduced to a single illustrative figure (the OBR climate-damage borrowing chart, now Figure~2), woven into the introduction's motivation. The other two external exhibits are dropped.
+\item \emph{``1.1 Empirical motivation'' mistitled.} The subsection has been dissolved and its surviving content integrated into the introduction; the ``empirical motivation'' heading is gone.
+\item \emph{Figure 4 not referenced.} Dropped.
+\item \emph{Section 4 title.} Renamed ``Extensions to the baseline framework.''
+\item \emph{``Comparative statics of climate policy and debt instruments.''} Rephrased; the revised Section~2 also states explicitly that the baseline model, having a single instrument, contains no ranking of debt instruments (this also addresses the p.~9 comment on ``ranking of instruments,'' now handled in Appendix~A.2).
+\item \emph{Equation (10): $C$ and $F$ not defined.} Now defined at the point of use (Appendix~A.1): $\mathcal{C}_{t+k}$ is the coupon, $\mathcal{F}$ the face value at maturity.
+\item \emph{``Physical risks are temporally clustered'' needs a citation.} Now supported by Mailier et al.\ (2006, \emph{Monthly Weather Review}) on serial clustering of extratropical cyclones (Appendix~A.1).
+\item \emph{Adaptation, subsidies, public investment: can the model endogenise these?} Appendix~A.5 now discusses how ($\mu_t$ or $\lambda_t$ as functions of an adaptation stock financed by issuance), why it is not done here (scarce empirical multipliers), and flags it as future work.
+\item \emph{Are the $d^k_t$ one-period bonds?} Yes; now stated explicitly at the start of Section~3.3, with maturity extension pointed to Appendix~A.1.
+\item \emph{p.~13: cite Collard, Habib, Panizza, Rochet.} Cited (introduction and Appendix~C).
+\item \emph{p.~16: state that the risk-free rate is constant in the simulations.} Stated as one of three scope statements opening Section~5.1, and restated in Appendix~C.
+\item \emph{p.~16: define $y$ at first appearance.} Superseded: $y$ has been replaced by $g$, defined at first use.
+\item \emph{p.~17: Table 1 horizon, annual terms, and cross-reference; same for Table 2.} Done for all tables (five-year period stated; annual equivalents in Table~1; all tables referenced from the text).
+\item \emph{Figure 5: distinguish contracts by colour.} All figures now encode the \emph{contract} by colour (colorblind-safe hues) and the \emph{scenario} by line style, with distinct markers in the sweep figures.
+\item \emph{p.~22: reconcile the stress-dependent $\alpha_t$ claim with constant $\alpha$ in the results.} Reconciled in two places: Section~3.4 states that the quantitative exercise holds $\alpha$ constant and that the stress-dependent version is an analytical extension; and the conclusion's discussion is now phrased conditionally (``the analytical framework allows capacity to deteriorate in stressed states---an extension under which the case for contingency would strengthen\ldots''), with the homogeneity result explaining why the constant-$\alpha$ results are informative about relative gains.
+\end{itemize}
+
+\section*{Reviewer 2}
+
+\subsection*{Comment 1: Scope too ambitious; excessive model complexity}
+
+\begin{revcomment}
+The manuscript attempts to simultaneously incorporate several highly complex mechanisms\ldots The paper would benefit from streamlining some channels to improve focus and transparency.
+\end{revcomment}
+
+\response We agree and have streamlined substantially. The main text now develops only the channels that are carried through the quantitative exercise: the acute-risk disaster process, the multi-instrument liability portfolio, and a reduced-form logistics wedge feeding growth and premia. The PE/VC asset-pricing channel (Appendix~B), the central-bank collateral/purchase block (Appendix~C), and the further relaxations of baseline assumptions (Appendix~A) are removed from the main line of argument. The main text has gone from twelve sections to six.
+
+\subsection*{Comment 2: Difficult to follow; transitions lack a clear narrative structure}
+
+\response The restructure addresses this directly: a single introduction states the two contributions and previews magnitudes; Section~3 opens with a plain-language ``transmission channels at a glance'' roadmap of the full causal chain; each quantitative subsection is organised around one question (``how much?'', ``when is the gain largest?'', ``what if the trigger is certain?'', ``when does the temperature link pay?''); and the discussion/conclusion is written in plain language without equation references.
+
+\subsection*{Comment 3: Add a section on mechanisms / key transmission channels, including how logistics shocks affect output and fiscal limits and interact with collateral policy}
+
+\response Added as Section~3.1 (``Transmission channels at a glance''), a plain-language overview tracing the six-link chain from the global climate state through logistics disruption, output and surplus capacity, repayment mappings, default and premia, to the fiscal limit---with the final link being exactly the collateral-policy interface the reviewer asks about, developed quantitatively in Appendix~C (haircut comparative static).
+
+\subsection*{Comment 4: The single coordinated authority is unrealistic for advanced economies given central bank independence}
+
+\response We agree and now say so where the planner problem is stated (Appendix~C): the coordinated authority is a modeling benchmark; in advanced economies the collateral and purchase decisions would be taken under a separate mandate, and the coordination studied here should be read as \emph{institutional consistency}---the central bank recognizing, on prudential grounds, the risk properties of instruments whose design independently reduces default risk---rather than joint optimization. The conclusion carries the same caveat in plain language.
+
+\subsection*{Comment 5: Temperature-linked coupons: measurement and marketability; comparison with catastrophe bonds and GDP-linked bonds; credibility for small open economies}
+
+\response The revision engages this on two levels. Quantitatively, Section~5.6 now simulates the instrument and gives a candid verdict: with weak coupling between global emissions realizations and domestic default states, the coupon \emph{reduces} the fiscal-limit analogue (basis risk dominates); it adds value only under strong coupling, and its natural role is as a long-horizon hedge of the global damage trend rather than a substitute for disaster clauses. Qualitatively, the conclusion now contains a dedicated paragraph comparing the design with catastrophe bonds and GDP-linked debt: its informational advantage is that a global emissions index cannot be manipulated by the issuer (the known obstacle for GDP-linked bonds) and needs no per-event loss verification (the cost driver for cat bonds); its disadvantages are measurement lags, the absence of an existing market, and a trigger outside any single issuer's control. For small open economies we note the credibility question is symmetric---no moral hazard premium, but investors must accept basis risk---and flag the pricing question as empirical.
+
+\subsection*{Comment 6: Numerical exercises are illustrative rather than quantitatively calibrated}
+
+\response We have chosen to be fully transparent about this rather than to overclaim. Section~5.1 opens with three scope statements, the first of which is that the exercise is an illustration, not a country calibration, and that the objects of interest are comparative statics rather than levels; the abstract and introduction say the same. Within that scope, the revision substantially strengthens the quantitative content: every parameter now has provenance and annual-equivalent units (Table~1); gains are reported in percentage terms across instruments; and the comparative statics in debt level, surplus capacity, growth, tail thickness, trigger informativeness ($Z=1$), coupling strength, clause generosity, and collateral haircuts map out where the mechanisms are quantitatively important. A calibrated welfare analysis with long-maturity debt, persistent disruption, and the pricing fixed point is stated in the conclusion as the natural next step; we believe it is a separate paper.
+
+\bigskip
+We are grateful to both reviewers; the manuscript is substantially sharper as a result of their reports.
+
+\end{document}
