@@ -1,0 +1,14 @@
+\subsection{Certain events and certain triggers}\label{subsec:certain}
+A useful limiting experiment separates the probability of a disaster from the uncertainty in the payment rule. Set disaster arrival to one while retaining the same distribution of jump sizes and the logistics process. For an event-only clause, every state now pays the same fraction $h_0=1-\kappa_Z$ of face. Writing $\tilde d=h_0d$ makes its proceeds identical to those of straight debt at face $\tilde d$:
+\begin{equation}\label{eq:constant_payoff_equivalence}
+ b_{h_0}(d;c)=\frac{h_0d}{R_f}\Prob(h_0d\le cg)=b_S(\tilde d;c).
+\end{equation}
+Since the unrestricted face can be rescaled, the maximum proceeds are equal, although the maximizing nominal faces differ. This equivalence is a statement about a known payoff multiplier, not a statement that the economy becomes safe when the event is certain. Output remains random and can still generate default.
+
+\begin{table}[t]
+\centering\caption{Certain disaster arrival with variable disaster sizes, stress parameters. The event-only contract has a constant payoff; the loss-threshold contract remains state-contingent. Parentheses are Monte Carlo SEs of the across-seed mean.}\label{tab:certain}
+\FitTable{\input{generated/certain.tex}}
+\end{table}
+The loss-threshold contract behaves differently. Some jumps exceed the verified loss threshold and others do not, so a certain event does not make its trigger certain. Its repayment schedule can continue to distinguish states with different resources. Table~\ref{tab:certain} reports both versions alongside straight and GDP debt to make the distinction observable. The exercise does not assert a universal ranking between GDP and disaster-loss designs when disasters are frequent: changing the threshold, relief fraction, or the relationship between disaster loss and resources can change the ranking.
+
+This limiting case is also a useful check on the computational method. A fixed absolute face grid can make constant-payoff instruments appear to have slightly different maxima if it samples one rescaled optimum more closely than another. Searching every empirical default threshold removes that source of discrepancy. More generally, a certain contractual haircut creates no new state information. The same face-rescaling argument is why a coupon adjustment associated with a fully anticipated emissions increment cannot by itself generate the insurance gain attributed to a surprise-linked design.

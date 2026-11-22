@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+lean_verification/.lake/
+paper/*.aux
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.run.xml
