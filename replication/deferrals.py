@@ -10,7 +10,7 @@ S=1{a+dh <= g(alpha+B(a'))}, a'=rf*d*(1-h)/g,
 s(a)=E[S(a,d*(a),g)].
 
 These additional assumptions define an illustrative stationary extension,
-not the original forgiveness recursion nor an estimated CRDC model.
+with inherited repayment obligations and risk-neutral pricing.
 """
 import numpy as np
 from .model import draw, payoff

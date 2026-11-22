@@ -1,22 +1,13 @@
 cff-version: 1.2.0
-message: "If you use these replication files, please cite the paper."
-title: "Replication files — Climate-Contingent Sovereign Finance"
-abstract: >-
-  Replication code and manuscript sources for the second revision of
-  "Climate-Contingent Sovereign Finance" (MDY-2026-0066, revised version),
-  together with a Lean 4 / mathlib project that machine-checks the
-  specified algebraic and pointwise subset described in its README.
+message: "Please cite the accompanying paper when using this code."
+title: "Climate-Contingent Sovereign Finance: Fiscal Limits, Disaster Risk, and Repayment Design"
 authors:
   - family-names: Rice
     given-names: James K.
     affiliation: University of Essex
-version: "2.0.0"
-date-released: "2026-11-22"
 license: MIT
 keywords:
   - sovereign debt
   - climate finance
-  - state-contingent debt instruments
-  - Monte Carlo simulation
-  - Lean 4
-  - formal verification
+  - state-contingent debt
+  - fiscal limits

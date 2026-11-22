@@ -1,1 +1,1 @@
-"""Second-revision replication package."""
+"""Replication package for climate-contingent sovereign finance."""

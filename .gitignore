@@ -10,11 +10,3 @@ paper/*.blg
 paper/*.log
 paper/*.out
 paper/*.run.xml
-reviews/*.aux
-reviews/*.log
-reviews/*.out
-generated/main.*
-generated/results_incomplete.json
-generated/deferral_retry.json
-generated/qa/*.png
-generated/smoothed_*.json

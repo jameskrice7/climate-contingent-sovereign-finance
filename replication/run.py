@@ -1,4 +1,4 @@
-"""Rebuild second-revision tables, figures, and machine-readable results."""
+"""Generate the paper tables, figures, and machine-readable results."""
 from dataclasses import replace, asdict
 from pathlib import Path
 import argparse
@@ -185,14 +185,12 @@ def main():
                     r['damping']=.05
                 result['deferrals'].append(r)
                 print('Deferral',nodes,k,r['B0'],r['converged'],r['residual'],flush=True)
-        (OUT/'deferral_diagnostics.json').write_text(json.dumps(result['deferrals'],indent=2)+'\n')
         if not all(r['converged'] for r in result['deferrals']):
-            (OUT/'results_incomplete.json').write_text(json.dumps(result,indent=2)+'\n')
             raise RuntimeError('Deferral fixed point did not converge; inspect numerical specification')
     else:
-        previous=OUT/'results.json'
-        if previous.exists():
-            result['deferrals']=json.loads(previous.read_text()).get('deferrals',[])
+        cached_results=OUT/'results.json'
+        if cached_results.exists():
+            result['deferrals']=json.loads(cached_results.read_text()).get('deferrals',[])
     (OUT/'results.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
     with (OUT/'seed_results.csv').open('w') as f:
         cols=sorted(set().union(*(r.keys() for r in all_rows)))
@@ -209,7 +207,7 @@ def make_tables(r):
     for name,case in r['cases'].items():
         for k in ['Straight','GDP','Disaster']:
             v=case['estimates'][k]
-            short={'Legacy stress':'Stress','Advanced economy':'Advanced','Disaster-prone small state':'Small state'}[name]
+            short={'Stress':'Stress','Advanced economy':'Advanced','Disaster-prone small state':'Small state'}[name]
             rows.append([short if k=='Straight' else '',k,cell(v['one_msb'],4),
                          cell(v['pd'],2,100),cell(v['one_gain']),
                          cell(v['stationary_msb'],3),cell(v['stationary_gain'])])
@@ -218,7 +216,7 @@ def make_tables(r):
     for name,case in r['cases'].items():
         for k in ['Straight','GDP','Disaster']:
             v=case['estimates'][k]
-            short={'Legacy stress':'Stress','Advanced economy':'Advanced','Disaster-prone small state':'Small state'}[name]
+            short={'Stress':'Stress','Advanced economy':'Advanced','Disaster-prone small state':'Small state'}[name]
             rows.append([short if k=='Straight' else '',k,cell(v['one_msd'],3),
                          cell(v['stationary_msd'],3),cell(v['stationary_msd_gain'])])
     table('msd',['Case','Contract',r'$d_1^M$',r'$d_\infty^M$',r'Stationary gain (\%)'],rows)
@@ -256,8 +254,8 @@ def make_tables(r):
     rows=[]
     for x in r.get('deferrals',[]):
         b=next(z for z in r['deferrals'] if z['nodes']==x['nodes'] and z['contract']=='Straight')['B0']
-        legacy=r['cases']['Legacy stress']['estimates']
-        forgiven=legacy[x['contract']]['stationary_gain']['mean']
+        stress_estimates=r['cases']['Stress']['estimates']
+        forgiven=stress_estimates[x['contract']]['stationary_gain']['mean']
         gain=percent(x['B0'],b)
         rows.append([str(x['nodes']),x['contract'],cell(x['B0'],4),cell(gain),
                      '--' if x['contract']=='Straight' else cell(100*gain/forgiven),
@@ -269,7 +267,7 @@ def make_tables(r):
         rows.append([name,cell(bound,4),*[cell(100*v[k]['one_msb']['mean']/bound) for k in ['Straight','GDP','Disaster']]])
     table('bound',['Case',r'$\alpha\mathbb E[g]/R_f$',r'Straight (\%)',r'GDP (\%)',r'Disaster (\%)'],rows)
     macros={}
-    for prefix,name in [('Legacy','Legacy stress'),('Advanced','Advanced economy'),('Small','Disaster-prone small state')]:
+    for prefix,name in [('Stress','Stress'),('Advanced','Advanced economy'),('Small','Disaster-prone small state')]:
         case=r['cases'][name]
         for contract in ['GDP','Disaster']:
             for metric,key in [('OneGain','one_gain'),('StationaryGain','stationary_gain'),('MSDGain','stationary_msd_gain')]:
@@ -286,7 +284,7 @@ def make_tables(r):
         for contract in ['GDP','Disaster']:
             value=next(z['B0'] for z in rows if z['contract']==contract)
             gain=percent(value,base)
-            permanent=r['cases']['Legacy stress']['estimates'][contract]['stationary_gain']['mean']
+            permanent=r['cases']['Stress']['estimates'][contract]['stationary_gain']['mean']
             macros['Deferral'+contract+'Gain']=cell(gain,1)
             macros['Deferral'+contract+'Retained']=cell(100*gain/permanent,1)
     (TEX/'numbers.tex').write_text('\n'.join('\\newcommand{\\'+k+'}{'+v+'}' for k,v in macros.items())+'\n')

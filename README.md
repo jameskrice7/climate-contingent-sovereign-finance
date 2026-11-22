@@ -1,131 +1,78 @@
-# Climate-Contingent Sovereign Finance — second revision
+# Climate-Contingent Sovereign Finance
 
-Manuscript MDY-2026-0066. This repository contains the paper, a point-by-point
-response, and the code and generated inputs used in the second revision.
-The calculations are theoretical illustrations, not estimated country effects.
+**Fiscal Limits, Disaster Risk, and Repayment Design**
 
-## Read the revision
+This repository contains the paper and the code needed to reproduce its tables,
+figures, fiscal-limit calculations, and formal verification.
 
-- `paper/main.pdf`: revised paper; `paper/main.tex`, `paper/sections/`, and
-  `paper/references.bib`: sources.
-- `reviews/response_round2.pdf` and `.tex`: response to the second-round comments
-  and the separate eight-point referee report.
-- `reviews/abstract_for_submission.txt`: matching abstract to paste into ScholarOne.
-- `generated/results.json`: full results, including independent-seed uncertainty
-  and stationary deferral diagnostics.
-- `references/audit.csv`: disposition of all 82 original references and the five
-  additions. Every reference retained in the active paper has a source and a
-  claim-level check in `references/retained_sources.json`.
+## Contents
 
-The supplied paper and first-round response were uploaded first in commit
-`894faef`; that commit preserves the unedited source. `legacy/` retains the old
-simulation engine, old bibliography, and original Lean source for provenance.
-The original referee PDF and pasted report were read locally; reproducing the
-research does not require them. The compiled first-revision paper is preserved
-at `legacy/main_round1.pdf` for direct comparison.
+- `paper/main.pdf`: the paper.
+- `paper/main.tex`, `paper/sections/`, and `paper/references.bib`: its LaTeX sources.
+- `paper/generated/`: the table inputs, numerical macros, and figures used by LaTeX.
+- `replication/`: the simulation engine, numerical checks, and figure-generation code.
+- `generated/results.json` and `generated/seed_results.csv`: numerical results.
+- `tests/`: checks of pricing, recovery, indexation, and fiscal-limit identities.
+- `lean_verification/`: Lean proofs and pinned dependencies.
 
-The paper retains the original overall length: 31 pages in the same 11-point,
-one-inch-margin format, with approximately 12,400 words excluding references
-versus 12,200 in the first revision. Fuller baseline exposition, results
-interpretation, and analytical appendices are retained while Section 3 remains
-focused on the mechanisms actually implemented. `generated/length_comparison.json`
-records the comparison; `python -m replication.compare_length` regenerates it.
+## Reproduction
 
-## Reproduce
-
-Tested with Python 3.14, NumPy 2.5.5, SciPy 1.18.1, Matplotlib 3.11.2,
-Tectonic 0.16.9, and Lean/mathlib 4.29.0 on macOS arm64.
+Use Python 3.14, Tectonic 0.16.9, and Lean/mathlib 4.29.0. Install Python packages
+in a virtual environment:
 
 ```sh
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
+cd lean_verification
+lake exe cache get
+cd ..
+make reproduce PYTHON=.venv/bin/python
+```
+
+The command regenerates the numerical results and LaTeX inputs, runs the checks,
+compiles the paper, and builds the Lean project. The calculations require no
+external dataset. The first Tectonic run and mathlib cache download require
+internet access. The simulation uses twenty independent seeds with 200,000
+draws per setting and includes three grid resolutions for stationary deferrals.
+Allow several minutes for the full computation.
+
+The components can also be run separately:
+
+```sh
 python -m replication.run
 python -m unittest discover -s tests -v
 python -m replication.check_outputs
-(cd paper && tectonic -X compile main.tex --outdir .)
-(cd reviews && tectonic -X compile response_round2.tex --outdir .)
-cd lean_verification
-lake exe cache get
-lake build
+make paper
+make lean
 ```
 
-Tectonic and elan/Lake are separate system prerequisites. The first TeX build
-and mathlib cache download require internet access; the numerical build uses no
-external datasets or network calls. Mathlib's regenerable cache is about 7 GB
-and is not committed. Python requirements are pinned; the complete environment
-used for this run is recorded in `generated/environment.txt`.
+For PDF rendering and layout checks, install `requirements-dev.txt` and run
+`make qa`. Rendered pages and the layout report are written to a temporary
+directory outside the repository.
 
-With prerequisites installed, `make reproduce PYTHON=.venv/bin/python`
-regenerates numerical inputs, runs model checks, compiles both PDFs, and checks
-Lean. `make qa` additionally renders the PDFs using the optional packages in
-`requirements-dev.txt`. PDF QA images are regenerable and excluded from Git.
-`revision_simulations.py` remains a compatibility entry point for the new build.
-The full build uses 20 seeds × 200,000 draws per setting and includes several
-stationary state-grid refinements; allow several minutes. A reduced run with
-`--draws 10000 --seeds 2 --skip-deferrals` is for development only and must not
-replace submission results. `check_outputs` rejects a nonstandard seed count.
+## Model
 
-## Model and numerical changes
+The principal comparisons use risk-neutral pricing, permanent state-contingent
+relief, and zero recovery. Stationary borrowing capacity is
+`alpha * Phi / (1 - Phi)` when `Phi < 1`. The deferral model carries postponed
+service forward as an inherited obligation and capitalizes it at the safe rate.
+Recovery, where included, is a share of repayment capacity. The paper specifies
+the timing, calibration, default rule, and assumptions for each calculation.
 
-The main one-period model has capacity `alpha*g`, risk-neutral pricing, and
-zero recovery. A clause in the main tables is a **permanent write-down**.
-At fixed continuation capacity its MSB gain is a one-off gain. Repeated issuance
-has borrowing factor `Phi`, stationary MSB `alpha*Phi/(1-Phi)`, and stationary
-MSD `alpha*x_star/(1-Phi)`. These are reported separately.
+The numerical optimizer evaluates all empirical default thresholds. Results
+include paired contract comparisons and standard errors of the across-seed
+means. Deferral outputs contain convergence residuals and state-boundary
+checks. The country environments are theoretical illustrations.
 
-The disaster contract now requires a verified output loss of at least 15%,
-with event-only and alternative-threshold comparisons retained. An exponential
-log jump of mean .25 implies a mean output loss of **20%**. The legacy stress
-case has negative expected log growth; separate advanced-economy and
-small-state cases use positive conditional trends and explicitly illustrative
-hazards. The .08 logistics probability is a five-year exposure-block
-probability, not an estimate of one or two shipping disruptions per decade.
+## Formal verification
 
-`replication/model.py` maximizes the empirical proceeds curve at all default
-thresholds, rather than using the former .001 face grid. This removes grid bias
-but not Monte Carlo error or finite-sample maximization bias. Paired contracts
-use common draws within each seed; tables report SEs of the mean of independent
-seed estimates, while JSON also reports across-seed standard deviations.
+`lean_verification/LeanVerification/Basic.lean` checks the default-condition
+algebra, growth-factor identities, homogeneity, threshold geometry, constant
+payoff equivalence, generosity derivative, stationary recursion, capacity-based
+payment bounds, NPV capitalization, and square identities used in the proofs.
+There are no custom axioms or incomplete proofs.
 
-`replication/deferrals.py` is a distinct stationary extension. Inherited claims
-cannot be deferred again; new relief is capitalized at the safe rate and paid
-one model period later, subject to survival at both dates. The state is
-inherited face due next period. The paper reports `B(0)` under a stationary
-policy and the schedule `B(a)`, **not** a stationary distribution or a scalar
-country-independent deferral limit. Timing and pricing equations are in
-Appendix A. Convergence residuals, grids, and boundary checks are archived.
-
-Recovery is a fraction of capacity in default. Face-value recovery was removed
-because it makes unrestricted MSB infinite. The paper reports the attainable
-full-indexation resource bound. Positive recovery and full indexation are
-checks on the step-clause gains, not fitted empirical exercises.
-
-The old unrestricted tail-value proposition is replaced by a conditional
-statement and a counterexample. Interior relief is established under stated
-conditions and in a fully worked uniform-distribution example. The emissions
-coupon insures **surprises**, and additive collateral easing mechanically
-scales every instrument equally. A separate risk-dependent eligibility rule
-makes its extra assumption explicit.
-
-## Output map
-
-| Code / output | Paper object |
-|---|---|
-| `model.py`, `results.json:cases` | One-period and stationary MSB/MSD; calibration arithmetic; resource bound |
-| `run.py:psi_sweep`, `mu_sweep`, `faces` | Logistics, trend-growth, and common-face comparisons |
-| `run.py:thresholds`, `recovery`, `temperature`, `certain_event` | Loss thresholds, capacity recovery, emissions surprises, and certain-event checks |
-| `deferrals.py`, `results.json:deferrals` | Carried-forward claims, grids, convergence, and inherited-state figure |
-| `run.py:haircuts` | Common additive versus default-risk-dependent collateral assumptions |
-| `plots.py` | All four current figure files in `paper/generated/` |
-| `run.py:make_tables` | Every simulation table and numerical prose macro |
-| `seed_results.csv` | Raw per-seed estimates for case and logistics comparisons |
-| `lean_verification/` | Precisely scoped formal subset; see its README |
-
-The constant parameters in the calibration table come from the immutable
-`Calibration` definitions. There are no manually copied simulation coordinates
-in the current manuscript. Population formulas, simulations, and conjectures
-are explicitly distinguished. Literature lookup is separate from the offline
-replication build; Crossref rate-limited some original records, and unresolved
-or mismatched records are not called verified. Removed entries are retained
-only in the provenance audit.
+The probabilistic arguments, Monte Carlo estimates, and stationary deferral
+solver are supported by the mathematical exposition and numerical checks.
+They are outside the formalized subset.

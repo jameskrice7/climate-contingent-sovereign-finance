@@ -29,9 +29,9 @@
     "optimizer": "all empirical default thresholds"
   },
   "cases": {
-    "Legacy stress": {
+    "Stress": {
       "parameters": {
-        "name": "Legacy stress",
+        "name": "Stress",
         "alpha": 0.16,
         "rf": 1.08,
         "mu": 0.01,

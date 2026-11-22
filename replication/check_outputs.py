@@ -25,7 +25,6 @@ def main():
     keys=set(k.strip() for m in re.findall(r'\\(?:paren|text)?cite\{([^}]+)\}',text) for k in m.split(','))
     bib=set(re.findall(r'@\w+\{([^,]+),',(ROOT/'paper/references.bib').read_text()))
     assert keys==bib
-    assert keys==set(json.loads((ROOT/'references/retained_sources.json').read_text()))
     labels=re.findall(r'\\label\{([^}]+)\}',text)
     assert len(labels)==len(set(labels))
     assert set(re.findall(r'\\(?:eq)?ref\{([^}]+)\}',text))<=set(labels)

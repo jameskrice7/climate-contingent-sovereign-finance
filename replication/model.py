@@ -10,7 +10,7 @@ import numpy as np
 
 @dataclass(frozen=True)
 class Calibration:
-    name: str = "Legacy stress"
+    name: str = "Stress"
     alpha: float = .16
     rf: float = 1.08
     mu: float = .01
