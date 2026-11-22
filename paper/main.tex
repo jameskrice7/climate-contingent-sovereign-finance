@@ -1,910 +1,423 @@
 \documentclass[11pt]{article}
-
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath, amssymb, amsthm, bm}
-\usepackage{graphicx}
-\usepackage{booktabs}
-\usepackage{hyperref}
-\usepackage{microtype}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usepackage{tikz}
-
-% Colorblind-safe series colors (color encodes the contract; dash style encodes the scenario)
-\definecolor{vizblue}{HTML}{2A78D6}   % straight debt
-\definecolor{vizorange}{HTML}{EB6834} % GDP-linked / contingent clause
-\definecolor{vizgreen}{HTML}{008300}  % disaster clause
-
+\usepackage{amsmath,amssymb,amsthm,bm,graphicx,booktabs,microtype}
 \usepackage[style=authoryear,sortcites=true,sorting=nyt,maxcitenames=2,maxbibnames=10,uniquename=false,uniquelist=false,backend=bibtex]{biblatex}
 \addbibresource{references.bib}
-
-\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
-
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\renewcommand{\topfraction}{.92}
+\renewcommand{\bottomfraction}{.85}
+\renewcommand{\textfraction}{.06}
+\renewcommand{\floatpagefraction}{.65}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 \newtheorem{remark}{Remark}
-
-\title{\bf Climate-Contingent Sovereign Finance:\\\large Extending Fiscal Limits to Logistical Climate Risk Transmission to Global Assets}
-%\author{James K Rice \thanks{PhD Candidate, University of Essex (UK)}}
-\date{\today}
-
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}
+\newsavebox{\tablebox}
+\newcommand{\FitTable}[1]{\sbox{\tablebox}{#1}\ifdim\wd\tablebox>\linewidth\resizebox{\linewidth}{!}{\usebox{\tablebox}}\else\usebox{\tablebox}\fi}
+\input{generated/numbers.tex}
+\title{\bf Climate-Contingent Sovereign Finance:\\Fiscal Limits, Disaster Risk, and Repayment Design}
+% Anonymous manuscript; author information is retained in CITATION.cff.
+\author{}
+\date{22 November 2026}
 \begin{document}
 \maketitle
-
 \begin{abstract}
-Sovereigns exposed to climate risk have begun to write state contingency directly into their debt contracts: Grenada's 2015 restructuring and Barbados's 2018--19 restructuring and 2022 issuance include clauses that suspend debt service after qualifying natural disasters. This paper asks what such instruments do to fiscal limits. Building on the structural fiscal-limit framework of \textcite{CollardEtAl2015}, as extended to climate damages by \textcite{Seghini2026}, it makes two contributions. First, it generalizes the maximum sustainable borrowing and maximum sustainable debt objects (MSB/MSD) to a portfolio of state-contingent liabilities, so that the fiscal limit depends not only on mean growth but on how contractual repayments load on left-tail states. Second, it extends the framework from chronic physical risk---the focus of the baseline model---to acute physical risk in the NGFS sense, by introducing a Barro-style disaster process whose intensity can rise with cumulative emissions. A Monte Carlo illustration quantifies both margins: at the baseline calibration, a GDP-linked repayment clause raises the one-period analogue of maximum sustainable borrowing by 10--12 percent relative to straight debt and cuts the default probability at the issuance optimum by roughly two-thirds; the advantage grows with the rollover need and with the thickness of the left tail, is invariant to surplus capacity, and is maximized at an interior level of contractual relief. A disaster-triggered clause delivers smaller gains that are limited by basis risk, and a temperature-linked coupon adds value only when the coupling between global emissions realizations and domestic disaster intensity is strong. A reduced-form logistics-amplification channel linking supply-chain disruption to sovereign premia, and a monetary block covering collateral policy and asset purchases, are developed analytically; their full numerical solution and empirical calibration are beyond the scope of this paper, and they are treated as extensions in the appendices.
+Can state-contingent sovereign debt expand borrowing capacity when climate risk thickens the left tail of output? This paper embeds contingent repayments in a fiscal-limit framework and adds acute disaster risk to chronic climate damages. In the stress illustration, a GDP-triggered clause with permanent relief raises one-period maximum sustainable borrowing by \LegacyGDPOneGain\ percent; when issued repeatedly, the stationary gain is \LegacyGDPStationaryGain\ percent. Gains are larger near the fiscal limit and depend on how closely relief identifies states that would otherwise default. A disaster-loss trigger delivers a smaller one-period gain of \LegacyDisasterOneGain\ percent because it misses adverse output states unrelated to a qualifying disaster. This mismatch is basis risk; the gap between the instruments' gains provides a design-specific measure. Separate advanced-economy and disaster-prone small-state illustrations, positive recovery, simulation uncertainty, and a stationary deferral extension show how the results depend on the fiscal environment and on whether relief is forgiven or carried forward. The illustrations are theoretical comparative statics, rather than estimates for individual issuers.
 \end{abstract}
+\noindent\textbf{Keywords:} sovereign debt; fiscal limits; state-contingent debt; disaster risk; basis risk.
 
-\textbf{Keywords:} Climate-Contingent Sovereign Debt; Maximum Sustainable Debt (MSD); State Debt Instruments; Climate Risk Transmission; Sovereign Risk Premia.
+\section{Introduction}\label{sec:intro}
+Debt contracts can change when payments fall due as well as how much creditors ultimately receive. Barbados's natural-disaster clauses and the UK Export Finance climate-resilient debt clause illustrate this distinction: qualifying events suspend service, while postponed amounts remain payable \parencite{imf_barbados2022_crdc,icma2022_crdc_chairs_summary,ukgov2023_crdc}. These arrangements motivate the question studied here: when does moving repayments away from distressed states expand the amount a sovereign can borrow?
 
-\section{Introduction}
-\label{sec:intro}
+The paper makes two contributions to the fiscal-limit framework of \textcite{CollardEtAl2015} and its climate extension in \textcite{Seghini2026}. First, it allows a portfolio of contingent liabilities, so the maximum sustainable borrowing (MSB) and the corresponding maximum sustainable debt (MSD) depend on the state-by-state repayment schedule. Second, it adds disaster jumps to the output process and compares output and disaster-loss triggers. The central mechanism is a survival--payoff trade-off: relief raises proceeds when the value of newly surviving repayments exceeds the payments forgone in states that would already have repaid.
 
-A small but growing group of sovereigns now issues debt whose repayment terms respond automatically to climate-related events. Grenada's 2015 restructuring introduced a hurricane clause that defers debt service after a qualifying storm; Barbados incorporated natural-disaster clauses in its 2018--19 domestic and external restructurings and added pandemic clauses in its 2022 issuance; and climate-resilient debt clauses (CRDCs) are now offered by official-sector lenders, including UK Export Finance and the Inter-American Development Bank \parencite{imf_barbados2022_crdc,icma2022_crdc_chairs_summary,ukgov2023_crdc,cpi2025_crdc_primer,pina2022_scgd_database,OECD2021CatClauses}. Euro-area sovereigns have not adopted such clauses to date; they enter the analysis instead through the monetary-policy interface, because the Eurosystem is introducing climate-related adjustments to its collateral framework \parencite{ecb2025_climate_factor_pr}. The instruments themselves are concrete. Under Barbados's 2022 clause, a verified natural disaster exceeding a parametric trigger allows the government to suspend principal and interest payments for up to two years, with the deferred amounts capitalized: repayment obligations are moved out of exactly the states in which output has collapsed and fiscal capacity is at its weakest.
+Throughout, \emph{additional fiscal space} means the change in MSB relative to straight debt, reported both in GDP units and as a percentage. MSD is the face value attaining MSB, with its own separately reported gain. Neither object is a welfare measure or an estimate of the distance between an observed debt stock and its limit. This usage differs from the debt-limit-minus-current-debt definition in \textcite{GhoshEtAl2013}.
 
-This paper asks what such instruments do to \emph{fiscal limits}---the maximum debt a sovereign can sustain without default becoming unavoidable. The central mechanic can be stated in one sentence: once climate shocks thicken the left tail of the growth distribution, maximum sustainable borrowing (MSB) and maximum sustainable debt (MSD) depend not only on mean growth but on \emph{how contractual repayments load on left-tail states}. Figure~\ref{fig:intro_loading} illustrates. A straight bond demands the same repayment in every state, so the default region is the entire set of growth outcomes in which repayment capacity $\alpha g$ falls below the promised face value. A contingent clause steps repayment down precisely in low-growth states, shrinking the default region---in the configuration drawn, cutting the probability mass in the default set from 8.0\% to 1.6\%---at the cost of a lower payoff in states where the sovereign would have repaid anyway. Whether that trade raises or lowers the fiscal limit is a quantitative question, and it is the question this paper answers.
+\emph{Basis risk} is the mismatch between an observable trigger and the states in which repayment capacity is low. A disaster trigger misses non-disaster recessions and can activate when repayment remains feasible. Because capacity in the main exercise is a function of output alone, observing output entails no informational basis risk by construction; nevertheless, a fixed GDP threshold can be poorly targeted. We measure the relative cost of trigger mismatch by the gap between GDP-clause and disaster-clause MSB gains, conditional on their specified relief rates. This gap also reflects differences in contractual design and is not an identified causal estimate of basis risk.
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.88\linewidth]{fig1_loading.pdf}
-\caption{How repayments load on left-tail states. \emph{Top panel:} with straight debt (face value $d=0.13$, surplus capacity $\alpha=0.16$), default occurs whenever the growth factor falls below $d/\alpha \approx 0.81$. A clause that cuts repayment by $\kappa=30\%$ in states below the trigger $\bar g = 0.95$ moves the default threshold down to $(1-\kappa)d/\alpha \approx 0.57$, splitting the relief into the three regions of the survival--payoff trade-off (Proposition~\ref{prop:interior_kappa}): relief that still ends in default, relief that converts default into survival, and relief given up in states in which the sovereign would have repaid anyway. \emph{Bottom panel:} the growth density under the acute-risk calibration of Section~\ref{sec:numerical} (lognormal growth plus Barro-style disaster jumps) attaches probability mass to those regions: the clause shrinks the default set's mass from $8.0\%$ to $1.6\%$. The dashed benchmark removes disasters; the thickened left tail is what makes the loading of repayments on left-tail states quantitatively first-order.}
-\label{fig:intro_loading}
+\begin{figure}[!htbp]
+\centering\includegraphics[width=.91\textwidth]{generated/loading.pdf}
+\caption{Repayment design at a common face value, $d=0.13$, in the stress illustration. Capacity is $0.16g$; the GDP clause pays $0.7d$ below $\bar g=0.95$ and $d$ otherwise. The shaded regions distinguish persistent default, avoided default, and relief in states that already repay. Using seed 42, default mass falls from \FigDefaultStraight\% to \FigDefaultGdp\%; relief is also paid in \FigPaidInSurvivalMass\% of states where straight debt would repay. These are common-face comparisons, not comparisons at each contract's optimum. The discounted survival benefit is \FigSurvivalPayoffGain\ of GDP and the payoff cost is \FigSurvivalPayoffCost\ of GDP, so the payoff cost exceeds the survival benefit at this face value: proceeds fall despite the lower default probability. The density is a kernel visualization; all masses use the unsmoothed draws.}\label{fig:loading}
 \end{figure}
 
-The paper builds directly on the structural fiscal-limit framework of \textcite{CollardEtAl2015}---recently extended by \textcite{CollardHabibPanizzaRochet2024}---and on \textcite{Seghini2026}, who integrates emissions pathways and climate damages into the maximum sustainable borrowing calculation and shows that unmanaged damages eventually dominate transition costs, making coordinated mitigation fiscally essential. Relative to that baseline, this paper makes two contributions.
+The distinction between forgiveness and deferral is essential. The main one-period repayment reduction is a \emph{write-down}: the reduced amount is not recovered later. Repeated issuance therefore changes continuation borrowing capacity as well as current proceeds. A separate stationary extension retains postponed payments as inherited claims and capitalizes them at the safe rate. Its results cannot be inferred by interpreting a write-down parameter as a payment suspension.
 
-\emph{First, it generalizes the fiscal-limit object to a portfolio of state-contingent liabilities.} The sovereign issues a vector of instruments---straight bonds, GDP-linked bonds, disaster clauses, temperature-linked coupons---each with its own mapping from macro-climate states into repayments. Generalized MSB/MSD are defined over this portfolio, and the analysis provides implementable sufficient conditions under which contingent claims \emph{strictly} relax the fiscal limit relative to straight debt: the survival gain from removing repayments from default states must exceed the payoff given up in survival states.
+Climate risk affects the resources available to service these claims. \textcite{Agarwala2021} discuss fiscal and sovereign-credit channels; \textcite{Barrage2020} quantify the budgetary consequences of adaptation and public spending; \textcite{BilalKanzig2026} estimate macroeconomic damages using global temperature; and \textcite{SeghiniDeesDeGaye2026} address sovereign debt challenges in a warming world. For ratings, \textcite{Klusak2023} provide climate-adjusted creditworthiness projections. These studies motivate the exposure to adverse output states; they do not identify the reduced-form parameters used below.
 
-\emph{Second, it extends the framework from chronic to acute physical risk.} In the NGFS taxonomy \parencite{NGFS2023}, chronic risk is the gradual erosion of growth by rising temperatures---the channel modeled by \textcite{Seghini2026} through a Dietz--Venmans damage function. Acute risk is the realization of discrete disasters. This paper introduces a Barro-style jump process for disasters \parencite{Barro2006}, allows the jump intensity to increase with cumulative emissions, and carries both through the quantitative exercise. This is precisely the risk category that disaster clauses are written on, so the extension is what makes the instrument analysis possible.
+The numerical scope is deliberately limited. The paper provides a theoretical model with illustrations, including separate advanced-economy and disaster-prone small-state cases. It does not estimate disaster arrival rates, production-network centrality, premia, or the welfare gains of actual clauses. Logistics enters through an i.i.d. output wedge; stress-dependent surplus capacity, private-asset transmission, and monetary policy remain analytical extensions. Section~\ref{sec:baseline} sets out fiscal limits, Section~\ref{sec:contracts} defines contracts and the implemented shocks, Section~\ref{sec:theory} states the analytical results, and Section~\ref{sec:numerical} reports the calculations. The appendices specify deferrals, recovery, further extensions, and proofs.
 
-The quantitative section delivers magnitudes for both margins. At the baseline calibration, a GDP-linked clause raises the one-period MSB analogue by 10--12\% relative to straight debt while cutting the default probability at the issuance optimum from roughly 11\% to 3\%. The advantage is increasing in the rollover need---the clause \emph{costs} proceeds when debt is low and pays off strongly near the fiscal limit---increasing in the thickness of the left tail, exactly invariant to the level of surplus capacity (a homogeneity property of the fiscal-limit problem), and maximized at an interior level of contractual relief of around 20--30\% of face value. A disaster-triggered clause yields smaller gains (2--3\%) because its trigger is imperfectly correlated with the default set: basis risk, quantified. A temperature-linked coupon---a natural hedge against the global damage driver---adds value only when the coupling between global emissions realizations and domestic disaster intensity is strong; when the coupling is weak, the coupon's payoff noise dominates its insurance value in a one-period setting.
-
-Two further channels are developed analytically but not calibrated, and it is important to state this scope limitation up front. A logistics-amplification channel maps global supply-chain disruptions into domestic output, surplus capacity, and sovereign risk premia, with production-network centrality governing exposure; the quantitative section varies the amplification parameter as a comparative static, but a full numerical solution and empirical calibration of this channel are beyond the scope of this paper. Likewise, a monetary block---climate-tilted collateral policy and asset purchases---is developed in Appendix~\ref{app:monetary} together with a simple comparative static on collateral haircuts; its equilibrium fixed point with long-maturity debt is left to future work.
-
-The mechanisms studied here are fiscally first-order in the projections of fiscal institutions. The UK Office for Budget Responsibility, for example, now publishes scenario-based debt paths that attribute several percentage points of GDP of additional borrowing to climate-damage costs over multi-decade horizons (Figure~\ref{fig:obr_46}); parallel scenario work by the IMF and central banks treats climate damages and transition costs as joint, state-dependent objects \parencite{IMF2023FiscalMonitor,boe2024_climate_scenario_analysis}. And a growing empirical literature finds climate-related risk priced in sovereign bonds and reflected in ratings \parencite{ecb_wp3135_climate_pricing,ecb_wp3042_climate_ratings,zenios2021_bruegel_climate_debt,kling2025_climate_vulnerability_cost_debt}. Once climate risk is priced as a systematic component of sovereign risk rather than idiosyncratic disaster noise, the borrowing factor underpinning MSB/MSD is jointly determined by climate exposure, investor risk appetite, and liability design---which is what motivates treating debt management as an explicit climate-risk hedging problem.
-
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=0.92\linewidth]{fig2_climate_wedge.pdf}
-  \caption{The fiscal cost of the extra degree. Additional public-sector net borrowing attributed to climate damage in the UK Office for Budget Responsibility's scenario analysis (author's stylized recreation of \cite{obr2025frs}, Chart 4.6). Shaded bands decompose the below-3$^\circ$C scenario into direct damage-repair spending, indirect revenue losses from lost output, and the debt interest that compounds on both; the dashed line is the below-2$^\circ$C total. The hatched wedge---roughly $2.2\%$ of GDP of annual borrowing by 2069--70---is the fiscal payoff to limiting warming. Climate damages are now routinely translated into long-horizon public-debt projections by fiscal institutions; this is the type of object that maps into the fiscal-limit calculations studied here.}
-  \label{fig:obr_46}
-\end{figure}
-
-The paper proceeds as follows. Section~\ref{sec:baseline} summarizes the baseline fiscal-limit model with emissions and damages. Section~\ref{sec:extensions} develops the extensions that the paper quantifies: the acute-risk disaster process, the liability portfolio with generalized MSB/MSD, and the reduced-form logistics and premium channel; extensions that are analytical only (maturity, recovery, an endogenous risk-free rate, state-dependent volatility) are collected in Appendix~\ref{app:further}. Section~\ref{sec:results} states the analytical results. Section~\ref{sec:numerical} presents the quantitative illustration and comparative statics. Section~\ref{sec:conclusion} discusses design lessons and concludes. Appendix~\ref{app:pevc} develops the asset-market transmission to private equity and venture capital valuations, Appendix~\ref{app:monetary} the monetary block, and Appendix~\ref{app:proofs} the proofs.
-
-\section{Baseline fiscal limits with emissions and damages}
-\label{sec:baseline}
-
-\textcite{Seghini2026} extends the Collard--Habib--Rochet framework (\cite{CollardEtAl2015}) by letting GDP growth depend on emissions paths (transition costs) and global cumulative emissions (damages). The core sustainability condition is
-\begin{equation}
-\frac{D_t}{Y_t} \le d_t^M,
+\section{Fiscal limits and climate-dependent resources}\label{sec:baseline}
+Let $g_{t+1}=Y_{t+1}/Y_t>0$ be gross output growth over a five-year period. Let $\alpha_{t+1}$ be the feasible primary surplus relative to next-period GDP, and $b^M_{t+1}$ maximum new borrowing at that date. Resources at $t+1$, relative to $Y_t$, are
+\begin{equation}\label{eq:capacity}
+ c_tg_{t+1},\qquad c_t=\alpha_{t+1}+b^M_{t+1}.
 \end{equation}
-where $d_t^M$ is the fiscal limit (MSD), the debt-to-GDP ratio that maximizes borrowing proceeds (MSB). Default occurs when the face value of debt exceeds repayment resources:
-\begin{equation}\label{eq:default_condition}
-D_t - \alpha Y_t > B_t^M \quad \Longleftrightarrow \quad \frac{D_t}{Y_t} > \alpha + b_t^M,
+When $\alpha_{t+1}$ is stochastic, capacity is a function of the full state; the homogeneous scalar recursion below assumes constant $\alpha$. For straight zero-coupon debt with face $d_t$, default occurs when $d_t>c_tg_{t+1}$. With zero recovery and risk-neutral pricing, proceeds are
+\begin{equation}\label{eq:straight}
+ b_t(d_t)=\frac{d_t}{R_f}\Prob_t(d_t\le c_tg_{t+1}),\qquad b_t^M=\max_{d_t\ge0}b_t(d_t).
 \end{equation}
-where $\alpha$ is the maximum primary surplus ratio (a fiscal-fatigue/Laffer constraint) and $b_t^M\equiv B_t^M/Y_t$ is maximum sustainable borrowing (\cite{Seghini2026}).
+The debt limit is an optimizer of proceeds, rather than a face value that ensures repayment in every state. If optimizers are multiple, the numerical tables report the smallest maximizing face value and record this tie-breaking convention. The portfolio aggregator below is a separate normalization of the maximizing set.
 
-With risk-neutral pricing and a constant gross risk-free rate $R$, the promised gross return on sovereign debt satisfies
-\begin{equation}\label{eq:pricing_basic}
-R(d_t)\left(1-\mathrm{PD}(d_t)\right)=R.
-\end{equation}
+In the chronic-risk baseline, an emissions-dependent transition wedge $\mathcal T_{t+1}$ and cumulative-emissions damages scale output growth \parencite{Seghini2026,DietzVenmans2019}:
+\begin{align}
+ g_{t+1}&=\mathcal T_{t+1}\exp\!\left(\mu_0+\varepsilon_{t+1}-\frac{\rho_T}{2}(T_{t+1}^2-T_t^2)\right),\label{eq:chronic}\\
+ \mathcal T_{t+1}&=\left(\frac{c_E+e_{t+1}}{c_E+e_t}\right)^\beta,
+ \qquad T_t=\zeta C_t,\qquad C_{t+1}=C_t+\Delta C_{t+1}.\nonumber
+\end{align}
+Here $e_t$ is emissions relative to a reference level, $c_E>0$, and $\varepsilon$ is a mean-zero growth shock. The transition wedge is denoted $\mathcal T$, reserving $H$ for contractual payoffs. The simulations use a constant drift or a surprise-dependent damage wedge; they do not solve for optimal emissions or reproduce a complete business-as-usual transition path. Carbon-budget and adaptation considerations are discussed in Appendix~\ref{app:extensions}.
 
-Equation (\ref{eq:pricing_basic}) is the key pricing identity that generates the borrowing-proceeds ``Laffer curve'' in the fiscal-limit framework. As face value issuance increases, default probability rises, and investors demand a higher promised gross return to break even. Borrowing proceeds therefore need not increase monotonically with promised repayments: beyond some point, additional face value is offset by sharply higher yields and a collapse in the present value of issuance revenue. MSB in (\ref{eq:MSB}) is exactly the peak of this proceeds curve, and MSD in (1) inherits its shape because sustainability is pinned down by the maximum resources the sovereign can raise subject to endogenous default risk.
+\section{Contingent liabilities and acute risk}\label{sec:contracts}
+\subsection{Portfolio definitions}
+Let $\bm d_t$ contain nonnegative face values of $K$ securities, with repayment per unit face $\Pi^k(\omega_{t+1})$. Total repayment is $\Delta(\omega;\bm d_t)=\sum_k d_t^k\Pi^k(\omega)$ and total proceeds are $b_t(\bm d_t)=\sum_kd_t^kq_t^k$. All securities share the default event $\Delta>c_tg$ in the baseline. Let $\mathcal D_t$ be the feasible set. Generalized MSB and a scalar MSD are
+\begin{align}
+ b_t^M&=\max_{\bm d\in\mathcal D_t}b_t(\bm d),\label{eq:MSB_general}\\
+ d_t^M&=\max_{\bm d\in\mathcal D_t}\sum_kd^k\bar\Pi^k
+ \quad\text{subject to}\quad b_t(\bm d)=b_t^M.\label{eq:MSD_scalar}
+\end{align}
+The constants $\bar\Pi^k$ normalize face units. The equality in \eqref{eq:MSD_scalar} restricts the aggregator to portfolios attaining MSB; an inequality would impose no restriction. The numerical comparisons below optimize one contract at a time and do not claim to solve the unrestricted portfolio problem. General stochastic-discount-factor pricing is recorded in Appendix~\ref{app:extensions}.
 
-Borrowing proceeds from issuing face value $d_t$ are $b(d_t)=d_t/R(d_t)$ and MSB is
-\begin{equation}\label{eq:MSB}
-b_t^M = \max_{d_t}\, b(d_t)=\max_{d_t}\frac{d_t}{R(d_t)}.
-\end{equation}
+\subsection{Implemented contracts}
+For a single instrument write repayment as $dH(\omega)$. The main mappings are
+\begin{align}
+ H_S&=1,\label{eq:Hstraight}\\
+ H_G(g)&=1-\kappa\ind\{g<\bar g\},\qquad 0\le\kappa<1,\label{eq:Hgdp}\\
+ H_D(Z,J)&=1-\kappa_Z\ind\{Z=1,\ 1-e^J\ge\ell_*\}.\label{eq:Hdis}
+\end{align}
+Here $Z$ indicates an active disaster jump, $J\le0$ its log-output effect, and $\ell_*$ a verified disaster-loss threshold. The baseline uses $\ell_*=0.15$; the event-only comparator pays on every active jump. Both $\kappa$ and $\kappa_Z$ are permanent write-down fractions in these equations. The deferral counterpart is specified separately in Appendix~\ref{app:deferral}. The magnitudes are illustrative contractual choices, not estimates of NPV losses in actual CRDCs.
 
-A crucial step is the mapping from macro growth to default probability. In Seghini, growth is lognormal with an i.i.d.\ shock:
-\begin{equation}\label{eq:growth_basic}
-g_{t+1} \equiv \frac{Y_{t+1}}{Y_t}=H_{t+1}(\{E_t\}) e^{\mu_0+\varepsilon_{t+1}}, \quad \varepsilon_{t+1}\sim \mathrm{i.i.d.}\ \mathcal{N}(0,\sigma_0^2),
-\end{equation}
-where $H_{t+1}$ captures the effect of the emissions path on growth (transition costs). Seghini specifies
-\begin{equation}\label{eq:seghini_eta}
-H_{t+1}=\frac{\eta(E_{t+1})}{\eta(E_t)},\qquad \eta(E_t) = (c\bar E_1 + E_t)^{\beta},
-\end{equation}
-which implies (in relative emissions) a growth term $(\frac{c+e_{t+1}}{c+e_t})^{\beta}$ (\cite{Seghini2026}).
-
-The emissions term in (\ref{eq:seghini_eta}) can be read as a multiplicative transition wedge on growth: holding the baseline shock fixed, changes in emissions reallocate resources and can temporarily depress measured output growth through adjustment costs. The crucial modeling move is that this wedge enters multiplicatively, so it scales the entire stochastic growth process rather than adding a deterministic amount. That formulation is convenient for mapping emissions policy into the default probability because it shifts the distribution of next-period output in a way that is directly comparable to damages and other growth wedges introduced later.
-
-Importantly, Seghini adds an exponential damage function \`a la Dietz--Venmans:
-\begin{equation}\label{eq:damage}
-D(T_t)=\exp\!\left(-\frac{\rho}{2}T_t^2\right),\qquad T_t=\zeta C_t,
-\end{equation}
-with global cumulative emissions $C_t$, producing an additional multiplicative term in growth (\cite{DietzVenmans2019}). Her resulting growth equation (country $i$) can be written as
-\begin{equation}\label{eq:seghini_growth_damage}
-g_{i,t+1}= \exp\!\left(\mu_{0,i}+\varepsilon_{i,t+1}-\frac{\rho}{2}\left[(\zeta C_{t+1})^2-(\zeta C_t)^2\right]\right)\left(\frac{c+e_{i,t+1}}{c+e_{i,t}}\right)^{\beta_i}.
-\end{equation}
-
-The carbon budget enters as a hard constraint:
-\begin{equation}\label{eq:carbon_budget}
-\sum_{t\ge 0} E_t \le \bar E_0,
-\end{equation}
-which implies that emissions must eventually fall sufficiently, ensuring the ``no free-riding'' condition that bounds MSB (\cite{Blanchard2019}).
-
-Seghini's quantitative results hinge on comparing fiscal limits under (i) coordinated transition, (ii) solitary transition, and (iii) global business-as-usual (BAU), showing that climate damages eventually dominate and coordination becomes fiscally essential. Two features of the baseline deserve emphasis for what follows. First, sovereign liabilities consist of a single instrument---one-period, non-interest-bearing debt rolled over each period---so the baseline model contains no ranking of debt instruments; instrument choice is precisely the margin this paper adds. Second, the damage channel is \emph{chronic} in the NGFS sense: damages accumulate smoothly with cumulative emissions, and there are no discrete disaster events. The assumptions delivering tractability (one-period debt, zero recovery, constant risk-free rate, i.i.d.\ lognormal growth) are flagged in \textcite{Seghini2026} as deliberate simplifications; the next section relaxes the ones this paper carries through to the quantitative exercise, and Appendix~\ref{app:further} discusses the remainder.
-
-\section{Extensions to the baseline framework}
-\label{sec:extensions}
-
-\subsection{Transmission channels at a glance}
-\label{subsec:channels}
-
-The extensions are best understood as links in a single transmission chain running from the global climate state to the fiscal limit. The chain begins with the global climate state itself: cumulative emissions erode trend growth---the chronic-risk channel already present in the baseline---and, in this paper, also raise the intensity of discrete disaster jumps, the acute-risk margin developed in Section~\ref{subsec:acute}. Climate shocks need not strike domestic territory to matter fiscally. Shocks that hit trade routes, ports, and suppliers abroad reduce domestic output through a logistics wedge whose size depends on the country's production-network centrality and import dependence (Section~\ref{subsec:logistics}); an external disruption therefore resembles a domestic macro shock in that it compresses the tax base without any local disaster occurring. Both channels also operate on the fiscal side directly, reducing the politically feasible primary surplus in stressed states and thereby adding a fiscal-fatigue margin to the output effects. The liability portfolio then maps realized macro-climate states into contractual repayments, and instrument design consists precisely in choosing this mapping (Section~\ref{subsec:portfolio}). Default occurs when contractual repayments exceed state-contingent capacity; the resulting default probability, together with climate and logistics exposure, feeds the sovereign premium, which prices new issuance and hence determines the fiscal limit. Finally, policy enters at the pricing stage: collateral eligibility and asset purchases can lower premia on specific instruments, interacting with the repayment mapping and the premium just described. This monetary interface is developed in Appendix~\ref{app:monetary}, where the same one-period apparatus is used for a comparative static on collateral haircuts.
-
-The quantitative exercise in Section~\ref{sec:numerical} operationalizes every link of this chain except the policy interface in a one-period setting; the appendices treat the monetary interface (Appendix~\ref{app:monetary}) and the asset-pricing spillover to private capital (Appendix~\ref{app:pevc}).
-
-\subsection{Acute physical risk: disasters as jumps}
-\label{subsec:acute}
-
-In the baseline, the i.i.d.\ lognormal shock is chosen for tractability and pseudo-analytic results (\cite{Seghini2026}). However, acute physical risk is better represented by fat-tailed disasters (\cite{Barro2006}; \cite{Mallucci2022}). If disasters arrive as jumps $J_{t+1}\le 0$ with intensity $\lambda_t$ increasing in temperature,
-\begin{equation}\label{eq:jump_growth}
-\log g_{t+1} = \mu_t + \varepsilon_{t+1}+J_{t+1},\quad \mathbb{P}(J_{t+1}\neq 0|\mathcal{F}_t)=\lambda(T_t),
-\end{equation}
-then the default probability is more sensitive to climate damages than in the lognormal case, because the left tail thickens. This tends to lower MSD in BAU relative to coordinated transition more dramatically than in the baseline, strengthening Seghini's qualitative conclusion while altering the timing and optimal policy mix. The mapping $\lambda(T_t)$ ties the arrival intensity of acute events to the same global state variable---cumulative emissions---that drives chronic damages, so the two NGFS risk categories share a common driver. Both the jump process and a state-dependent $\lambda$ are carried through the quantitative exercise in Section~\ref{sec:numerical}; the specification with disaster clustering over time (serially correlated intensity) interacts with maturity structure and is discussed in Appendix~\ref{app:further}.
-
-\subsection{A portfolio of sovereign liabilities and generalized fiscal limits}
-\label{subsec:portfolio}
-
-I now generalize MSB/MSD to a sovereign liability portfolio. Let the government issue $K$ instruments with face values (or notional shares) collected in a vector $\bm{d}_t=(d^1_t,\dots,d^K_t)$ as ratios to GDP. All instruments are one-period securities, maturing next period; maturity extension is a separate margin, discussed in Appendix~\ref{app:further}. Instrument $k$ has a state-contingent gross payoff function $\Pi^k_{t+1}(\omega_{t+1})$ per unit of notional, where $\omega_{t+1}$ summarizes macro states (growth, temperature, disaster occurrence, etc.). Let the market price per unit notional be $q^k_t$, so proceeds are $b^k_t=d^k_t q^k_t$, and total proceeds are
-\begin{equation}
-b_t(\bm{d}_t)=\sum_{k=1}^K d^k_t q^k_t.
-\end{equation}
-Total contractual repayment due next period (as a ratio to $Y_t$) is
-\begin{equation}\label{eq:due_total}
-\Delta_{t+1}(\omega_{t+1};\bm{d}_t)=\sum_{k=1}^K d^k_t \Pi^k_{t+1}(\omega_{t+1}).
-\end{equation}
-
-I preserve the ``excusable default'' spirit: default occurs when required repayment exceeds resources. However, resources can now include (i) primary surplus capacity and (ii) instrument-specific state-contingent relief (already in $\Pi^k$), plus (iii) disaster-recovery inflows if modeled as insurance. Let $g_{t+1}\equiv Y_{t+1}/Y_t$ denote the gross growth factor. Default occurs if
-\begin{equation}\label{eq:default_multi}
-\Delta_{t+1}(\omega_{t+1};\bm{d}_t) > (\alpha_t + b_{t+1}^M)\, g_{t+1}.
-\end{equation}
-Thus, the default probability is
-\begin{equation}\label{eq:PD_multi}
-\mathrm{PD}(\bm{d}_t)=\mathbb{P}\left(\Delta_{t+1}(\omega_{t+1};\bm{d}_t) > (\alpha_t + b_{t+1}^M)\, g_{t+1}\ \big|\ \mathcal{F}_t\right).
-\end{equation}
-
-Let investors price instruments with a stochastic discount factor $M_{t+1}$ that depends on global risk and climate states. Then
-\begin{equation}\label{eq:pricing_sdf}
-q^k_t = \mathbb{E}_t\left[M_{t+1}\,\Pi^k_{t+1}(\omega_{t+1})\,\mathbf{1}\{\tau>t+1\} + M_{t+1}\,\mathcal{R}^k_{t+1}\,\mathbf{1}\{\tau=t+1\}\right],
-\end{equation}
-where $\tau$ is the default time and $\mathcal{R}^k_{t+1}$ is recovery conditional on default. This nests Seghini's risk-neutral, constant-$R$ pricing when $M_{t+1}=1/R$ and recoveries are zero (\cite{Seghini2026}).
-
-Define generalized MSB as maximum proceeds achievable by choosing the instrument mix subject to feasibility and a carbon budget:
-\begin{equation}\label{eq:MSB_general}
-b_t^M = \max_{\bm{d}_t\in \mathcal{D}_t}\ b_t(\bm{d}_t)
-\end{equation}
-subject to the induced default probability being consistent with market pricing and with the continuation borrowing capacity $b_{t+1}^M$ (a fixed-point condition analogous to \textcite{CollardEtAl2015}). The generalized fiscal limit (MSD) can be defined as the set of debt vectors that achieve MSB, or as the maximum of a chosen scalar aggregator of debt (e.g.\ weighted face value) subject to not exceeding MSB. A natural scalar is total expected repayment in the no-default state:
-\begin{equation}\label{eq:MSD_scalar}
-d_t^M \equiv \max_{\bm{d}_t\in \mathcal{D}_t} \sum_{k=1}^K d^k_t \bar \Pi^k \quad \text{s.t.}\quad b_t(\bm{d}_t)\le b_t^M,
-\end{equation}
-where $\bar\Pi^k$ is a normalization (e.g.\ promised payoff in the baseline state).
-
-I consider four instruments, all of which appear in the quantitative exercise. \emph{Instrument 1: straight debt.} $\Pi^1_{t+1}=1$, a one-period, non-interest-bearing security with face value normalized. This corresponds to Seghini's baseline (\cite{Seghini2026}).
-
-\emph{Instrument 2: GDP-linked bonds}, which pay less in low-output states:
-\begin{equation}\label{eq:gdp_linked}
-\Pi^2_{t+1}= 1 + \kappa_g\left(\frac{g_{t+1}}{\bar g}-1\right),
-\end{equation}
-with $\kappa_g\in(0,1)$ and $\bar g$ a reference growth level. When $g_{t+1}$ is low, repayment falls, reducing default probability (\cite{BorenszteinMauro2004}; \cite{ChamonMauro2006}; \cite{KimOstry2018}). The quantitative section works with the threshold (clause) version $\Pi_{t+1} = 1-\kappa\,\mathbf{1}\{g_{t+1}<\bar g\}$, which is closer to contractual practice.
-
-\emph{Instrument 3: disaster clauses.} The clause triggers a payment reduction (in practice, a maturity extension or coupon suspension) if a disaster indicator $Z_{t+1}\in\{0,1\}$ turns on. In one-period form,
-\begin{equation}\label{eq:cat_clause}
-\Pi^3_{t+1}=1-\kappa_Z Z_{t+1}, \quad \kappa_Z\in(0,1),
-\end{equation}
-with $Z_{t+1}=1$ when verified disaster losses exceed a threshold (\cite{WorldBankCatBonds}). This is the CRDC payoff in reduced form.
-
-\emph{Instrument 4: temperature-linked (cumulative-emissions-linked) coupons.} Because Seghini's damage term is driven by global cumulative emissions $C_t$ (\cite{Seghini2026}), a natural hedge is an instrument whose repayments fall when emissions growth overshoots a reference path:
+The emissions-surprise coupon uses $X=\Delta C/\overline{\Delta C}$ with $\E[X]=1$:
 \begin{equation}\label{eq:temp_linked}
-\Pi^4_{t+1}= 1-\kappa_T\left(\frac{\Delta C_{t+1}-\overline{\Delta C}}{\overline{\Delta C}}\right),
+ H_T(X)=\max\{0,\,1-\kappa_T(X-1)\}.
 \end{equation}
-where $\Delta C_{t+1} = C_{t+1}-C_t$, $\kappa_T>0$, and $\overline{\Delta C}$ is the reference emissions increment, so the expected payoff is one on the reference path. This instrument pays insurance in precisely the states where damages accelerate (and where BAU becomes fiscally explosive). Its value, however, hinges on how tightly global emissions realizations are coupled to domestic default states at the relevant horizon---a question Section~\ref{subsec:temp_sim} answers quantitatively. A fifth design---resilience bonds indexed to verified adaptation capital---pairs naturally with the collateral policy discussed in the monetary block and is presented in Appendix~\ref{app:monetary}.
+The floor prevents negative repayments in extreme draws. This contract insures surprises in emissions relative to a reference path; it is not a direct hedge of the known component of a warming trend. If $\Delta C$ is anticipated at issuance, $H_T$ is a known scalar and can be replicated by changing the face of straight debt.
 
-A central reason these instruments remain underused, despite their theoretical appeal, is that they can carry novelty and ambiguity premia, as well as concerns over measurement, verification, and basis risk in triggers (\cite{igan2021_premia_scdi}; \cite{volz2022_state_contingent_debt}; \cite{pina2022_scgd_database}). This paper therefore treats instrument choice as a joint problem of (i) shifting repayments out of default-relevant states, and (ii) designing triggers and payoffs that are sufficiently transparent to limit premia. The resulting comparative statics clarify when the reduction in default probability dominates any ex ante pricing discount, delivering a strict relaxation of MSB/MSD.
-
-\subsection{Logistics disruption, surplus capacity, and sovereign premia}
-\label{subsec:logistics}
-
-Climate shocks do not only destroy local capital; they disrupt trade routes, ports, shipping, and intermediate input supply, creating production-network amplification (\cite{AcemogluCarvalho2012}; \cite{Carvalho2014}). These disruptions matter for fiscal limits through two mechanisms: (i) they depress domestic output and tax bases, and (ii) they raise sovereign risk premia via investor perceptions of macro fragility.
-
-Let $\ell_{i,t}\ge 0$ denote a logistics disruption wedge for country $i$ that scales effective output. Suppose
-\begin{equation}\label{eq:logistics_wedge}
-\log \ell_{i,t+1}= \varphi_i Z_{t+1} + \psi_i \, \mathrm{NetCen}_i \, Z^{\mathrm{global}}_{t+1} + u_{i,t+1},
+A linear GDP-indexed instrument is useful as a benchmark, but is not the step design simulated in the main tables:
+\begin{equation}\label{eq:linear}
+ H_L(g)=1-\kappa_g+\kappa_g g/\bar g,\qquad 0\le\kappa_g\le1.
 \end{equation}
-where $\mathrm{NetCen}_i$ measures production-network centrality (or trade-route exposure), $Z^{\mathrm{global}}$ is a global logistics shock (e.g.\ a major shipping choke-point disruption), and $u$ is idiosyncratic noise. Then modify Seghini's growth by
-\begin{equation}\label{eq:growth_with_logistics}
-g_{i,t+1}= g^{\mathrm{Seghini}}_{i,t+1}\cdot \exp(-\ell_{i,t+1}),
-\end{equation}
-where $g^{\mathrm{Seghini}}_{i,t+1}$ is given by \eqref{eq:seghini_growth_damage}. This nests Seghini when $\ell\equiv 0$. The composite parameter $\psi_i\,\mathrm{NetCen}_i$ is what the quantitative section varies as a single amplification scalar $\psi$: it is a reduced-form loading of domestic output on global logistics shocks, and its empirical counterpart is a centrality measure from input-output or trade-network data (eigenvector or Katz--Bonacich centrality, import dependence in critical intermediates), which the physical-risk propagation literature shows to govern the pass-through of remote disasters to domestic activity (\cite{BarrotSauvagnat2016}; \cite{inoue_todo2019_supply_chain}; \cite{boehm2019_input_linkages}).
+Full indexation ($\kappa_g=1$) will attain a resource bound. It must not be confused with setting $\kappa=1$ in the step clause, which eliminates payments below the trigger.
 
-One clarification is important, because this paper elsewhere emphasizes departures from i.i.d.\ growth: specification \eqref{eq:growth_with_logistics} does \emph{not} by itself relax the i.i.d.\ assumption. If $Z^{\mathrm{global}}_{t+1}$ and $u_{i,t+1}$ are i.i.d., the wedge $\ell_{i,t+1}$ is i.i.d.\ too, and its role is to thicken the left tail of the within-period growth distribution rather than to introduce serial dependence. Serial dependence---clustered disasters, multi-year reconstruction, persistent disruption---requires an autocorrelated intensity or wedge process, which interacts with maturity structure and is discussed in Appendix~\ref{app:further}. The quantitative exercise below is therefore a statement about tail thickness, not persistence.
-
-In Seghini, $\alpha$ is constant and calibrated to historical maxima (\cite{Seghini2026}). But climate and logistics disruptions alter political feasibility and revenue capacity. Let
-\begin{equation}\label{eq:alpha_endog}
-\alpha_{i,t} = \bar \alpha_i - \chi_T D_T(T_t) - \chi_\ell \ell_{i,t},
-\end{equation}
-where $D_T(T_t)$ is a damage index increasing in $T_t$ and $\chi_T,\chi_\ell>0$. This captures ``fiscal fatigue'' worsening in stressed states (\cite{GhoshEtAl2013}). The quantitative exercise holds $\alpha$ constant---the homogeneity result in Section~\ref{subsec:gains} shows that the \emph{relative} gains from contingency are invariant to the level of $\alpha$---so \eqref{eq:alpha_endog} should be read as an analytical extension whose quantitative implementation is left to future work.
-
-Let sovereign pricing incorporate a premium $\pi_{i,t}$ so that $R_{i,t}=R_{f,t}\exp(\pi_{i,t})$. Model
-\begin{equation}\label{eq:premium}
-\pi_{i,t} = \theta_d\,\mathrm{PD}_{i,t} + \theta_T T_t + \theta_\ell \ell_{i,t} + \theta_x \mathrm{FXFrag}_{i,t}.
-\end{equation}
-Each term has a distinct economic rationale and a signed coefficient. The first term is default compensation: under risk-neutral pricing the premium must rise one-for-one with expected default losses, so $\theta_d>0$, and in the presence of risk aversion $\theta_d$ exceeds the actuarial level. The second term captures the pricing of \emph{systematic} climate exposure: if damages are driven by the global state $T_t$, they cannot be diversified away, so investors demand compensation beyond expected losses, implying $\theta_T>0$ for damage-exposed issuers (\cite{ecb_wp3135_climate_pricing}). The third term reflects logistics fragility: a country whose output is exposed to supply-chain disruption has a more fragile tax base for a given default probability, and the empirical sovereign-risk literature finds such macro-fragility characteristics priced over and above model-implied PD, so $\theta_\ell>0$. The fourth term, $\mathrm{FXFrag}_{i,t}$---external vulnerability and currency mismatch of the sovereign balance sheet---raises the loss given stress and the likelihood of self-fulfilling runs, so $\theta_x>0$ (\cite{Mallucci2022}). This creates a feedback loop: climate and logistics raise premia, premia tighten fiscal limits, tighter limits constrain adaptation and transition finance, increasing future damages. These reduced-form sensitivities could be parameterized in future empirical work using spread responses to climate and logistics shocks; the present paper does not estimate them, and in the simulations the risk-free rate and premium are held constant except where noted.
-
-Sovereign premia also transmit to the discount rates applied to private capital---private equity and venture capital (PE/VC) valuations in particular---linking sovereign sustainability to international asset markets. Because that channel is not used in the quantitative exercise, it is developed in Appendix~\ref{app:pevc}.
-
-\section{Analytical results: when contingent instruments relax fiscal limits}
-\label{sec:results}
-
-I now show that state-contingent instruments can strictly increase MSB/MSD relative to straight debt, under implementable conditions.
-
-Consider a one-period setting to parallel Seghini. Let $k=1$ be straight debt with payoff $\Pi^1_{t+1}=1$. Let $k=2$ be a contingent instrument with payoff $\Pi^2_{t+1}=1-\kappa \cdot \mathbb{1}\{g_{t+1}<\bar g\}$, i.e.\ it reduces repayment in bad states (GDP-linked or disaster-linked). Assume investors price with a state-independent $R_f$ for clarity and recovery is zero. Consider issuing a small share $\epsilon$ of instrument 2 replacing instrument 1 while keeping total face value constant.
-
-Let $\Delta_{t+1}(\epsilon) = d\big[(1-\epsilon)\Pi^1_{t+1}+\epsilon \Pi^2_{t+1}\big]$. Then the default event is
-\begin{equation}
-\Delta_{t+1}(\epsilon) > (\alpha + b_{t+1}^M)\, g_{t+1}.
-\end{equation}
-Because $\Pi^2_{t+1}\le \Pi^1_{t+1}$ in bad states and equals it in good states, the set of $\omega_{t+1}$ leading to default weakly shrinks when $\epsilon$ increases. Therefore,
-\begin{equation}\label{eq:PD_decreases}
-\frac{\partial \mathrm{PD}}{\partial \epsilon}\le 0,
-\end{equation}
-with strict inequality whenever the threshold region has positive probability mass.
-
-Borrowing proceeds are
-\begin{equation}
-b(\epsilon)= d\left[(1-\epsilon)q^1 + \epsilon q^2\right].
-\end{equation}
-With risk-neutral pricing, $q^k=\mathbb{E}\left[\Pi^k_{t+1}\mathbb{1}\{\tau>t+1\}\right]/R_f$.
-If adding contingency reduces PD sufficiently, the survival-weighted payoff can rise even if the instrument pays less in bad states. A sufficient condition for $b'(\epsilon)>0$ at $\epsilon=0$ is
-\begin{equation}\label{eq:sufficient_condition}
-\underbrace{\frac{\partial}{\partial \epsilon}\mathbb{E}\big[\mathbf{1} \{\tau>t+1\}\big]\Big|_{\epsilon=0}}_{\text{survival gain}}
->\underbrace{\kappa \cdot \mathbb{P}(g_{t+1}<\bar g,\ \tau>t+1)\Big|_{\epsilon=0}}_{\text{payoff reduction in survival states}}.
-\end{equation}
-Condition \eqref{eq:sufficient_condition} is intuitive: if contingency meaningfully reduces default probability in precisely the states where default would otherwise occur, it increases the value of being repaid at all, raising proceeds.
-
-In Seghini, the MSB recursion is linear in $(\alpha+b^M_{t+1})$ with a constant borrowing factor $\gamma e^{\mu_0}/R$ (\cite{Seghini2026}). With instrument choice, the borrowing factor becomes a functional of the payoff mapping:
-\begin{equation}\label{eq:borrowing_factor_general}
-b_t^M = \max_{\bm{d}_t}\ \frac{e^{\mu_t}}{R_{f,t}}\ \Gamma(\bm{d}_t;\sigma_t,\text{tails})\ (\alpha_t+b_{t+1}^M)\, \mathbb{E}_t[H_{t+1} \mid \bm{d}_t],
-\end{equation}
-where $\Gamma$ is an effective borrowing factor that increases when payoffs reduce repayments in the left tail (default states). Thus, the instrument mix is a lever that modifies the financial amplification channel, not merely a funding choice.
-
-Because damages accelerate with $(\zeta C_t)^2$ in Seghini's damage term (\cite{Seghini2026}), BAU implies an increasing drift toward low-growth states. A temperature-linked payoff \eqref{eq:temp_linked} explicitly reduces repayment as $\Delta C$ rises, transferring resources from BAU-bad states to BAU-good states. Even if such instruments command a premium (lower $q$) in normal times, they can stabilize fiscal limits by preventing the sharp MSD decline that Seghini finds under BAU. This reasoning yields two predictions, which should be read as conjectures that the quantitative section examines in a one-period setting and that a full dynamic implementation would test more sharply. First, countries with higher exposure to global damages (higher $\theta_T$ in \eqref{eq:premium}) should benefit more---in terms of fiscal-limit stabilization---from temperature-linked clauses than from GDP-linked clauses alone, because the underlying state variable is global and persistent; Section~\ref{subsec:temp_sim} shows that the strength of the coupling between the global state and domestic default states is exactly what determines the sign of the temperature-linked gain. Second, under \eqref{eq:logistics_wedge}--\eqref{eq:growth_with_logistics}, countries with high network centrality experience larger output losses when global logistics disruptions occur, so the fiscal value of well-targeted contingency should be increasing in logistics-network centrality and import dependence, holding local disaster risk constant; Section~\ref{subsec:gains} confirms this comparative static in $\psi$. The corresponding results for monetary support (collateral and purchases) are stated and discussed in Appendix~\ref{app:monetary}.
-
-\section{Quantitative illustration: how much do contingent claims relax the fiscal limit?}
-\label{sec:numerical}
-
-\subsection{Purpose and design}
-\label{subsec:design}
-
-This section quantifies the paper's mechanism in a transparent one-period environment. Three scope statements up front. First, the exercise is a numerical \emph{illustration}, not an empirical calibration to a specific country: parameters are chosen to be defensible orders of magnitude (Table~\ref{tab:params}), and the outputs of interest are comparative statics---percentage gains in the fiscal-limit analogue across instruments and environments---rather than levels. Second, \emph{the gross risk-free rate $R_f$ is held constant throughout the simulations}; the general-equilibrium determination of $R_f$ is discussed in Appendix~\ref{app:further}. Third, the exercise sets the continuation borrowing capacity $b^M_{t+1}$ to zero, so that repayment capacity is $\alpha g$ alone; this makes the levels conservative (they omit the value of future market access) without affecting the cross-instrument comparisons that are the object of interest.
-
-Throughout this section, $g$ denotes the gross output growth factor $Y_{t+1}/Y_t$ over one model period, consistent with its use in Sections~\ref{sec:baseline}--\ref{sec:results}. For face value $d$ and a payoff mapping $H(g)$, repayment due is $dH(g)$ and fiscal capacity is $\alpha g$. Default occurs if
-\begin{equation}\label{eq:default}
-dH(g) > \alpha g .
-\end{equation}
-Assume risk-neutral pricing with gross risk-free rate $R_f$. The issuance price per unit face value is
-\begin{equation}\label{eq:iss_price}
-q(d) = \frac{\mathbb{E}\big[H(g)\mathbf{1}\{dH(g)\le \alpha g\}\big]}{R_f},
-\end{equation}
-so proceeds are $b(d)=dq(d)$. The maximum of $b(d)$ over $d$ is the numerical analogue of MSB: it captures the peak amount the sovereign can raise once default risk and pricing are internalized.
-
-Given i.i.d.\ draws $\{g^{(n)}\}_{n=1}^N$, the Monte Carlo estimators are
-\begin{align}
-\widehat{q}_N(d;\chi) &= \frac{1}{R_f}\cdot \frac{1}{N}\sum_{n=1}^N H\!\left(g^{(n)},\chi\right)\,
-\mathbf{1}\!\left\{d\,H\!\left(g^{(n)},\chi\right)\le \alpha g^{(n)}\right\}, \label{eq:qhat}\\
-\widehat{b}_N(d;\chi) &= d\,\widehat{q}_N(d;\chi), \qquad
-\widehat{PD}_N(d;\chi)=\frac{1}{N}\sum_{n=1}^N \mathbf{1}\!\left\{d\,H\!\left(g^{(n)},\chi\right)> \alpha g^{(n)}\right\}, \label{eq:bhpdh}
-\end{align}
-where $\chi$ collects contract parameters. The numerical MSB analogue is
-\begin{equation}
-\widehat{b}^M_N(\chi)=\max_{d\in\mathcal{D}}\widehat{b}_N(d;\chi), \qquad
-\widehat{d}^*_N(\chi)\in\arg\max_{d\in\mathcal{D}}\widehat{b}_N(d;\chi),
-\label{eq:msbhat}
-\end{equation}
-for a grid $\mathcal{D}=[0,0.40]$ in steps of $0.001$. Consistency of these estimators is established in Appendix~\ref{app:proofs}. All results use $N=200{,}000$ draws and a fixed seed; the replication code is archived with the paper.
-
-Growth over the period is modeled as
+\subsection{Disasters and logistics in the simulations}
+Acute risk is represented by disaster jumps, motivated by \textcite{Barro2006} and the Caribbean sovereign-default analysis of \textcite{Mallucci2022}. The implemented process is
 \begin{equation}\label{eq:output}
-g = \exp(\mu+\varepsilon+J)\cdot \exp(-\psi L),
+ g=\exp(\mu+\varepsilon-ZV-\psi L),\qquad
+ \varepsilon\sim N(0,\sigma^2),\quad V\sim\operatorname{Exp}(\text{mean }m_J),
 \end{equation}
-where $\varepsilon\sim \mathcal{N}(0,\sigma^2)$ is the baseline growth shock; $J\le 0$ is a rare-disaster jump, active with probability $p_{\text{dis}}$ and with magnitude drawn from an exponential distribution with mean $|\mathbb{E}[J]|$ (an operational version of \eqref{eq:jump_growth}); and $L\ge 0$ is a logistics disruption wedge, active with probability $p_{\text{log}}$ with exponential magnitude of mean $\mathbb{E}[L]$. The scalar $\psi\ge 0$ is the logistics amplification of Section~\ref{subsec:logistics}: it stands in for the composite loading $\psi_i\,\mathrm{NetCen}_i$, so sweeping $\psi$ traces out countries of increasing production-network centrality.
+where $Z\sim\operatorname{Bernoulli}(p_{\rm dis})$, and $L$ is zero with probability $1-p_{\log}$ and otherwise exponential with mean $m_L$. The primitive shocks are independent, except for the emissions--disaster coupling explicitly introduced in Section~\ref{subsec:temperature}. Larger $\psi$ lowers output in each realization with $L>0$. The wedge is i.i.d.; it does not create disaster clustering or persistent production-network propagation. $\psi$ is an illustrative exposure loading, not an observed centrality measure. Production-network evidence motivates this reduced form \parencite{Carvalho2014,boehm2019_input_linkages}; an empirical calibration would require network data.
 
-I compare the payoff mappings
-\begin{align}
-H_{\text{straight}}(g) &= 1, \label{eq:Hstraight}\\
-H_{\text{GDP}}(g;\kappa,\bar g) &= 1-\kappa\,\mathbf{1}\{g<\bar g\}, \label{eq:Hgdp}\\
-H_{\text{DIS}}(Z;\kappa_Z) &= 1-\kappa_Z Z, \qquad Z\in\{0,1\}, \label{eq:Hdis}
-\end{align}
-plus the temperature-linked coupon \eqref{eq:temp_linked} in Section~\ref{subsec:temp_sim}. The GDP clause targets the endogenous left tail directly; the disaster clause targets an observable event trigger ($Z=1$ when the jump is active) and therefore illustrates basis risk relative to default states. Two implementable trade-offs are explored: generosity ($\kappa$) increases survival in bad states but reduces payoffs conditional on survival; and the trigger ($\bar g$) trades off targeting (low basis risk relative to default states) versus frequent activation.
+The quantitative exercise therefore implements output shocks, contractual repayments, default, and issuance pricing. Surplus capacity and the safe rate are held fixed within each case, and the main comparisons omit additional risk premia. Stress-dependent capacity and a reduced-form premium are developed only in Appendix~\ref{app:extensions}.
 
-\subsection{Calibration}
-\label{subsec:calibration}
+\section{Analytical results}\label{sec:theory}
+\subsection{The survival--payoff trade-off}
+For a given resource scalar $c>0$, price and proceeds are
+\begin{equation}\label{eq:pricing}
+ q_H(d;c)=\frac{1}{R_f}\E\!\left[H\ind\{dH\le cg\}\right],\qquad b_H(d;c)=dq_H(d;c).
+\end{equation}
+Consider replacing a small fraction $\epsilon$ of straight debt by the GDP clause at a common face $d$, so effective relief is $\epsilon\kappa$. Default weakly falls, but proceeds need not rise. On the branch $d\le c\bar g$, if $F$ is a differentiable growth CDF with density $f$, the derivative at $\epsilon=0$ is
+\begin{equation}\label{eq:tradeoff}
+ \left.\frac{\partial b}{\partial\epsilon}\right|_0
+ =\frac{d\kappa}{R_f}\left[\frac{d}{c}f(d/c)-\big(F(\bar g)-F(d/c)\big)\right].
+\end{equation}
+The first term values newly surviving repayments; the second values payments forgone in states that would already repay. Their difference, rather than default reduction alone, determines the issuance benefit. Figure~\ref{fig:loading} gives the finite-change version at a common face. Appendix~\ref{app:proofs} derives the corresponding formula at positive relief.
 
-Table~\ref{tab:params} reports the parameter values, their annual equivalents, and their provenance. The model period is five years, following Seghini's periodization; because the model is solved at that frequency, all values in the table are reported both per period and in annual terms.
-
-\begin{table}[t]
-\centering
-\caption{Calibration of the numerical illustration. The model period is 5 years (Seghini's periodization); annual equivalents are reported for comparability.}
-\label{tab:params}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}llll@{}}
-\toprule
-Parameter & Per 5-yr period & Annual equivalent & Source / rationale \\ \midrule
-Risk-free gross rate $R_f$ & $1.08$ & $1.55\%$/yr & long-run real safe rate (\cite{Blanchard2019}) \\
-Fiscal capacity $\alpha$ & $0.16$ & $3.2\%$ of GDP/yr & max primary surplus (\cite{GhoshEtAl2013}; \cite{CollardEtAl2015}) \\
-Mean log growth $\mu$ & $0.01$ & $0.2\%$/yr & conservative damage-adjusted trend \\
-Growth volatility $\sigma$ & $0.10$ & $4.5\%$/yr & pooled 5-yr growth dispersion, AEs \\
-Disaster prob.\ $p_{\text{dis}}$ & $0.15$ & $3.2\%$/yr hazard & \cite{Barro2006}; \cite{Mallucci2022} \\
-Disaster size $|\mathbb{E}[J]|$ & $0.25$ (exponential) & mean loss $25\%$ & \cite{Barro2006} disaster sizes \\
-Logistics prob.\ $p_{\text{log}}$ & $0.08$ & $1.65\%$/yr hazard & 1--2 global disruptions/decade (\cite{UNCTAD2022}) \\
-Logistics wedge $\mathbb{E}[L]$ & $0.06$ & $6\%$ output wedge & network propagation (\cite{inoue_todo2019_supply_chain}) \\
-GDP clause $(\kappa,\bar g)$ & $(0.30,\;0.95)$ & --- & CRDC-scale deferral (\cite{icma2022_crdc_chairs_summary}) \\
-Disaster clause $\kappa_Z$ & $0.35$ & --- & 2-yr service suspension $\approx 40\%$ of 5-yr service \\
-Temperature coupon $\kappa_T$ & $0.30$ & --- & symmetric coupon step, Section~\ref{subsec:temp_sim} \\
-Logistics amplification $\psi$ & $\{0,\dots,3\}$ & --- & centrality loading, swept as comparative static \\
-Face-value grid $\mathcal{D}$ & $[0,\,0.40]$, step $0.001$ & --- & spans the post-peak region for all $\alpha$ considered \\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-Three calibration choices need explanation. First, the clause parameters: $\kappa=0.30$ means the clause forgives (or defers beyond the period) 30\% of the repayment due when the trigger is hit, and $\kappa\in[0.1,0.8]$ is swept in Section~\ref{subsec:kappa}; the anchor is the scale of actual CRDCs, under which a two-year suspension of debt service amounts to roughly 40\% of the service due within a five-year window. The trigger $\bar g = 0.95$ activates the clause when output over the period falls 5\% or more below its starting level---a severe-recession/disaster region. Second, the units of $d$: because debt is one-period and matures within the period, $d$ is the \emph{face value due within the current five-year period} as a share of GDP, not the total stock of public debt. With continuation borrowing set to zero, the sustainable $d$ is bounded by within-period surplus capacity, which is why the proceeds curves peak near $d\approx 0.13$--$0.15$ (about 2.6--3\% of GDP per year of maturing debt service). This is the one-period analogue of the rollover need, not a claim that fiscal limits are 13\% of GDP; in the full recursion, capacity is $\alpha+b^M_{t+1}$ and the corresponding MSD is an order of magnitude larger, as in \textcite{CollardEtAl2015} and \textcite{Seghini2026}. Third, disaster sizes are exponentially distributed rather than fixed, matching the archived replication code; this makes the left tail heavier than a fixed-jump specification and is the natural operationalization of ``fatter-tailed'' acute risk.
-
-\subsection{Proceeds and default risk}
-\label{subsec:laffer}
-
-Figure~\ref{fig:proceeds} plots issuance proceeds $b(d)$ against face value $d$ for straight debt and the GDP clause, at $\psi=0$ and $\psi=1.5$; Figure~\ref{fig:pd} shows the associated default probabilities. Contracts are distinguished by color (blue: straight; orange: GDP clause) and the logistics scenario by line style (solid: $\psi=0$; dashed: $\psi=1.5$).
-
-With straight debt, proceeds rise nearly linearly while default is rare, peak at $\widehat d^*\approx 0.13$, and collapse as default becomes pervasive. The contingent clause shifts the peak up and to the right ($\widehat d^*\approx 0.15$): by cutting repayments in states below $\bar g$, it removes exactly the marginal default states that destroy issuance value near the straight-debt peak. At the respective optima, the clause raises peak proceeds by 10.5\% ($\psi=0$) while cutting the default probability from 10.8\% to 3.0\% (Table~\ref{tab:msb_contracts}).
-
-The $\psi=1.5$ curves lie almost on top of the $\psi=0$ curves, and this deserves comment rather than concealment: at the baseline parameterization the \emph{unconditional} logistics drag is $p_{\text{log}}\times\psi\times\mathbb{E}[L]\approx 0.7\%$ of output, so moderate amplification barely moves the proceeds curve even though it visibly worsens tail outcomes conditional on disruption. The economically relevant comparative static is therefore the systematic sweep of $\psi$ in Table~\ref{tab:msb_contracts} and Figure~\ref{fig:msb_vs_psi}, where the erosion of straight-debt capacity and the stabilizing role of contingency emerge monotonically.
-
-\begin{figure}[t]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=0.95\linewidth,
-  height=6.5cm,
-  xlabel={$d$ (face value due within period)},
-  ylabel={$b(d)=d q(d)$ (issuance proceeds)},
-  legend style={at={(0.02,0.98)},anchor=north west},
-  xmin=0, xmax=0.30, ymin=0, ymax=0.14,
-  xtick={0,0.05,0.10,0.15,0.20,0.25,0.30},
-  scaled x ticks=false, scaled y ticks=false,
-  tick label style={/pgf/number format/fixed},
-  x tick label style={/pgf/number format/fixed,/pgf/number format/precision=2},
-  y tick label style={/pgf/number format/fixed,/pgf/number format/precision=2},
-  grid=major, major grid style={opacity=0.25},
-  tick align=outside, tick pos=left,
-]
-\addplot[vizblue, thick] coordinates {(0.00,0.0000) (0.01,0.0093) (0.02,0.0185) (0.03,0.0278) (0.04,0.0370) (0.05,0.0462) (0.06,0.0554) (0.07,0.0644) (0.08,0.0733) (0.09,0.0820) (0.10,0.0904) (0.11,0.0983) (0.12,0.1055) (0.13,0.1108) (0.14,0.1098) (0.15,0.0966) (0.16,0.0711) (0.17,0.0424) (0.18,0.0206) (0.19,0.0082) (0.20,0.0027) (0.21,0.0008) (0.22,0.0002) (0.23,0.0001) (0.24,0.0000) (0.25,0.0000) (0.26,0.0000) (0.27,0.0000) (0.28,0.0000) (0.29,0.0000) (0.30,0.0000)};
-\addlegendentry{Straight debt ($\psi=0$)}
-\addplot[vizorange, thick] coordinates {(0.00,0.0000) (0.01,0.0083) (0.02,0.0166) (0.03,0.0249) (0.04,0.0332) (0.05,0.0415) (0.06,0.0498) (0.07,0.0581) (0.08,0.0663) (0.09,0.0745) (0.10,0.0826) (0.11,0.0907) (0.12,0.0987) (0.13,0.1066) (0.14,0.1143) (0.15,0.1217) (0.16,0.1029) (0.17,0.0750) (0.18,0.0533) (0.19,0.0389) (0.20,0.0276) (0.21,0.0136) (0.22,0.0002) (0.23,0.0001) (0.24,0.0000) (0.25,0.0000) (0.26,0.0000) (0.27,0.0000) (0.28,0.0000) (0.29,0.0000) (0.30,0.0000)};
-\addlegendentry{GDP clause ($\psi=0$)}
-\addplot[vizblue, thick, dashed] coordinates {(0.00,0.0000) (0.01,0.0093) (0.02,0.0185) (0.03,0.0278) (0.04,0.0370) (0.05,0.0462) (0.06,0.0554) (0.07,0.0644) (0.08,0.0733) (0.09,0.0820) (0.10,0.0903) (0.11,0.0980) (0.12,0.1049) (0.13,0.1094) (0.14,0.1075) (0.15,0.0936) (0.16,0.0684) (0.17,0.0405) (0.18,0.0196) (0.19,0.0078) (0.20,0.0026) (0.21,0.0007) (0.22,0.0002) (0.23,0.0000) (0.24,0.0000) (0.25,0.0000) (0.26,0.0000) (0.27,0.0000) (0.28,0.0000) (0.29,0.0000) (0.30,0.0000)};
-\addlegendentry{Straight debt ($\psi=1.5$)}
-\addplot[vizorange, thick, dashed] coordinates {(0.00,0.0000) (0.01,0.0082) (0.02,0.0165) (0.03,0.0247) (0.04,0.0330) (0.05,0.0412) (0.06,0.0494) (0.07,0.0576) (0.08,0.0658) (0.09,0.0740) (0.10,0.0820) (0.11,0.0901) (0.12,0.0980) (0.13,0.1057) (0.14,0.1133) (0.15,0.1206) (0.16,0.1020) (0.17,0.0748) (0.18,0.0536) (0.19,0.0394) (0.20,0.0278) (0.21,0.0135) (0.22,0.0002) (0.23,0.0000) (0.24,0.0000) (0.25,0.0000) (0.26,0.0000) (0.27,0.0000) (0.28,0.0000) (0.29,0.0000) (0.30,0.0000)};
-\addlegendentry{GDP clause ($\psi=1.5$)}
-\end{axis}
-\end{tikzpicture}
-\caption{Issuance proceeds $b(d)$ under straight and GDP-linked contingent debt (color distinguishes the contract; dashes the logistics scenario). The contingent payoff raises peak proceeds by reducing default in left-tail states. The $\psi=1.5$ curves nearly coincide with $\psi=0$ because the unconditional logistics drag is under 1\% of output at this parameterization; see Figure~\ref{fig:msb_vs_psi} for the systematic sweep.}
-\label{fig:proceeds}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=0.95\linewidth,
-  height=6.5cm,
-  xlabel={$d$ (face value due within period)},
-  ylabel={Default probability $\Pr[\text{default}]$},
-  legend style={at={(0.02,0.98)},anchor=north west},
-  xmin=0, xmax=0.30, ymin=0, ymax=1,
-  xtick={0,0.05,0.10,0.15,0.20,0.25,0.30},
-  ytick={0,0.2,0.4,0.6,0.8,1},
-  scaled x ticks=false, scaled y ticks=false,
-  tick label style={/pgf/number format/fixed},
-  x tick label style={/pgf/number format/fixed,/pgf/number format/precision=2},
-  y tick label style={/pgf/number format/fixed,/pgf/number format/precision=1},
-  grid=major, major grid style={opacity=0.25},
-  tick align=outside, tick pos=left,
-]
-\addplot[vizblue, thick] coordinates {(0.00,0.0000) (0.01,0.0000) (0.02,0.0000) (0.03,0.0002) (0.04,0.0006) (0.05,0.0015) (0.06,0.0031) (0.07,0.0058) (0.08,0.0099) (0.09,0.0155) (0.10,0.0237) (0.11,0.0347) (0.12,0.0501) (0.13,0.0795) (0.14,0.1529) (0.15,0.3047) (0.16,0.5203) (0.17,0.7308) (0.18,0.8762) (0.19,0.9533) (0.20,0.9852) (0.21,0.9960) (0.22,0.9990) (0.23,0.9998) (0.24,0.9999) (0.25,1.0000) (0.26,1.0000) (0.27,1.0000) (0.28,1.0000) (0.29,1.0000) (0.30,1.0000)};
-\addlegendentry{Straight ($\psi=0$)}
-\addplot[vizorange, thick] coordinates {(0.00,0.0000) (0.01,0.0000) (0.02,0.0000) (0.03,0.0000) (0.04,0.0002) (0.05,0.0004) (0.06,0.0008) (0.07,0.0014) (0.08,0.0023) (0.09,0.0038) (0.10,0.0058) (0.11,0.0084) (0.12,0.0120) (0.13,0.0161) (0.14,0.0218) (0.15,0.0289) (0.16,0.2132) (0.17,0.4345) (0.18,0.5964) (0.19,0.7039) (0.20,0.7937) (0.21,0.9021) (0.22,0.9990) (0.23,0.9998) (0.24,0.9999) (0.25,1.0000) (0.26,1.0000) (0.27,1.0000) (0.28,1.0000) (0.29,1.0000) (0.30,1.0000)};
-\addlegendentry{GDP clause ($\psi=0$)}
-\addplot[vizblue, thick, dashed] coordinates {(0.00,0.0000) (0.01,0.0000) (0.02,0.0000) (0.03,0.0002) (0.04,0.0007) (0.05,0.0016) (0.06,0.0033) (0.07,0.0061) (0.08,0.0104) (0.09,0.0164) (0.10,0.0253) (0.11,0.0378) (0.12,0.0563) (0.13,0.0912) (0.14,0.1707) (0.15,0.3258) (0.16,0.5385) (0.17,0.7426) (0.18,0.8826) (0.19,0.9558) (0.20,0.9860) (0.21,0.9962) (0.22,0.9991) (0.23,0.9998) (0.24,0.9999) (0.25,1.0000) (0.26,1.0000) (0.27,1.0000) (0.28,1.0000) (0.29,1.0000) (0.30,1.0000)};
-\addlegendentry{Straight ($\psi=1.5$)}
-\addplot[vizorange, thick, dashed] coordinates {(0.00,0.0000) (0.01,0.0000) (0.02,0.0000) (0.03,0.0000) (0.04,0.0002) (0.05,0.0004) (0.06,0.0008) (0.07,0.0015) (0.08,0.0024) (0.09,0.0040) (0.10,0.0061) (0.11,0.0088) (0.12,0.0126) (0.13,0.0170) (0.14,0.0232) (0.15,0.0311) (0.16,0.2140) (0.17,0.4312) (0.18,0.5909) (0.19,0.6990) (0.20,0.7914) (0.21,0.9023) (0.22,0.9991) (0.23,0.9998) (0.24,0.9999) (0.25,1.0000) (0.26,1.0000) (0.27,1.0000) (0.28,1.0000) (0.29,1.0000) (0.30,1.0000)};
-\addlegendentry{GDP clause ($\psi=1.5$)}
-\end{axis}
-\end{tikzpicture}
-\caption{Default probability under straight vs.\ contingent debt (color distinguishes the contract; dashes the logistics scenario). The clause flattens the default transition in the intermediate-$d$ region by shifting repayments out of bad states; at $d=0.15$, default probability falls from 30\% to 3\%.}
-\label{fig:pd}
-\end{figure}
-
-\subsection{Fiscal-limit gains and comparative statics}
-\label{subsec:gains}
-
-The policy-relevant question is not whether the curves shift but by how much, and under what conditions the gain is largest. Table~\ref{tab:msb_contracts} reports the maximizing face value $\widehat d^*$, peak proceeds $\widehat b^M$, the default probability at the maximizer, and the percentage gain in $\widehat b^M$ relative to straight debt, across clause types and logistics amplification.
-
-\begin{table}[t]
-\centering
-\caption{Peak proceeds, default risk, and MSB gains across clause types and logistics amplification $\psi$. GDP clause: $\kappa=0.30$, $\bar g=0.95$; disaster clause: $\kappa_Z=0.35$. Monte Carlo, $N=200{,}000$; gains relative to straight debt at the same $\psi$.}
-\label{tab:msb_contracts}
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-Contract & $\psi$ & $\widehat d^*$ & $\widehat b^M$ & $\widehat{PD}(\widehat d^*)$ & Gain vs.\ straight \\
-\midrule
-Straight & 0.00 & 0.135 & 0.11153 & 0.108 & --- \\
-Straight & 0.75 & 0.134 & 0.11083 & 0.107 & --- \\
-Straight & 1.50 & 0.133 & 0.10978 & 0.109 & --- \\
-Straight & 2.25 & 0.133 & 0.10884 & 0.116 & --- \\
-Straight & 3.00 & 0.133 & 0.10803 & 0.123 & --- \\
-\addlinespace
-GDP clause & 0.00 & 0.152 & 0.12320 & 0.030 & $+10.5\%$ \\
-GDP clause & 0.75 & 0.152 & 0.12265 & 0.031 & $+10.7\%$ \\
-GDP clause & 1.50 & 0.152 & 0.12208 & 0.033 & $+11.2\%$ \\
-GDP clause & 2.25 & 0.152 & 0.12146 & 0.037 & $+11.6\%$ \\
-GDP clause & 3.00 & 0.152 & 0.12084 & 0.041 & $+11.9\%$ \\
-\addlinespace
-Disaster clause & 0.00 & 0.136 & 0.11356 & 0.051 & $+1.8\%$ \\
-Disaster clause & 0.75 & 0.136 & 0.11287 & 0.056 & $+1.8\%$ \\
-Disaster clause & 1.50 & 0.136 & 0.11184 & 0.065 & $+1.9\%$ \\
-Disaster clause & 2.25 & 0.135 & 0.11088 & 0.066 & $+1.9\%$ \\
-Disaster clause & 3.00 & 0.135 & 0.11008 & 0.072 & $+1.9\%$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[t]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=0.95\linewidth, height=6.5cm,
-  xlabel={Logistics amplification $\psi$}, ylabel={Peak issuance proceeds $\widehat b^M$},
-  xmin=0, xmax=3.0, ymin=0.105, ymax=0.125,
-  xtick={0,0.75,1.5,2.25,3.0},
-  scaled x ticks=false, scaled y ticks=false,
-  tick label style={/pgf/number format/fixed},
-  x tick label style={/pgf/number format/fixed,/pgf/number format/precision=2},
-  y tick label style={/pgf/number format/fixed,/pgf/number format/precision=3},
-  grid=major, major grid style={opacity=0.25},
-  legend style={at={(0.02,0.5)},anchor=west},
-]
-\addplot[vizblue, thick, mark=*] coordinates {(0.00,0.11153) (0.75,0.11083) (1.50,0.10978) (2.25,0.10884) (3.00,0.10803)};
-\addlegendentry{Straight}
-\addplot[vizorange, thick, mark=square*] coordinates {(0.00,0.12320) (0.75,0.12265) (1.50,0.12208) (2.25,0.12146) (3.00,0.12084)};
-\addlegendentry{GDP clause ($\kappa{=}0.30,\bar g{=}0.95$)}
-\addplot[vizgreen, thick, mark=triangle*] coordinates {(0.00,0.11356) (0.75,0.11287) (1.50,0.11184) (2.25,0.11088) (3.00,0.11008)};
-\addlegendentry{Disaster clause ($\kappa_Z{=}0.35$)}
-\end{axis}
-\end{tikzpicture}
-\caption{Peak proceeds $\widehat b^M$ decline with logistics amplification $\psi$ under straight debt ($-3.1\%$ from $\psi=0$ to $\psi=3$), while the GDP clause both raises the level and flattens the decline ($-1.9\%$), so the contingency gain rises from $10.5\%$ to $11.9\%$ with centrality.}
-\label{fig:msb_vs_psi}
-\end{figure}
-
-Four comparative statics answer the ``when is the gain largest?'' question.
-
-\paragraph{(i) The gain grows with the rollover need.} Table~\ref{tab:gain_vs_d} fixes $\psi=1.5$ and compares proceeds contract-by-contract at given face values, rather than at the respective optima. At low rollover needs, the clause is a pure cost: at $d=0.08$, default is negligible under either contract, so the clause gives up payoff in survival states for no survival gain, and proceeds are 10\% \emph{lower}. The advantage turns positive just below the straight-debt peak and grows explosively beyond it: $+5\%$ at $d=0.14$, $+29\%$ at $d=0.15$, $+49\%$ at $d=0.16$. Contingent liabilities are valuable for sovereigns operating near their fiscal limits, not for sovereigns with ample headroom---which is also where the political demand for such instruments is found.
-
-\begin{table}[t]
-\centering
-\caption{Proceeds advantage of the GDP clause by rollover need $d$ ($\psi=1.5$). The clause reduces proceeds when default risk is negligible and dominates near and beyond the straight-debt peak.}
-\label{tab:gain_vs_d}
-\begin{tabular}{@{}cccccc@{}}
-\toprule
-$d$ & $b_{\text{straight}}(d)$ & $b_{\text{GDP}}(d)$ & Advantage & $PD_{\text{straight}}$ & $PD_{\text{GDP}}$ \\
-\midrule
-0.08 & 0.0733 & 0.0658 & $-10.2\%$ & 0.010 & 0.002 \\
-0.10 & 0.0903 & 0.0820 & $-9.1\%$ & 0.025 & 0.006 \\
-0.12 & 0.1049 & 0.0980 & $-6.6\%$ & 0.056 & 0.013 \\
-0.13 & 0.1094 & 0.1057 & $-3.3\%$ & 0.091 & 0.017 \\
-0.14 & 0.1075 & 0.1133 & $+5.4\%$ & 0.171 & 0.023 \\
-0.15 & 0.0936 & 0.1206 & $+28.8\%$ & 0.326 & 0.031 \\
-0.16 & 0.0684 & 0.1020 & $+49.2\%$ & 0.539 & 0.214 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{(ii) The relative gain is invariant to surplus capacity $\alpha$.} This is an exact property, not a numerical finding:
-
-\begin{remark}\label{rem:alpha_homog}
-For any payoff mapping $H(g)$ that does not depend on $\alpha$, the problem \eqref{eq:default}--\eqref{eq:msbhat} is homogeneous of degree one in $(\alpha,d)$: replacing $\alpha$ by $c\alpha$ and substituting $d=c d'$ leaves the default event and price unchanged and scales proceeds by $c$. Hence $\widehat b^M(c\alpha)=c\,\widehat b^M(\alpha)$ for every contract, and percentage gains between contracts are independent of $\alpha$.
+\subsection{One-off versus repeated issuance}
+\begin{remark}[Homogeneity and the stationary fiscal limit]\label{rem:homogeneity}
+For any contract whose payoff depends on exogenous states and not the scale of issuance, set $x=d/c$ and define
+\begin{equation}\label{eq:phi}
+ \Phi_H=\max_{x\ge0}\frac{x}{R_f}\E[H\ind\{xH\le g\}],\qquad
+ x_H^*\in\arg\max_x\frac{x}{R_f}\E[H\ind\{xH\le g\}].
+\end{equation}
+Then $b_H^M(c)=c\Phi_H$ and $d_H^M(c)=cx_H^*$. With i.i.d. growth, constant $\alpha$, permanent relief, and $0\le\Phi_H<1$, repeated issuance gives
+\begin{equation}\label{eq:stationary}
+ b_{H,\infty}^M=\frac{\alpha\Phi_H}{1-\Phi_H},\qquad
+ d_{H,\infty}^M=\frac{\alpha x_H^*}{1-\Phi_H}.
+\end{equation}
 \end{remark}
+At fixed continuation capacity the relative MSB gain is $\Phi_G/\Phi_S-1$. If the contract changes in every future period, its stationary MSB gain is instead
+\begin{equation}\label{eq:stationarygain}
+ \frac{b_{G,\infty}^M}{b_{S,\infty}^M}-1
+ =\frac{\Phi_G-\Phi_S}{\Phi_S(1-\Phi_G)}.
+\end{equation}
+Thus the proportional one-period gain is amplified by $1/(1-\Phi_G)$. MSD also depends on the change in optimal normalized face $x^*$ and has a distinct percentage gain. These formulae do not apply unchanged to deferrals: an inherited obligation becomes an additional state.
 
-Table~\ref{tab:gain_vs_alpha_mu} (top panel) confirms this numerically: as $\alpha$ ranges from 0.10 to 0.22, straight-debt capacity scales proportionally while the GDP-clause gain stays at $11.0\%\pm0.2$ percentage points (grid and Monte Carlo error) and the disaster-clause gain at $1.9\%$. The economic content is twofold. Low-$\alpha$ sovereigns benefit \emph{equally in proportional terms} but---precisely because their fiscal limits are lower---the same proportional gain relieves a binding constraint rather than adding unused headroom. And once $\alpha$ becomes stress-dependent as in \eqref{eq:alpha_endog}, the homogeneity breaks in favor of contingency: clauses deliver relief in exactly the states where $\alpha_t$ endogenously deteriorates. Quantifying that interaction requires the dynamic model and is left for future work.
+\subsection{An attainable upper bound}
+\begin{proposition}[Resource bound]\label{prop:bound}
+With risk-neutral pricing, zero recovery, and nonnegative contractual repayments, $b_H^M(c)\le c\E[g]/R_f$. Full linear indexation $H(g)=g/\bar g$ attains the bound at $d=c\bar g$.
+\end{proposition}
+\begin{proof}
+In survival states $dH\le cg$; in default creditors receive zero. Hence realized repayment is bounded by $cg$ in every state. Taking expectations and discounting proves the inequality. Under full indexation the stated face makes repayment exactly $cg$ in every state, so default never occurs and the bound is attained.
+\end{proof}
+The bound places the step-clause gains in context. An interior optimum in the step design's relief parameter is not a general restriction on contingency: full indexation is optimal in the linear family because it attains the bound.
 
-\paragraph{(iii) The gain falls modestly as trend growth falls---with a fixed trigger.} The bottom panel of Table~\ref{tab:gain_vs_alpha_mu} varies mean log growth $\mu$ from $-0.02$ to $0.03$ per period. The GDP-clause gain \emph{declines} from 11.5\% to 10.3\% as $\mu$ falls, the opposite of the intuition that lower-growth countries benefit more. The reason is instructive: with the trigger fixed at $\bar g = 0.95$, a lower-growth country trips the clause in a larger share of \emph{non-default} states, so the payoff-reduction term in condition \eqref{eq:sufficient_condition} grows while the survival gain does not. The design lesson is that the trigger should be indexed to trend growth (e.g.\ $\bar g$ set relative to expected growth); with a trend-indexed trigger, the targeting of the clause---and hence the gain---is restored for low-growth issuers.
+\section{Quantitative illustrations}\label{sec:numerical}
+\subsection{Design, computation, and uncertainty}\label{subsec:design}
+The one-period comparison sets $b^M_{t+1}=0$, so $c=\alpha$. This normalization preserves relative MSB comparisons only at a \emph{given} continuation capacity. We also report the full stationary recursion \eqref{eq:stationary}; the stationary comparison internalizes each contract's continuation capacity. Both exercises assume i.i.d. growth and permanent relief.
 
+Unless otherwise stated, the Monte Carlo comparison tables average estimates from \NumSeeds\ independent seeds (42--61), each with $N=\NumDraws$ draws. Common primitive draws are used across contracts within a seed, so differences are paired. Parentheses report the Monte Carlo standard error of the across-seed mean, $s/\sqrt{\NumSeeds}$; the underlying across-seed standard deviation $s$ is also archived. These are simulation errors conditional on the assumed model, not parameter uncertainty. Maximization can introduce finite-sample upward bias and make the maximizing face less stable than proceeds. The code evaluates every empirical default threshold $x=g/H$ and resolves exact ties toward the smaller face, eliminating the former fixed-grid error. Appendix~\ref{app:proofs} distinguishes consistency of this optimizer from the original finite-grid result. Stationary transforms are applied within each seed before averaging.
+
+\subsection{Parameters and their interpretation}\label{subsec:calibration}
 \begin{table}[t]
-\centering
-\caption{MSB gains from contingency as a function of surplus capacity $\alpha$ (top panel; $\mu=0.01$) and mean log growth $\mu$ (bottom panel; $\alpha=0.16$), at $\psi=1.5$. Gains are relative to straight debt in the same environment.}
-\label{tab:gain_vs_alpha_mu}
-\begin{tabular}{@{}ccccc@{}}
-\toprule
- & $\widehat b^M_{\text{straight}}$ & Gain, GDP clause & Gain, disaster clause \\
-\midrule
-$\alpha=0.10$ & 0.0686 & $+11.2\%$ & $+1.9\%$ \\
-$\alpha=0.13$ & 0.0892 & $+10.8\%$ & $+1.9\%$ \\
-$\alpha=0.16$ & 0.1098 & $+11.2\%$ & $+1.9\%$ \\
-$\alpha=0.19$ & 0.1304 & $+10.9\%$ & $+1.9\%$ \\
-$\alpha=0.22$ & 0.1510 & $+11.2\%$ & $+1.9\%$ \\
-\addlinespace
-$\mu=-0.02$ & 0.1065 & $+10.3\%$ & $+1.9\%$ \\
-$\mu=-0.01$ & 0.1076 & $+10.7\%$ & $+1.9\%$ \\
-$\mu=0.00$ & 0.1087 & $+11.0\%$ & $+1.9\%$ \\
-$\mu=0.01$ & 0.1098 & $+11.2\%$ & $+1.9\%$ \\
-$\mu=0.02$ & 0.1109 & $+11.4\%$ & $+1.9\%$ \\
-$\mu=0.03$ & 0.1120 & $+11.5\%$ & $+1.9\%$ \\
-\bottomrule
+\centering\small
+\caption{Illustrative five-year parameters. The stress case preserves the first-revision distribution for comparison; the other cases separate fiscal capacity, trend growth, and disaster exposure.}\label{tab:params}
+\begin{tabular}{@{}lrrr@{}}\toprule
+Parameter & Stress & Advanced economy & Small state \\\midrule
+$\alpha$ & .16 & .16 & .10 \\
+$R_f$ & 1.08 & 1.08 & 1.08 \\
+Conditional trend $\mu$ & .01 & .075 & .075 \\
+Growth volatility $\sigma$ & .10 & .10 & .15 \\
+Disaster probability $p_{\rm dis}$ & .15 & .025 & .15 \\
+Mean log jump $m_J$ & .25 & .25 & .25 \\
+Logistics probability $p_{\log}$ & .08 & .08 & .08 \\
+Mean active log wedge $m_L$ & .06 & .06 & .06 \\
+Logistics loading $\psi$ & 1.5 & 1.5 & 1.5 \\
+GDP $(\kappa,\bar g)$ & (.30,.95) & (.30,.95) & (.30,.95) \\
+Disaster $(\kappa_Z,\ell_*)$ & (.35,.15) & (.35,.15) & (.35,.15) \\\bottomrule
 \end{tabular}
 \end{table}
+These are contrasting theoretical cases, not country estimates. The capacity scale $\alpha=.16$ corresponds to roughly 3.2 percent of GDP per year of cumulative surplus capacity; the small-state case uses 2 percent. Fiscal-fatigue evidence motivates considering a limit to feasible surpluses \parencite{GhoshEtAl2013}, but does not identify these particular numbers. The common safe gross rate 1.08 corresponds to about 1.55 percent annually. It is a discount rate, not the borrowing rate or observed sovereign spread of a Caribbean issuer \parencite{Blanchard2019}. Default losses are priced separately.
 
-\paragraph{(iv) The gain rises with tail thickness $\psi$.} From Table~\ref{tab:msb_contracts}: straight-debt capacity falls monotonically as logistics amplification thickens the left tail (from 0.1115 to 0.1080, $-3.1\%$), while GDP-clause capacity falls by only $-1.9\%$, so the contingency gain rises from 10.5\% to 11.9\%. This is the quantitative counterpart of Proposition~\ref{prop:psi_value} in Appendix~\ref{app:proofs}: a thicker left tail creates more probability mass that the clause can move from default to survival. Since $\psi$ proxies production-network centrality, the prediction is that high-centrality, import-dependent sovereigns gain the most from state contingency, holding local disaster risk constant.
+In the advanced-economy and small-state illustrations, conditional trend log growth is 1.5 percent annually. The five-year disaster probability is 2.5 percent (about 0.51 percent annually) for the former and 15 percent (about 3.20 percent annually) for the latter. These contrasting choices isolate exposure; the higher hazard is \emph{not} Barro's estimate. \textcite{Barro2006} reports a pooled annual disaster frequency of approximately 1.7 percent, including wars and depressions. \textcite{Mallucci2022} motivates considering disaster-prone Caribbean economies, but the present small-state parameters are not a replication of that empirical calibration. The annualized Gaussian volatility is $\sigma/\sqrt5$, or 4.47 and 6.71 percent. These volatility values are sensitivity choices rather than claimed sample estimates.
 
-The disaster clause's much smaller gain ($\approx 1.9\%$ throughout) is a quantified statement about \emph{basis risk}. The clause triggers on the observable event $Z=1$, but with exponentially distributed disaster sizes many triggered events are small (relief is wasted in survival states) while some untriggered states---deep Gaussian recessions, logistics-compounded downturns---still default (relief is missing where needed). The GDP clause conditions on the fiscally relevant object, output itself, and therefore dominates. In practice this trade-off runs the other way in verification costs: $Z$ is easier to verify than output shortfalls, which is why actual CRDCs use parametric triggers. The model quantifies what that verification convenience costs in fiscal space.
+The exponential log jump with mean .25 implies a conditional mean output loss $\E[1-e^{-V}]=.25/1.25=.20$, \emph{not} 25 percent. A 15 percent loss trigger requires $V\ge-\log(.85)$; its stress-case activation probability is $p_{\rm dis}(.85)^{1/.25}=7.83$ percent per five years, compared with 15 percent for the event-only clause. The conditional mean loss among qualifying events is $1-.85/1.25=32$ percent. The logistics probability .08 means roughly .16 active five-year blocks per decade in expectation, rather than one or two disruptions per decade. It is an exposure-block probability chosen for sensitivity analysis, not a count of all shipping disruptions. The mean output wedge conditional on a logistics block is $1-1/(1+\psi m_L)$; at $\psi=1.5$ its unconditional effect is about .66 percent, while the unconditional expected \emph{log} drag is .72 percent.
 
-\subsection{Certain disasters: the $Z=1$ scenario}
-\label{subsec:z1}
+The stress case has negative expected log growth. At $\psi=1.5$,
+\begin{equation}\label{eq:meanlog}
+ \E[\log g]=\mu-p_{\rm dis}m_J-\psi p_{\log}m_L
+ =-.0347,
+\end{equation}
+or approximately $-.694$ percent annually. It is retained as an adverse environment, not a normal trend calibration. Expected log growth is instead .06155 per five years in the advanced-economy case and .0303 in the small-state case. These calculations include the disaster and logistics drags; $\mu$ alone is not expected realized growth.
 
-To make the ordering between GDP-linked bonds and disaster clauses fully explicit, Table~\ref{tab:z1} reports the degenerate scenario in which the disaster indicator is switched on with certainty ($Z=1$, jump drawn in every state; $\psi=0$).
+The GDP trigger $g<.95$ is a cumulative five-year output decline of at least 5 percent. It is not necessarily a severe disaster: Gaussian shocks and the assumed slow stress-case drift make it relatively frequent. Relief fractions .30 and .35 are design parameters; converting a two-year suspension into a share of five-year service supplies no justification for treating the same amount as a permanent NPV loss. The two interpretations are therefore kept separate.
+
+\subsection{One-period and stationary fiscal limits}\label{subsec:limits}
+\begin{table}[t]
+\centering\caption{Maximum sustainable borrowing and default at the optimum. Parentheses are Monte Carlo SEs of the mean. One-period and stationary gains are relative to the corresponding straight-debt limit.}\label{tab:limits}
+\FitTable{\input{generated/limits.tex}}
+\end{table}
+\begin{table}[t]
+\centering\caption{Face values attaining MSB: one-period and stationary MSD. These are promised repayments in GDP units, not issuance proceeds.}\label{tab:msd}
+\FitTable{\input{generated/msd.tex}}
+\end{table}
+In the stress case, the GDP clause raises one-period MSB by \LegacyGDPOneGain\ percent and stationary MSB by \LegacyGDPStationaryGain\ percent (Table~\ref{tab:limits}). The corresponding stationary MSD gain is \LegacyGDPMSDGain\ percent (Table~\ref{tab:msd}). The disaster-loss clause yields smaller gains: \LegacyDisasterOneGain\ percent in one-period MSB and \LegacyDisasterStationaryGain\ percent in stationary MSB. Its trigger misses low-capacity states caused by ordinary growth and logistics shocks.
+
+The alternative cases preserve the mechanism without mixing advanced-economy fiscal capacity with an adverse trend. The GDP-clause one-period gains are \AdvancedGDPOneGain\ percent in the advanced-economy case and \SmallGDPOneGain\ percent in the small-state case. Their stationary MSB gains are \AdvancedGDPStationaryGain\ and \SmallGDPStationaryGain\ percent. These percentages depend on tail shape, volatility, the fixed output trigger, and the distance of $\Phi$ from one, rather than on disaster hazard alone. A small rise in $\Phi$ can have a large stationary effect near one.
+
+In these cases the stationary MSB and MSD levels are several times their one-period counterparts. The multipliers are $1/(1-\Phi_H)$, not an assumed order-of-magnitude adjustment. One-period faces near .13--.15 in the stress case are five-year service obligations relative to initial GDP, rather than estimates that a country's total public debt limit is 13--15 percent of GDP.
 
 \begin{table}[t]
-\centering
-\caption{The $Z=1$ scenario: disaster occurs with certainty. The disaster clause becomes a deterministic haircut---equivalent to rescaled straight debt---while the GDP clause retains its state contingency.}
-\label{tab:z1}
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-Contract & $\widehat d^*$ & $\widehat b^M$ & $\widehat{PD}(\widehat d^*)$ & Gain vs.\ straight \\
-\midrule
-Straight & 0.106 & 0.07842 & 0.201 & --- \\
-GDP clause ($\kappa{=}0.30,\bar g{=}0.95$) & 0.152 & 0.08839 & 0.204 & $+12.7\%$ \\
-Disaster clause ($\kappa_Z{=}0.35$) & 0.163 & 0.07842 & 0.201 & $0.0\%$ \\
-\bottomrule
-\end{tabular}
+\centering\caption{The risk-neutral resource bound and the fraction attained by each step design (percent). The bound uses the analytic mean of $g$; reported step proceeds average simulations.}\label{tab:bound}
+\FitTable{\input{generated/bound.tex}}
 \end{table}
+Table~\ref{tab:bound} reports the attainable full-indexation bound. Remaining below it reflects a restricted repayment design, rather than evidence that any increase in contingency must eventually reduce proceeds.
 
-The result is exact, not approximate: when the trigger is certain, $H_{\text{DIS}}=1-\kappa_Z$ in every state, so the disaster clause is a uniform haircut on face value---the sovereign simply issues $d/(1-\kappa_Z)$ units of a claim worth $(1-\kappa_Z)$ each, replicating straight debt state by state ($\widehat d^* = 0.106/0.65 \approx 0.163$, identical $\widehat b^M$ and default probability). The GDP clause, by contrast, still discriminates between the surviving and defaulting states \emph{within} the disaster environment and preserves a $+12.7\%$ gain. The ordering principle is that a contingent instrument creates fiscal space only insofar as its trigger is \emph{informative about the default set}; a trigger that fires always (or never) is payoff-equivalent to straight debt.
-
-\subsection{Temperature-linked coupons and temperature-dependent disaster intensity}
-\label{subsec:temp_sim}
-
-This subsection carries the paper's two remaining announced extensions through the simulation: the temperature-linked instrument \eqref{eq:temp_linked} and the state-dependent jump intensity $\lambda(T_t)$ from \eqref{eq:jump_growth}.
-
-Global emissions growth over the period is stochastic: $\Delta C/\overline{\Delta C}\sim$ lognormal with mean one and dispersion 0.30. It affects domestic growth through two couplings: the disaster intensity becomes $\lambda(\Delta C) = p_{\text{dis}} + \lambda_1(\Delta C/\overline{\Delta C}-1)$, so acute risk rises when global emissions overshoot; and a chronic wedge $\exp(-\delta_C(\Delta C/\overline{\Delta C}-1))$ scales growth directly. The temperature-linked coupon pays $H_T = 1-\kappa_T(\Delta C/\overline{\Delta C}-1)$: repayments fall when emissions overshoot (insurance) and rise symmetrically when they undershoot. Two coupling regimes are simulated: \emph{weak} ($\lambda_1=0.10$, $\delta_C=0.05$) and \emph{strong} ($\lambda_1=0.40$, $\delta_C=0.15$), at $\psi=1.5$.
-
-\begin{table}[t]
-\centering
-\caption{Instrument comparison with stochastic global emissions and temperature-dependent disaster intensity $\lambda(\Delta C)$, at $\psi=1.5$. Weak coupling: $\lambda_1=0.10$, $\delta_C=0.05$; strong coupling: $\lambda_1=0.40$, $\delta_C=0.15$.}
-\label{tab:temp}
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-Contract & $\widehat d^*$ & $\widehat b^M$ & $\widehat{PD}(\widehat d^*)$ & Gain vs.\ straight \\
-\midrule
-\multicolumn{5}{@{}l}{\emph{Panel A: weak coupling}} \\
-Straight & 0.133 & 0.10955 & 0.110 & --- \\
-GDP clause & 0.152 & 0.12197 & 0.033 & $+11.3\%$ \\
-Disaster clause & 0.136 & 0.11164 & 0.066 & $+1.9\%$ \\
-Temperature-linked ($\kappa_T{=}0.30$) & 0.129 & 0.10715 & 0.100 & $-2.2\%$ \\
-\addlinespace
-\multicolumn{5}{@{}l}{\emph{Panel B: strong coupling}} \\
-Straight & 0.132 & 0.10752 & 0.120 & --- \\
-GDP clause & 0.152 & 0.12127 & 0.039 & $+12.8\%$ \\
-Disaster clause & 0.135 & 0.11060 & 0.068 & $+2.9\%$ \\
-Temperature-linked ($\kappa_T{=}0.30$) & 0.131 & 0.10968 & 0.097 & $+2.0\%$ \\
-Temperature-linked ($\kappa_T{=}0.50$) & 0.127 & 0.10672 & 0.089 & $-0.7\%$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Table~\ref{tab:temp} delivers a nuanced verdict on the paper's own proposed instrument, and reporting it honestly is the point of the exercise. Under weak coupling, the temperature-linked coupon \emph{reduces} the fiscal limit by 2.2\%: the global emissions realization is nearly orthogonal to the domestic default set at a five-year horizon, so the coupon adds payoff noise (and gives up repayments in overshoot states that are mostly survival states) without buying survival. Under strong coupling---when emissions overshoots substantially raise domestic disaster intensity and chronic damages---the same instrument turns positive ($+2.0\%$), comparable to the disaster clause; and overloading the coupon ($\kappa_T=0.50$) turns it negative again, the same interior-generosity logic as Section~\ref{subsec:kappa}. Two further observations: replacing the fixed intensity with the mean-preserving $\lambda(\Delta C)$ leaves straight-debt capacity essentially unchanged ($\widehat b^M$ moves by less than $10^{-4}$), so the value of the temperature link comes entirely from the \emph{correlation} it creates between the trigger and the default set, not from any change in average risk. And the one-period design understates the instrument's dynamic appeal: its natural role is to hedge the persistent BAU drift in cumulative emissions across periods---the state variable is global and trending---which a one-period exercise cannot capture. The practical-design comparison with catastrophe bonds and GDP-linked debt, including measurement and marketability concerns for small open economies, is taken up in Section~\ref{sec:conclusion}.
-
-\subsection{Optimal clause generosity}
-\label{subsec:kappa}
-
-Condition \eqref{eq:sufficient_condition} predicts an interior optimum in relief generosity: increasing $\kappa$ raises the survival gain but also the payoff give-up in survival states. Figure~\ref{fig:msb_vs_kappa} varies $\kappa$ for the GDP clause at $\psi=1.5$ ($\bar g=0.95$). Peak proceeds rise from $\kappa=0.1$ to a maximum at $\kappa\approx 0.2$ ($\widehat b^M = 0.1237$), then decline monotonically---by $\kappa=0.8$ the clause is so generous that expected repayment collapses even though default is rare. The empirically relevant region for CRDC-scale deferrals ($\kappa\in[0.2,0.4]$) sits near the optimum, which is reassuring for practical design: contingency should be targeted and moderate, not maximal.
-
-\begin{figure}[t]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=0.95\linewidth, height=6.5cm,
-  xlabel={Clause generosity $\kappa$ (GDP clause)}, ylabel={Peak proceeds $\widehat b^M$},
-  xmin=0.1, xmax=0.8,
-  xtick={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8},
-  scaled x ticks=false, scaled y ticks=false,
-  tick label style={/pgf/number format/fixed},
-  x tick label style={/pgf/number format/fixed,/pgf/number format/precision=1},
-  y tick label style={/pgf/number format/fixed,/pgf/number format/precision=3},
-  grid=major, major grid style={opacity=0.25},
-]
-\addplot[vizorange, thick, mark=*] coordinates {(0.1,0.11852) (0.2,0.12368) (0.3,0.12208) (0.4,0.11872) (0.5,0.11444) (0.6,0.10969) (0.7,0.10470) (0.8,0.09960)};
-\end{axis}
-\end{tikzpicture}
-\caption{Interior optimality in clause generosity. At $\psi=1.5$ and $\bar g=0.95$, proceeds peak at $\kappa\approx 0.2$: moderate relief maximizes the survival gain net of the payoff reduction in survival states, while overly generous relief destroys expected repayment even when default is rare.}
-\label{fig:msb_vs_kappa}
+\begin{figure}[!htbp]
+\centering\includegraphics[width=\textwidth]{generated/curves.pdf}
+\caption{Proceeds and default probability at a common face value in the stress case (seed 42). The disaster contract applies the 15 percent loss threshold. The GDP curve has a distinct change at $d=\alpha\bar g=.152$; above that point its survival set can cease to be a single upper interval.}\label{fig:curves}
 \end{figure}
 
-\section{Discussion and conclusion}
-\label{sec:conclusion}
+\subsection{Rollover needs, growth, capacity, and logistics}\label{subsec:sensitivity}
+\begin{table}[t]
+\centering\caption{Common-face comparisons in the stress case. These comparisons isolate the rollover need; they are not differences between separately optimized contracts.}\label{tab:faces}
+\FitTable{\input{generated/faces.tex}}
+\end{table}
+At low face values, relief mainly reduces repayments in states where straight debt would survive, so proceeds can fall despite lower default risk (Table~\ref{tab:faces}). Near the straight-debt peak, newly surviving payments become more valuable. Figure~\ref{fig:loading} illustrates this benefit and cost decomposition at $d=.13$; Figure~\ref{fig:curves} shows why a comparison at the same face and a comparison at each optimum answer different questions.
 
-This paper started from an institutional fact---sovereigns such as Grenada and Barbados now write disaster contingency directly into their debt contracts---and asked what such design choices do to the maximum debt a government can sustain once climate risk is taken seriously. The answer, in a framework that extends the structural fiscal-limit tradition to acute physical risk and to a menu of contingent instruments, is that liability design is a quantitatively meaningful margin of climate policy. In the numerical illustration, a repayment clause that forgives about a third of payments in severe downturns raises the sustainable-borrowing benchmark by ten to twelve percent relative to conventional debt, while cutting the probability of default at the issuance optimum by roughly two-thirds. The gain is largest exactly where it matters: for sovereigns rolling over large amounts near their fiscal limit, for economies whose supply-chain position exposes them to disruptions originating elsewhere, and in environments where disasters make the distribution of growth outcomes more bottom-heavy. For sovereigns with ample headroom, the same clauses are a net cost---insurance bought against a risk they do not face.
+Homogeneity gives an exact capacity comparative static: multiplying $\alpha$ by a positive scalar multiplies one-period and stationary proceeds and optimizing faces by that scalar, while relative gains remain unchanged. The numerical optimizer works with $x=d/\alpha$, so the former small violations of this result due to a fixed absolute grid are eliminated. This statement requires capacity to depend on output through a constant scalar. It does not establish a ranking when the surplus falls independently in climate stress.
 
-Three design lessons emerge from the comparative statics. First, a contingent instrument creates fiscal space only insofar as its trigger tracks the states in which default would actually occur. A clause triggered by an event that is only loosely related to fiscal distress---our disaster clause with variable disaster sizes, or a temperature-linked coupon weakly coupled to domestic outcomes---delivers a small fraction of the gain, and in the limiting case of a trigger that always fires it delivers none at all, being equivalent to ordinary debt issued at a discount. This is the cost of verification convenience: parametric triggers are easy to verify but track fiscal distress imperfectly, and the model prices that basis risk at several percent of borrowing capacity. Second, relief should be moderate: the optimum forgives roughly a fifth to a third of payments in bad states, and more generous relief destroys value even when it makes default vanishingly rare. Third, triggers should be indexed to trend growth, since a fixed threshold becomes poorly targeted for slow-growing issuers.
+\begin{table}[t]
+\centering\caption{Conditional mean-growth sensitivity in the stress environment, with the GDP trigger fixed at .95 and logistics loading at 1.5.}\label{tab:mu}
+\input{generated/mu.tex}
+\end{table}
+\begin{table}[t]
+\centering\caption{Logistics sensitivity in the stress environment. The gap is the GDP gain minus the disaster-loss gain at the stated relief fractions; it is a design-specific basis-risk proxy.}\label{tab:psi}
+\input{generated/psi.tex}
+\end{table}
+With a fixed GDP trigger, slower growth can cause relief to activate in more states where repayment was feasible; it need not increase the clause's percentage benefit (Table~\ref{tab:mu}). The logistics sweep in Table~\ref{tab:psi} and Figure~\ref{fig:sensitivity} is a model-specific comparative static. A downward shift in growth alone does not imply a larger contingency gain. It can also reduce the probability of payments above the trigger and the amount of face the sovereign can issue. Proposition~\ref{prop:tails} states explicit conditions for a monotone gain, and Appendix~\ref{app:proofs} provides a counterexample to the unrestricted claim.
 
-The temperature-linked coupon deserves a candid practical assessment, since its trigger---global cumulative emissions---is measured with lags and model dependence, and no market for such instruments exists. Its comparative advantage over catastrophe bonds and GDP-linked debt is informational: a global emissions index cannot be manipulated by the issuing government (unlike output statistics, a known obstacle for GDP-linked bonds) and does not require loss verification after each event (unlike catastrophe triggers). Its disadvantages are that the trigger is outside any single issuer's control and, as the simulations show, only loosely coupled to a small economy's default states over short horizons. On this evidence, temperature-linked designs are best understood as long-horizon hedges of the global damage trend---complements to, not substitutes for, disaster clauses that handle acute local events. For small open economies, the credibility question is real but symmetric: precisely because the trigger is global, investors need not price moral hazard, but they must accept basis risk; which effect dominates is an empirical pricing question flagged for future work.
+\subsection{Loss thresholds and basis risk}\label{subsec:threshold}
+\begin{table}[t]
+\centering\caption{Disaster-loss thresholds in the stress case, with $\kappa_Z=.35$. A zero threshold means every active disaster, excluding non-disaster states.}\label{tab:threshold}
+\input{generated/threshold.tex}
+\end{table}
+Table~\ref{tab:threshold} implements the loss threshold appearing in the contract definition. Removing small-disaster payments can improve targeting and increase proceeds, even though the total number of relief events falls. A high threshold can in turn miss events near the default boundary, so more selective triggers need not always help. The remaining gap to the GDP clause reflects missed non-disaster stress as well as the specified trigger and relief parameters. It is not evidence that disaster verification is intrinsically inferior once measurement costs and premia are included.
 
-Several limitations bound these conclusions, and each defines a research direction. The quantitative exercise is a one-period illustration with a constant risk-free rate, not a calibrated welfare analysis: it prices instruments by risk-neutral investors, omits the continuation value of market access, and holds surplus capacity fixed even though the analytical framework allows capacity to deteriorate in stressed states---an extension under which the case for contingency would strengthen, since clauses deliver relief exactly when capacity erodes. The logistics-amplification channel is deliberately reduced-form; a full treatment would calibrate network centrality from input-output data and let disruption persist across periods, interacting with maturity choice. The monetary block in the appendix treats collateral policy and purchases analytically and through a simple comparative static, but does not solve the joint fixed point between pricing, default risk, and the risk-free rate that arises with long-maturity debt. And the framework's planner jointly chooses fiscal, debt-management, and monetary instruments---a useful benchmark, but one that abstracts from central bank independence; in practice, the coordination this paper studies would operate through institutionally separate mandates, with the central bank adjusting collateral treatment of instruments whose design independently reduces default risk, rather than through a single authority. Moral hazard and political economy also remain: relief is valuable precisely in bad states, so triggers must be verifiable and monitoring credible, and governments may prefer instruments that delay adjustment rather than hedge risk.
+If the \emph{trigger} is certain, the disaster payoff is a known constant and has exactly the same maximum proceeds as straight debt under unrestricted face rescaling. If every disaster event is certain but loss sizes remain variable, a positive loss threshold need not activate with certainty. The code reports both the event-only and loss-threshold cases under certain event arrival; only the former is covered by the payoff-equivalence result.
 
-The empirical agenda is nonetheless sharp. The framework predicts that sovereign spreads respond less to qualifying disasters for issuers with credible disaster clauses; that this protection is worth more for trade-exposed, network-central economies; and that official-sector support---collateral eligibility, purchases---compresses premia most effectively when directed at instruments whose payoffs already reduce default risk. Each prediction is testable with event studies around disasters and shipping disruptions, spread regressions interacted with contractual features, and eligibility discontinuities.
+\subsection{Recovery and carried-forward deferrals}\label{subsec:recovery}
+\begin{table}[t]
+\centering\caption{Recovery as a share $\varrho$ of capacity in default, stress case. All contracts receive the same recovery rule.}\label{tab:recovery}
+\input{generated/recovery.tex}
+\end{table}
+Recoveries proportional to face create an unbounded borrowing problem when face is unrestricted. We instead pay $\varrho\alpha g$ in default, with $0\le\varrho\le1$ (Appendix~\ref{app:recovery}). The resource bound remains valid. As recovery rises, avoiding default sacrifices a larger payment that creditors would otherwise receive, reducing the relative benefit of the clause in this illustration (Table~\ref{tab:recovery}). At full capacity recovery, every contract raises $\alpha\E[g]/R_f$; there is no proceeds advantage to avoiding default. A monotone ranking of optimized \emph{differences} at intermediate recoveries is a numerical result here, rather than a general theorem.
 
-The policy conclusion is continuous with the baseline literature but adds an operational margin. Coordinated mitigation remains the only durable answer to the long-run erosion of fiscal limits by climate damages. But while that coordination is negotiated, governments need not manage their balance sheets as if climate risk were not accumulating. Debt contracts that move repayments out of disaster states, priced transparently and triggered verifiably, buy fiscal room precisely when it is scarcest---and they do so through contract design, without inflation surprises, financial repression, or ex post renegotiation.
+\begin{table}[t]
+\centering\caption{NPV-neutral deferrals under a stationary issuance policy, stress case. $B(0)$ is new borrowing capacity with no inherited deferred claim. Gains use the straight-debt control at the same discretization. ``Retained'' is this percentage gain divided by the corresponding permanent-relief stationary percentage gain. Residual is the undamped fixed-point update error; it is not a discretization error bound.}\label{tab:deferral}
+\FitTable{\input{generated/deferral.tex}}
+\end{table}
+Table~\ref{tab:deferral} carries each deferred amount into the following period, with interest at $R_f$, and prices its subsequent default risk. New issuance must compete with inherited service for the same resources. The computation solves for borrowing capacity and survival jointly as functions of inherited claims, rather than subtracting an expected deferral from the scalar forgiveness limit. Appendix~\ref{app:deferral} specifies timing, default, pricing, numerical grids, and convergence diagnostics.
 
-\section*{Code Availability}
+Because deferrals add an endogenous inherited-debt state, there is no single state-independent stationary MSB. We report $B(0)$ under the stationary policy and the capacity schedule $B(a)$, not a claim about a stationary distribution of outstanding debt. At the finest grid, the GDP deferral gain is \DeferralGDPGain\ percent, retaining \DeferralGDPRetained\ percent of the permanent-relief stationary percentage gain. The disaster deferral gain is \DeferralDisasterGain\ percent, retaining \DeferralDisasterRetained\ percent. Only a fraction of the permanent-relief gain survives once postponed payments must be serviced. The reported grid refinements indicate the numerical sensitivity; these additional model assumptions and the discrete approximation make the deferral results illustrative rather than estimated effects of the terms of a particular CRDC.
 
-All code associated with the simulations in this paper, including the revision simulations that generate every table and figure in Section~\ref{sec:numerical} and Appendix~\ref{app:monetary}, is available at: \url{https://osf.io/scugt}.
+\subsection{Emissions surprises and additional pricing discounts}\label{subsec:temperature}
+For the emissions-surprise exercise, $X$ is lognormal with log standard deviation .30 and mean one. Disaster probability is $p(X)=\min\{.60,\max\{.01,.15+\lambda_1(X-1)\}\}$ and log growth additionally includes $-\delta_C(X-1)$. Weak coupling uses $(\lambda_1,\delta_C)=(.10,.05)$; strong coupling uses $(.40,.15)$. The coupon in \eqref{eq:temp_linked} uses $\kappa_T=.30$. These are scenario assumptions.
+\begin{table}[t]
+\centering\caption{Insurance against unanticipated emissions increments in the stress environment. The disaster clause retains its loss threshold.}\label{tab:temperature}
+\input{generated/temperature.tex}
+\end{table}
+The value of the surprise coupon depends on how closely the global surprise tracks domestic low capacity (Table~\ref{tab:temperature}). The exercise does not establish protection against a fully anticipated BAU trend. For a known coupon multiplier $h_0>0$, setting $\tilde d=h_0d$ gives exactly the straight-debt proceeds problem; changing the known reference path alone creates no new fiscal space.
 
-\printbibliography
+The main risk-neutral prices omit novelty, ambiguity, liquidity, and measurement premia. \textcite{igan2021_premia_scdi} document substantial and persistent premia in existing state-contingent instruments, and \textcite{RochRoldan2023} show how ambiguity can reverse their welfare ranking. A contract-specific issuance discount can therefore offset the model's gain. Appendix~\ref{app:monetary} distinguishes a common additive collateral subsidy, which mechanically scales every contract's proceeds, from an explicitly assumed default-risk-dependent eligibility rule. Neither establishes an empirical complementarity between collateral support and contingency.
+
+\subsection{Generosity of the step clause}\label{subsec:kappa}
+\begin{figure}[!htbp]
+\centering\includegraphics[width=\textwidth]{generated/sensitivity.pdf}
+\caption{Logistics sensitivity (left) and step-clause generosity (right), stress case. Error bars are $1.96$ times the Monte Carlo SE of the across-seed mean. The generosity sweep reoptimizes face value at each $\kappa$. Its interior peak is a property of this step design and distribution; full linear indexation attains the resource bound.}\label{fig:sensitivity}
+\end{figure}
+Figure~\ref{fig:sensitivity} displays the survival--payoff trade-off as relief increases. The proof in Appendix~\ref{app:proofs} gives a closed form on the binding-trigger branch and explicit sufficient conditions for an interior maximum. It also provides a complete example with a global interior optimum. Continuity and an envelope argument alone do not establish strict quasi-concavity of optimized proceeds for an arbitrary distribution; interior optimality requires the stated distribution and optimizing-face conditions.
+
+\section{Discussion and conclusion}\label{sec:conclusion}
+Contingency expands borrowing capacity when it creates repayments in states where default would otherwise destroy creditor value, after accounting for payments forgone in states that already repay. This is a contract-design result. An output trigger has an informational advantage in a model where repayment capacity depends on output alone, while a disaster trigger trades observable verification for exposure to basis risk. Implementing a loss threshold improves the disaster contract's targeting relative to an event-only rule in the stress illustration.
+
+One-period write-down gains understate the stationary gain when the same contract is issued repeatedly and continuation capacity adjusts. They also overstate what can be inferred for actual payment deferrals. Carrying postponed amounts forward introduces a debt state and leaves substantially less room for new issuance than forgiving them. Recovery similarly narrows the benefit of avoiding default, and additional pricing premia may overturn a borrowing-capacity ranking. The model supplies neither an empirical estimate for a Caribbean issuer nor a welfare endorsement of a particular clause.
+
+Stress-dependent surplus capacity could change the preferred trigger: if a loss in capacity tracks a disaster or logistics shock beyond its effect on output, a trigger observing that shock may outperform a GDP-only rule. This is a conjecture requiring a joint capacity process. Production-network persistence, adaptation investment, and monetary support also require further modeling and data. The present logistics sweep varies an exposure parameter and cannot establish that measured network-central countries experience a particular spread response. Likewise, a coupon indexed to emissions surprises is not a hedge of deterministic warming known at issuance.
+
+The empirical agenda is to compare verified loss thresholds, output realizations, deferred-service schedules, recovery values, and contract-specific premia. Such evidence would determine which states contracts actually insure and whether the resulting fiscal space is valuable after servicing inherited claims. Coordinated mitigation addresses the erosion of the underlying tax base; contractual timing and payoff design address how a given resource base is financed.
+
+\section*{Replication and code availability}
+The manuscript source, generated tables and figures, machine-readable results, uncertainty estimates, Python environment specification, and Lean project are available at \url{https://github.com/jameskrice7/climate-contingent-sovereign-finance}. All numerical objects in the current version are generated from the archived code. A single documented command regenerates the current numerical objects; the paper contains no manually copied simulation coordinates. The first-revision source and response are preserved in repository history. The formal verification checks the specified algebraic identities, threshold statements, derivatives, and certificate inequalities; it does not machine-prove the simulations, the stationary deferral solver, or all probabilistic and economic claims.
 
 \appendix
-
-\section{Further relaxations of the baseline assumptions}
-\label{app:further}
-
-This appendix collects the relaxations of the baseline tractability assumptions that are analytically instructive but are not carried through the quantitative exercise of Section~\ref{sec:numerical}. They are presented as extensions of deliberate simplifications in \textcite{CollardEtAl2015} and \textcite{Seghini2026}, not as flaws in those frameworks.
-
-\subsection{Maturity structure}
-\label{app:maturity}
-
-Assuming one-period debt fully rolled over each period makes MSB a static maximization of $d_t/R(d_t)$. But climate shocks are persistent and often arrive as clusters; maturity structure is therefore a first-order hedging margin (\cite{ChatterjeeEyigungor2012}; \cite{LorenzoniWerning2019}; \cite{BronerEtAl2013}). With long-term debt, the government can smooth rollover risk across states, and investors price a stream of contingent default probabilities. In a stylized $N$-period coupon bond, the gross promised return depends on the entire hazard path:
-\begin{equation}\label{eq:long_debt_pricing}
-P_t = \mathbb{E}_t\left[\sum_{k=1}^{N}\frac{\mathcal{C}_{t+k}\,\mathbb{1}\{\tau>t+k\}}{R_f^k}+\frac{\mathcal{F}\,\mathbb{1}\{\tau>t+N\}}{R_f^N}+\sum_{k=1}^{N}\frac{\mathcal{R}_{t+k}\,\mathbb{1}\{\tau=t+k\}}{R_f^k}\right],
+\section{Carried-forward obligations and recovery}\label{app:deferral}
+\subsection{A stationary deferral model}
+Let $a\ge0$ be inherited, nondeferrable face due at $t+1$, relative to $Y_t$. New issuance $d$ pays $dH(g)$ at $t+1$ and defers $d(1-H(g))$ for one additional model period. The deferred amount capitalizes at $R_f$; at $t+1$ it becomes an inherited face ratio
+\begin{equation}\label{eq:arrears}
+ a'=\frac{R_fd(1-H(g))}{g}.
 \end{equation}
-where $\mathcal{C}_{t+k}$ is the coupon paid at $t+k$, $\mathcal{F}$ is the face value repaid at maturity, $\tau$ is the default time, $\mathcal{R}_{t+k}$ is recovery in default, and $R_f$ is the gross risk-free rate.
+This five-year deferral is an illustrative maturity experiment, not a reconstruction of the one- or two-year pauses in actual clauses. Inherited claims cannot be deferred again. Default at either payment date is absorbing and entails zero recovery on all outstanding claims. There is no priority advantage for the new instrument and no exclusion period followed by re-entry. No service is forgiven conditional on survival.
 
-The climate-specific reason maturity is first-order is that physical risks exhibit temporal clustering: extratropical cyclones and other hazard types arrive in serially correlated spells rather than independently across years (\cite{Mailier2006}), and reconstruction and repeated disruptions to ports, grids, and transport extend the macroeconomic footprint of each event. When rollover needs are concentrated at short horizons, clustered climate shocks mechanically push the sovereign into a sequence of refinancing states where spreads are highest, even if long-run fiscal capacity is unchanged. Conversely, terming out issuance before predictable increases in damages pre-commits the repayment schedule to states where market access is more reliable, flattening the endogenous default hazard embedded in \eqref{eq:long_debt_pricing}. Even if output growth were i.i.d., the default hazard is generally not, because debt stocks carry over; the one-period assumption thus tends to overstate the sensitivity of fiscal limits to near-term transition costs and understate the value of terming out issuance.
+Let $B(a)$ be maximal proceeds from \emph{new} issuance when inherited face is $a$, and let $s(a)$ be next-period survival under the maximizing issuance rule. Resources at $t+1$ are the feasible surplus and new borrowing, while both inherited and immediate new service must be paid:
+\begin{align}
+ S(a,d,g)&=\ind\{a+dH(g)\le g[\alpha+B(a')]\},\label{eq:def_survival}\\
+ B(a)&=\max_{d\ge0}\frac{d}{R_f}\E\!\left[S(a,d,g)\{H(g)+(1-H(g))s(a')\}\right],\label{eq:def_bellman}\\
+ s(a)&=\E[S(a,d^*(a),g)].\label{eq:def_s}
+\end{align}
+The second part of the price discounts the capitalized deferred payment over two dates: $R_fd(1-H)/R_f^2=d(1-H)/R_f$, multiplied by survival at both dates. It is NPV-neutral \emph{in the absence of default}; changing default risk can change its market value. The state $a$ includes obligations previously issued by this sovereign, so those obligations reduce its future capacity even though their original proceeds were received earlier. With $H\equiv1$ and $a=0$, the model reduces to the scalar stationary straight-debt recursion.
 
-\subsection{Positive recovery}
-\label{app:recovery}
+The solver uses empirical conditional quantiles within each trigger cell, estimated from 500,000 seed-42 draws. We use 128, 256, and 512 nodes per cell. At those refinements, respectively, inherited face has 321, 641, and 961 grid points on $[0,16\alpha]$, while new face has 801, 1601, and 2401 points on $[0,10\alpha]$. Linear interpolation evaluates $B(a')$ and $s(a')$. Above the inherited-state boundary they are zero; the archived diagnostics report the largest inherited state used by the policy, borrowing at the upper boundary, and whether optimal issuance hits its upper boundary. The results must therefore be read together with those boundary checks.
 
-Seghini assumes zero recovery, a standard simplification (\cite{CollardEtAl2015}). But recovery in advanced-economy restructurings is rarely zero, and the existence of official-sector facilities changes effective recovery values. With fractional recovery $\lambda\in(0,1)$, the pricing condition becomes
-\begin{equation}\label{eq:pricing_recovery}
-R(d_t)\Big( (1-\mathrm{PD}(d_t))+\lambda\,\mathrm{PD}(d_t)\Big)=R_f,
+We initialize $B=0$ and terminal survival $s(a)=\Prob(a\le\alpha g)$, and integrate cumulative probabilities linearly between the conditional quantile cells, rather than treating the quadrature nodes as atomic shocks. This avoids artificial default jumps at cell boundaries. We use damped fixed-point updates with weight .25; a recorded retry at .05 is permitted if needed. Convergence requires the \emph{undamped} residual $\max\{\|B_{\rm new}-B\|_\infty,\alpha\|s_{\rm new}-s\|_\infty\}<2\times10^{-7}$. This checks the discretized equations, not uniqueness of a continuous-state equilibrium or a global contraction. Refinement sensitivity is reported instead of treating residual tolerance as overall numerical accuracy. The retained-gain column in Table~\ref{tab:deferral} compares percentage gains at $a=0$ under the stationary policy, with each deferral row using its own straight-debt numerical control.
+
+\begin{figure}[!htbp]
+\centering\includegraphics[width=.94\textwidth]{generated/deferral_states.pdf}
+\caption{New issuance capacity as a function of inherited nondeferrable face, at the finest reported deferral discretization. The policy is stationary; the inherited claim is a state. This is not a stationary distribution of debt ratios.}\label{fig:deferrals}
+\end{figure}
+
+\subsection{Recovery proportional to capacity}\label{app:recovery}
+If recovery is a fixed share $\lambda_R>0$ of face, proceeds obey $b(d)\ge\lambda_Rd/R_f$, so unrestricted MSB is infinite. That rule is unsuitable for this resource-constrained fiscal-limit calculation. Instead, with capacity $cg$ and $S=\ind\{dH\le cg\}$, define
+\begin{equation}\label{eq:recovery}
+ b_H(d;c,\varrho)=\frac{1}{R_f}\E[dHS+\varrho cg(1-S)],\qquad0\le\varrho\le1.
 \end{equation}
-so
-\begin{equation}\label{eq:R_with_recovery}
-R(d_t)=\frac{R_f}{1-(1-\lambda)\mathrm{PD}(d_t)}.
+Both survival payments and recovery are bounded by capacity, preserving Proposition~\ref{prop:bound}. At $\varrho=1$ realized repayment equals capacity in default and equals the promise in survival; taking $d$ sufficiently large makes all sampled states default and attains the empirical resource bound. In the population, $b(d)\to c\E[g]/R_f$ as $d\to\infty$ by dominated convergence for the step contracts, so at full recovery the MSB may be a supremum without a finite maximizing face. We therefore report proceeds, not an economically meaningful finite MSD, in that limiting case. Full indexation still attains the bound at finite face.
+
+\section{Extensions not implemented in the main comparisons}\label{app:extensions}
+A general pricing formulation uses a stochastic discount factor $M_{t+1}$ and recovery per unit face $\mathcal R^k$:
+\begin{equation}\label{eq:sdf}
+ q_t^k=\E_t[M_{t+1}\Pi^k_{t+1}\ind\{\text{survive}\}
+            +M_{t+1}\mathcal R^k_{t+1}\ind\{\text{default}\}].
 \end{equation}
-Borrowing proceeds become
-\begin{equation}\label{eq:proceeds_recovery}
-b(d_t)=\frac{d_t}{R(d_t)}=d_t\frac{1-(1-\lambda)\mathrm{PD}(d_t)}{R_f}.
+The main calculations set $M=1/R_f$ and recovery to zero except for Table~\ref{tab:recovery}. A complete carbon-budget problem would constrain $\sum_tE_t\le\bar E$, specify adaptation investment and its resource cost, and map them into damages and disaster exposure. No emissions path or adaptation policy is optimized here.
+
+One can extend fiscal capacity to $\alpha_{i,t+1}=\bar\alpha_i-\chi_TD_T(T_{t+1})-\chi_\ell\ell_{i,t+1}$, with nonnegative sensitivities and a lower bound to ensure feasible capacity. In that case default depends on the shocks behind the surplus as well as output, invalidating a GDP-only sufficient statistic. Whether this favors a GDP clause or a disaster clause is an open quantitative question, not a strengthening of the GDP ranking by assumption.
+
+A reduced-form country premium might be written $\varpi_{i,t}=\theta_dPD_{i,t}+\theta_TT_t+\theta_\ell\ell_{i,t}+\theta_x\mathrm{FXFrag}_{i,t}$, where $\mathrm{FXFrag}$ measures currency mismatch and external funding vulnerability. Here $\varpi$ denotes an additional pricing wedge, not inflation. Expected default losses are already priced in survival-weighted payoffs; adding a PD term without specifying its role as an extra premium would double-count them. Neither these coefficients nor a network equation for $\ell$ are estimated or used in the main results.
+
+Private-asset transmission through sovereign financing conditions, persistent logistics shocks, state-dependent volatility, an endogenous safe rate, and a richer maturity structure are possible extensions. They require cash-flow processes, discount factors, and refinancing policies beyond the current apparatus. The deferral experiment is a specific two-vintage obligation model and does not solve all of those extensions.
+
+\section{Collateral support as a pricing assumption}\label{app:monetary}
+The ECB's announced climate factor motivates attention to collateral valuation, without identifying the premium elasticities used here \parencite{ecb2025_climate_factor_pr}. Let $h_c$ denote a collateral haircut and let $PD_H(d)$ be the default probability under instrument $H$. For an extra pricing wedge of the form
+\begin{equation}\label{eq:collateral}
+ \varpi_H(d;h_c)=\theta_dPD_H(d)-\xi(1-h_c),
 \end{equation}
-Relative to zero recovery, positive recovery flattens $b(d)$ at high $d$ because default states no longer imply total investor losses. This mechanically raises MSB and MSD. Note that the baseline model, with its single instrument, contains no ranking of debt instruments; it is only once recovery (or contingency) varies across contract designs that such a ranking arises---e.g.\ clauses that increase recovery, such as maturity extensions with step-up coupons, can expand fiscal space without reducing ex ante borrowing proceeds.
-
-\subsection{An endogenous risk-free rate}
-\label{app:rf}
-
-Fixing $R$ is conservative in some directions but not others. If physical damages raise global precautionary savings or trigger monetary easing, $R_f$ may fall, raising fiscal limits (Blanchard-type arithmetic). Conversely, climate risk can increase term premia and risk-free rates if it raises inflation volatility or risk aversion (\cite{Giglio2021}). For fiscal-limit analysis, what matters is that $R_f$ is itself a function of climate states and policy regimes:
-\begin{equation}\label{eq:Rf_state}
-R_{f,t}=R_f(\pi_t,\sigma_{\pi,t},\text{global risk},T_t),
+proceeds are the survival-weighted baseline proceeds multiplied by $\exp[-\varpi_H(d;h_c)]$. Consequently,
+\begin{equation}\label{eq:mechanical}
+ b_H^M(h_c)=e^{\xi(1-h_c)}b_H^M(1)
 \end{equation}
-so that the borrowing factor is endogenous and potentially correlated with $g_{t+1}$. The simulations in Section~\ref{sec:numerical} hold $R_f$ constant; the fixed-point issues that arise once $R_f$ responds to purchases and default risk are discussed in Appendix~\ref{app:monetary}.
+for \emph{every} instrument. The maximizing face and default probability are unchanged. This reproduces the assumed $\xi$, rather than demonstrating complementarity between support and contingent design.
 
-\subsection{State-dependent volatility}
-\label{app:vol}
-
-Seghini assumes the emissions path affects the mean of growth but not its volatility, which keeps the ``borrowing factor net of growth'' constant (\cite{Seghini2026}). Yet transition policy may increase short-run volatility (reallocation, energy-price shocks) and reduce long-run volatility (lower disaster exposure). Allowing $\sigma_t=\sigma(E_t,T_t)$ changes the maximizer $\gamma\equiv \max_x x[1-F(x)]$ because $F$ depends on $\sigma_t$. The MSB recursion becomes state-dependent:
-\begin{equation}\label{eq:gamma_state}
-b_t^M = \frac{\gamma(\sigma_t)\,e^{\mu_t}}{R_{f,t}}\big(\alpha_t+b_{t+1}^M\big)H_{t+1}.
+For comparison, impose the explicitly different eligibility assumption
+\begin{equation}\label{eq:riskeligibility}
+ \varpi_H(d;h_c)=\theta_dPD_H(d)-\xi(1-h_c)[1-PD_H(d)].
 \end{equation}
-This is not a cosmetic change: if mitigation temporarily increases $\sigma_t$, the short-run fiscal-limit drop can be larger than the mean-growth channel suggests, even when the long-run benefits of lower $T_t$ dominate.
-
-\subsection{Joint debt dynamics and endogenous adaptation}
-\label{app:joint}
-
-Seghini holds current debt ratios constant to isolate changes in fiscal limits (\cite{Seghini2026}). But policy design requires joint dynamics: debt may rise to fund adaptation, subsidies, and public investment (\cite{IMF2023FiscalMonitor}). Whether that is sustainability-enhancing depends on multipliers, the structure of liabilities, and the presence of state-contingent instruments. In principle the model can endogenize adaptation and public investment by letting $\mu_t$ or the disaster intensity $\lambda_t$ depend on an accumulated adaptation stock financed by issuance; the resulting problem couples the portfolio choice of Section~\ref{subsec:portfolio} to an investment Euler equation, and its calibration requires empirical multipliers for adaptation spending that are still scarce. This is a natural next step but beyond the present paper.
-
-\section{Asset-market transmission: private equity and venture capital}
-\label{app:pevc}
-
-Sovereign climate risk transmits to private capital markets through both cash flows and discount rates; this appendix records the mapping used in the paper's discussion (it is not part of the quantitative exercise). Let a representative private equity or venture capital (PE/VC) asset in country $i$ have cash flows $CF_{i,t}$ exposed to climate and logistics shocks. Its value for global investors is
-\begin{equation}\label{eq:asset_value}
-V_{i,t} = \mathbb{E}_t\left[\sum_{s\ge 1} M^{\ast}_{t+s}\, CF_{i,t+s}\right],
-\end{equation}
-where $M^{\ast}$ is the global stochastic discount factor. Suppose cash flows scale with output and supply-chain reliability:
-\begin{equation}\label{eq:cashflow}
-\log CF_{i,t+1} = a + b\log Y_{i,t+1} - \nu \ell_{i,t+1} - \nu_T T_{t+1} + \eta_{i,t+1}.
-\end{equation}
-And suppose the global discount factor incorporates sovereign risk through financing conditions (exit discounting, local credit spreads, or required returns):
-\begin{equation}\label{eq:SDF_with_sovereign}
-M^{\ast}_{t+1} = \tilde M_{t+1}\exp\!\left(-\omega \pi_{i,t}\right),\quad \omega>0.
-\end{equation}
-Then sovereign climate risk reduces PE/VC values both by lowering expected cash flows and by raising discount rates (\cite{BoltonKacperczyk2021}; \cite{GiglioKellyStroebel2021}). This provides a welfare and political-economy rationale for instrument design: mitigating sovereign default risk protects the domestic tax base and stabilizes private capital values and cross-border investment. Once sovereign climate and logistics risk enters discounting \eqref{eq:SDF_with_sovereign} and cash flows \eqref{eq:cashflow}, the same shock that compresses fiscal space also mechanically reduces private-market valuations via a joint cash-flow and discount-rate channel---a concrete rationale for why global investors in illiquid assets should care about sovereign instrument design, especially in small open economies with large foreign investor bases.
-
-\section{A monetary block: collateral policy, purchases, and inflation risk}
-\label{app:monetary}
-
-The fiscal-limit tradition on which this paper builds---\textcite{CollardEtAl2015}, extended by \textcite{CollardHabibPanizzaRochet2024}, and \textcite{Seghini2026}---deliberately excludes monetary finance. Yet climate policy is increasingly intertwined with central-bank operations: collateral frameworks, haircuts, refinancing terms, and portfolio tilts. This appendix incorporates monetary policy as a state-contingent liquidity backstop that affects sovereign pricing but is constrained by inflation risk and mandate credibility (\cite{IMF2023FiscalMonitor}). It is placed in an appendix because, as detailed below, its full equilibrium is not solved in this paper; a one-period comparative static on collateral haircuts is provided instead.
-
-These channels have become operationally relevant. The Eurosystem has announced the introduction of a climate factor in its collateral framework, explicitly motivated by protecting the central bank balance sheet against climate-related transition risk and valuation uncertainty (\cite{ecb2025_climate_factor_pr}; \cite{ecb2025_climate_factor_faq}). In parallel, central banks (including the Bank of England) have expanded scenario analysis to assess climate-related financial risks in the asset classes most relevant to monetary operations, including sovereign bonds (\cite{boe2024_climate_scenario_analysis}; \cite{ngfs2025_scenario_guide_update}). These developments motivate modeling collateral haircuts and purchase eligibility as state-contingent policy levers rather than as neutral institutional background.
-
-\subsection{Specification}
-
-Let instrument $k$ be eligible collateral at haircut $h^k_t\in[0,1]$. Eligibility increases demand and lowers required returns. A reduced-form mapping for the premium is
-\begin{equation}\label{eq:premium_haircut}
-\pi^k_{i,t} = \pi_{i,t} - \xi (1-h^k_t),
-\end{equation}
-where $\xi>0$ is the effectiveness of collateral easing. Climate-tilted collateral policy can thus lower yields on resilience or temperature-linked instruments, increasing their issuance feasibility.
-
-A natural instrument for such treatment is the \emph{resilience bond}, indexed to verified adaptation capital. Let $A_t$ denote the verified adaptation stock (flood defenses, grid hardening, wildfire prevention). A resilience bond's spread step-down can be represented by a lower payoff when adaptation progresses (because borrowing costs fall) or, equivalently, by an issuance price premium; a reduced-form payoff mapping is
-\begin{equation}\label{eq:resilience_bond}
-\Pi^5_{t+1}=1-\kappa_A \Delta A_t,
-\end{equation}
-where $\Delta A_t$ is verified progress and $\kappa_A>0$. This contract is implementable if monitoring and verification are credible, and it is the design for which prudential collateral treatment is easiest to justify: verified adaptation directly reduces the disaster exposure of the sovereign the central bank holds as counterparty.
-
-Let the central bank purchase a share $\omega^k_t$ of instrument $k$. In segmented markets, purchases reduce term premia (\cite{KrishnamurthyVissingJorgensen2011}; \cite{GreenwoodVayanos2014}):
-\begin{equation}\label{eq:term_premium}
-\pi^k_{i,t} = \pi^k_{i,t}(\cdot) - \upsilon \omega^k_t.
-\end{equation}
-However, purchases are constrained by inflation and fiscal dominance risk. We \emph{assume}---this is a conjecture motivated by the fiscal-dominance arithmetic of \textcite{SargentWallace1981} rather than a derived result---that inflation variance $\sigma_{\pi,t}^2$ rises with large purchases of risky sovereign instruments:
-\begin{equation}\label{eq:inflation_risk}
-\sigma_{\pi,t}^2 = \bar\sigma_{\pi}^2 + \Gamma\sum_k \omega^k_t \mathrm{PD}(\bm{d}_t).
-\end{equation}
-The mechanism is that purchases of instruments with high default risk expose the central bank balance sheet to losses whose fiscal backing is uncertain, raising the variance of the future price level required to satisfy the consolidated budget constraint. Then $R_{f,t}$ may increase with $\sigma_{\pi,t}^2$ (risk/term premia), partially offsetting the direct benefit.
-
-Consider a social planner (or coordinated authority) choosing emissions $\{E_t\}$, adaptation $\{A_t\}$, instrument shares $\{\bm{d}_t\}$, and monetary supports $\{\omega^k_t,h^k_t\}$ to maximize welfare:
-\begin{equation}\label{eq:planner}
-\max_{\{E_t,A_t,\bm{d}_t,\omega^k_t,h^k_t\}} \ \mathbb{E}_0\left[\sum_{t\ge 0}\beta^t U(C_t) - \Phi(\tau) - \Psi(\pi_t)\right]
-\end{equation}
-subject to: (i) the carbon budget \eqref{eq:carbon_budget}, (ii) temperature and damages \eqref{eq:damage}, (iii) growth dynamics with logistics \eqref{eq:growth_with_logistics}, (iv) fiscal feasibility \eqref{eq:default_multi}, and (v) monetary constraints linking $\omega,h$ to inflation risk \eqref{eq:inflation_risk}. Here $\Phi(\tau)$ is an expected default cost (output loss, financial instability), and $\Psi(\pi_t)$ is a penalty for inflation deviations. The single coordinated authority is a modeling benchmark: in advanced economies, central bank independence means the collateral and purchase decisions in \eqref{eq:premium_haircut}--\eqref{eq:term_premium} would be taken under a separate mandate, and the coordination studied here should be read as institutional consistency (the central bank recognizing the risk properties of well-designed instruments) rather than joint optimization.
-
-\subsection{The pricing--default fixed point}
-
-Equations \eqref{eq:premium}, \eqref{eq:premium_haircut}--\eqref{eq:inflation_risk} form a system in $(\pi,\mathrm{PD},R_f,\sigma_\pi)$: the premium is linear in PD, PD depends on pricing through $R(d)=R_f\exp(\pi)$ whenever repayment obligations are interest-bearing or multi-period, $\sigma_\pi$ depends on purchases of defaultable instruments, and $R_f$ feeds back through a term-premium channel. This paper does not solve that fixed point in general, and the simulations in Section~\ref{sec:numerical} hold $R_f$ constant. One special case is worth recording because it underlies the comparative static below: with one-period, zero-coupon debt and capacity $\alpha g$, the default event $dH(g)>\alpha g$ does not involve the issuance price, so $\mathrm{PD}(d)$ is determined before pricing and the system is \emph{recursive} rather than simultaneous---$\mathrm{PD}(d)$ first, then $\pi(d)=\theta_d \mathrm{PD}(d)-\xi(1-h)$, then proceeds. With long-maturity or interest-bearing debt the simultaneity is restored, and solving it is a prerequisite for any quantitative claim about monetary backstops; this is left to future work.
-
-\subsection{A comparative static on collateral haircuts}
-
-Within the recursive one-period case, the effect of collateral generosity on the fiscal limit can be computed exactly with the apparatus of Section~\ref{sec:numerical}. Let the eligible instrument be the GDP clause ($\kappa=0.30$, $\bar g=0.95$) at $\psi=1.5$, priced with premium $\pi(d)=\theta_d\,\mathrm{PD}(d)-\xi(1-h)$, $\theta_d=0.5$, $\xi=0.02$. Table~\ref{tab:haircut} sweeps the haircut $h$ from 1 (ineligible) to 0 (full collateral value).
-
+Support now depends on the instrument's survival probability and can change its optimizing face. The rule makes the economic content of risk-based eligibility explicit, but remains a stylized assumption rather than an estimate of an ECB policy. Table~\ref{tab:haircut} uses $\theta_d=.5$, $\xi=.02$, and the stress distribution for both rules. These scenarios use extra pricing wedges and are outside the main risk-neutral resource-bound comparison.
 \begin{table}[h]
-\centering
-\caption{Collateral haircut comparative static (GDP clause, $\psi=1.5$, $\theta_d=0.5$, $\xi=0.02$). Lower haircuts raise the fiscal limit through the pricing channel only; in the one-period model the default set---and hence $\widehat{PD}$ at the optimum---is unchanged.}
-\label{tab:haircut}
-\begin{tabular}{@{}ccccc@{}}
-\toprule
-Haircut $h$ & $\widehat d^*$ & $\widehat b^M$ & $\widehat{PD}(\widehat d^*)$ & Gain vs.\ ineligible \\
-\midrule
-1.00 & 0.152 & 0.12009 & 0.033 & --- \\
-0.75 & 0.152 & 0.12069 & 0.033 & $+0.5\%$ \\
-0.50 & 0.152 & 0.12130 & 0.033 & $+1.0\%$ \\
-0.25 & 0.152 & 0.12191 & 0.033 & $+1.5\%$ \\
-0.00 & 0.152 & 0.12252 & 0.033 & $+2.0\%$ \\
-\bottomrule
-\end{tabular}
+\centering\caption{Collateral easing relative to ineligibility within each instrument, under common additive and risk-dependent eligibility. The additional PD loading is an assumed premium beyond expected default losses.}\label{tab:haircut}
+\FitTable{\input{generated/haircut.tex}}
 \end{table}
+A planner considering monetary support would need to specify welfare, default costs, inflation costs, resource constraints, and separate policy mandates. Locally, holding default and cash flows fixed, a decline in an instrument's extra premium larger than the rise in the log safe rate raises proceeds. This partial derivative condition is not a global welfare or equilibrium result. No fully specified planner problem or theorem about collateral complementarity is claimed.
 
-Full eligibility raises the fiscal-limit analogue by about 2\%---roughly the size of the disaster clause's contractual gain---without changing the default set: in this setting collateral policy operates purely through the pricing channel. This sharpens the sense in which monetary support and instrument design are complements rather than substitutes: the haircut cannot substitute for a well-targeted trigger (it does not move repayments out of bad states), but it can amplify the issuance value of an instrument whose design has already reduced default risk.
-
-Combining \eqref{eq:premium_haircut}--\eqref{eq:inflation_risk}, a sufficient condition for monetary support to increase MSB is
-\begin{equation}\label{eq:monetary_condition}
-\left|\frac{\partial \pi^k}{\partial \omega^k}\right| > \left|\frac{\partial \log R_{f,t}}{\partial \omega^k}\right|.
-\end{equation}
-The corresponding policy claim---that monetary backstops are most credible when conditioned on hedging instruments, because supporting instruments that lower PD limits the inflation-risk externality in \eqref{eq:inflation_risk}---should be read as a \emph{conjecture} supported by the comparative static above and by condition \eqref{eq:monetary_condition}, not as a theorem: proving it requires solving the fixed point with long-maturity debt and an operational inflation block.
-
-\section{Proofs and formal results for the numerical experiments}
-\label{app:proofs}
-
-This appendix formalizes the results referenced in Section~\ref{sec:numerical}: (i) an interior optimum in clause generosity (Figure~\ref{fig:msb_vs_kappa}) and (ii) monotone comparative statics of clause value with left-tail thickening induced by logistics amplification $\psi$ (Figure~\ref{fig:msb_vs_psi}). The proofs build on the one-period fiscal-limit logic in \textcite{CollardEtAl2015} and its climate extension in \textcite{Seghini2026}, translated into the pricing/default representation in \eqref{eq:default}--\eqref{eq:iss_price}.
-
-\subsection{Preliminaries and threshold structure}
-Let $g>0$ be the next-period growth factor, $\alpha>0$ fiscal capacity, $R_f>1$ the gross risk-free rate,
-and $H(g)\in(0,1]$ a measurable payoff mapping (possibly with parameters $\chi$ suppressed).
-Define default as in \eqref{eq:default}: default occurs when $dH(g)>\alpha g$.
-
-\begin{lemma}[Threshold structure of the default set]
-\label{lem:threshold}
-(i) Suppose $H(g)$ is weakly non-increasing in $g$; this covers straight debt, $H\equiv 1$, and countercyclical payoffs that \emph{raise} repayment in bad states. Then for every $d\ge 0$ there exists a threshold $g^*(d)$ such that the survival set is $\{g\ge g^*(d)\}$ (up to probability-zero sets), and the default probability is $PD(d)=\Pr(g<g^*(d))$.
-(ii) The step-down clause $H_{\text{GDP}}(g)=1-\kappa\,\mathbf{1}\{g<\bar g\}$ with $\kappa\in(0,1)$ is instead weakly non-\emph{de}creasing, so it is not covered by (i); its survival set is
+\section{Proofs and scope of the formal results}\label{app:proofs}
+\subsection{Thresholds and optimal relief}
+\begin{lemma}[Step-clause survival set]\label{lem:threshold}
+For $\kappa\in(0,1)$ and capacity $cg$, the GDP clause's survival set is
 \[
-\big[\,d(1-\kappa)/\alpha,\ \bar g\,\big)\ \cup\ \big[\,\max\{d/\alpha,\ \bar g\},\ \infty\,\big),
+ [d(1-\kappa)/c,\bar g)\ \cup\ [\max\{d/c,\bar g\},\infty),
 \]
-which is an upper interval if and only if $d\le\alpha\bar g$ (in which case $g^*(d)=d(1-\kappa)/\alpha$) or $d\ge \alpha\bar g/(1-\kappa)$ (in which case $g^*(d)=d/\alpha$). On the intermediate range $d\in\big(\alpha\bar g,\ \alpha\bar g/(1-\kappa)\big)$ the default set is not a lower tail: states just above the trigger default while states just below it survive.
+where an interval whose lower endpoint exceeds its upper endpoint is empty. It is an upper interval if and only if $d\le c\bar g$ or $d\ge c\bar g/(1-\kappa)$.
 \end{lemma}
-
 \begin{proof}
-(i) Define $\phi_d(g)\equiv \alpha g - dH(g)$. Under the stated monotonicity, $\alpha g$ is increasing in $g$ and
-$-dH(g)$ is weakly increasing in $g$, so $\phi_d(g)$ is increasing in $g$. Hence the survival set $\{g:\phi_d(g)\ge 0\}$ is an upper interval (possibly empty), i.e.\ $\{g\ge g^*(d)\}$ for $g^*(d)\equiv\inf\{g:\phi_d(g)\ge 0\}$. (ii) On $\{g<\bar g\}$ survival requires $d(1-\kappa)\le\alpha g$; on $\{g\ge\bar g\}$ it requires $d\le \alpha g$. Comparing the two induced cutoffs $d(1-\kappa)/\alpha$ and $d/\alpha$ with $\bar g$ yields the displayed set and the stated characterization.
+Below the trigger, survival requires $g\ge d(1-\kappa)/c$; above it, survival requires $g\ge d/c$. Taking the union gives the set. In the intermediate face range, a nonempty interval below the trigger survives while states just above the trigger default. Outside this range the intervals join or the lower one disappears.
 \end{proof}
-
-\begin{remark}\label{rem:threshold_window}
-At the baseline calibration ($\alpha=0.16$, $\bar g=0.95$, $\kappa=0.30$) the non-threshold window in Lemma~\ref{lem:threshold}(ii) is $(\alpha\bar g,\ \alpha\bar g/(1-\kappa))=(0.152,\ 0.217)$. The proceeds maximizer of the GDP clause, $\widehat d^*=0.152=\alpha\bar g$ (Table~\ref{tab:msb_contracts}), sits exactly at the upper edge of the threshold branch, and the sharp rise of the clause's default probability over $d\in(0.152,\,0.217)$ in Figure~\ref{fig:pd} is the visible signature of the lost threshold structure. The results below use the threshold representation on the branch $d\le\alpha\bar g$, which contains the maximizer.
-\end{remark}
-
-Given Lemma~\ref{lem:threshold} (for the GDP clause, on the branch $d\le\alpha\bar g$; see Remark~\ref{rem:threshold_window}), the price and proceeds take the form
-\begin{equation}
-q(d)=\frac{1}{R_f}\, \mathbb{E}\!\left[H(g)\mathbf{1}\{g\ge g^*(d)\}\right], \qquad
-b(d)=d\,q(d).
-\label{eq:price_proceeds_app}
-\end{equation}
-
-\subsection{Interior optimality in clause generosity (formalizing Figure~\ref{fig:msb_vs_kappa})}
-
-Consider the GDP-triggered clause $H_{\text{GDP}}(g;\kappa,\bar g)=1-\kappa\mathbf{1}\{g<\bar g\}$ with
-$\kappa\in[0,1)$, and fix $\bar g$. Define peak proceeds $b^M(\kappa)=\max_{d\in\mathcal{D}} b(d;\kappa)$ for a compact grid $\mathcal{D}$.
-
-\begin{proposition}[Interior optimal generosity under a survival--payoff trade-off]
-\label{prop:interior_kappa}
-Assume $g$ has a continuous density on $(0,\infty)$ and $\Pr(g<\bar g)>0$. Then there exist parameter regions in which $b^M(\kappa)$ is strictly quasi-concave in $\kappa$ on $[0,1)$ and attains an interior maximizer $\kappa^*\in(0,1)$.
+On the branch $d\le c\bar g$, proceeds and their derivative are
+\begin{align}
+ b(d;\kappa)&=\frac d{R_f}\left[(1-\kappa)\{F(\bar g)-F(d(1-\kappa)/c)\}+1-F(\bar g)\right],\label{eq:closed}\\
+ \partial_\kappa b&=\frac d{R_f}\left[(1-\kappa)\frac dc f(d(1-\kappa)/c)
+                    -\{F(\bar g)-F(d(1-\kappa)/c)\}\right].\label{eq:derivative}
+\end{align}
+The survival gain has the marginal repayment weight $1-\kappa$. At the binding-trigger face $d=c\bar g$, let $y=(1-\kappa)\bar g$. Then
+\begin{align}
+ B(\kappa)&=\frac{c\bar g}{R_f}\left[(1-\kappa)\{F(\bar g)-F(y)\}+1-F(\bar g)\right],\label{eq:boundary}\\
+ B'(\kappa)&=\frac{c\bar g}{R_f}[yf(y)-F(\bar g)+F(y)],\nonumber\\
+ B''(\kappa)&=-\frac{c\bar g^2}{R_f}[2f(y)+yf'(y)].\nonumber
+\end{align}
+\begin{proposition}[Sufficient conditions for interior relief]\label{prop:interior}
+Suppose the globally maximizing face is $c\bar g$ for $\kappa$ in a closed interval $[\kappa_a,\kappa_b]\subset(0,1)$, $F$ is twice differentiable at the relevant cutoffs, $2f(y)+yf'(y)>0$ throughout the interval, and $B'(\kappa_a)>0>B'(\kappa_b)$. Then optimized proceeds have a unique interior maximum on this interval. A global interior optimum exists in explicit distributions; it is not asserted for every continuous density.
 \end{proposition}
-
 \begin{proof}
-Work on the threshold branch $d\le\alpha\bar g$ (Remark~\ref{rem:threshold_window}), where $g^*(d;\kappa)=d(1-\kappa)/\alpha$ and, with $F$ the CDF of $g$, proceeds are
-\begin{equation}
-b(d;\kappa)=\frac{d}{R_f}\Big[(1-\kappa)\big(F(\bar g)-F(g^*(d;\kappa))\big)+1-F(\bar g)\Big].
-\label{eq:b_explicit_proof}
-\end{equation}
-Differentiating (with $f=F'$ the density) gives, for any fixed $d$,
-\begin{equation}
-\frac{\partial b(d;\kappa)}{\partial \kappa}
-=
-\underbrace{\frac{d}{R_f}\,(1-\kappa)\cdot \frac{\partial}{\partial \kappa}\Pr\!\left(g\ge g^*(d;\kappa)\right)}_{\text{survival gain, weighted by the marginal payoff }1-\kappa}
-\;-\;
-\underbrace{\frac{d}{R_f}\cdot \Pr\!\left(g<\bar g,\; g\ge g^*(d;\kappa)\right)}_{\text{payoff reduction in survival states}},
-\label{eq:tradeoff_proof}
-\end{equation}
-where $\partial \Pr(g\ge g^*)/\partial\kappa=(d/\alpha)\,f(g^*(d;\kappa))$. The weight $1-\kappa$ appears because the marginal surviving states pay the clause payoff $1-\kappa$, not the full face value; at $\kappa=0$ the weight is unity and \eqref{eq:tradeoff_proof} reduces to the continuous analogue of \eqref{eq:sufficient_condition}. For small $\kappa$, the survival gain term can dominate because reducing repayments in low-$g$ states shifts $g^*(d;\kappa)$ downward and increases survival probability by an amount proportional to the density near the threshold. For large $\kappa$, survival probability saturates near one, the payoff reduction term increases toward $\Pr(g<\bar g)$, and the $1-\kappa$ weight attenuates the survival gain further, driving the derivative negative. Continuity and compactness of $\mathcal{D}$ imply the maximized objective $b^M(\kappa)$ inherits interior optimality under standard envelope/maximum theorem arguments.
+Under the maximizing-face assumption, $b^M=B$ on the stated interval. Equation~\eqref{eq:boundary} gives strict concavity and the endpoint derivative signs, which establish the first claim.
+
+For a global example let $g$ be uniform on $(0,2\bar g)$, put $r=1-\kappa\in[0,1]$, $u=d/(c\bar g)$, and normalize proceeds by $c\bar g/R_f$. For $u\le1$, normalized proceeds are $u[1+r-r^2u]/2$. Their derivative in $u$ is nonnegative on this branch because $1+r-2r^2\ge0$, so their maximum is $(1+r-r^2)/2\le5/8$, with equality only at $r=1/2$ and $u=1$.
+
+For $1\le u\le\min\{2,1/r\}$, normalized proceeds are $u[(r+2)-(r^2+1)u]/2$. Maximizing this quadratic over all real $u$ bounds them by $(r+2)^2/[8(1+r^2)]\le5/8$, since $5(1+r^2)-(r+2)^2=(2r-1)^2$. For $2\le u<1/r$ only the low-output survival interval remains and proceeds are $ru(1-ru)/2\le1/8$. For $1/r\le u\le2$ only the high-output interval remains and proceeds are $u(2-u)/2\le1/2$. Beyond both cutoffs proceeds vanish. Cases with $r=0$ are obtained directly or by limits. Thus the global maximum is $5/8$, attained at $\kappa=1/2$ and $d=c\bar g$, while straight debt yields $1/2$. This proves a 25 percent proceeds gain and a global interior optimum for this step-design example.
 \end{proof}
+The example proves existence without claiming that a distribution-free envelope theorem supplies strict quasi-concavity. The empirical optimizer in the stress case lies near the binding-trigger face at baseline relief; whether that face remains globally optimal elsewhere is checked numerically, not assumed in interpreting the whole generosity sweep.
 
-\subsection{Logistics amplification increases the value of properly targeted contingency (formalizing Figure~\ref{fig:msb_vs_psi})}
-
-In the numerical model, logistics enters multiplicatively as $g=\exp(\mu+\varepsilon+J)\exp(-\psi L)$ with $L\ge 0$, so higher $\psi$ shifts probability mass toward low output states.
-
-\begin{lemma}[First-order stochastic dominance shift]
-\label{lem:fod_shift}
-If $L\ge 0$ a.s.\ and independent of $(\varepsilon,J)$, then for $\psi_2>\psi_1$ the distribution of
-$g(\psi_2)$ first-order stochastically dominates \emph{downward} $g(\psi_1)$:
-$\Pr(g(\psi_2)\le t)\ge \Pr(g(\psi_1)\le t)$ for all $t>0$.
-\end{lemma}
-
-\begin{proof}
-For any $t>0$, $\{g(\psi)\le t\} \Leftrightarrow \{\exp(\mu+\varepsilon+J)\le t\exp(\psi L)\}$.
-Because $L\ge0$, increasing $\psi$ increases the right-hand side threshold in states with $L>0$, enlarging the event $\{g(\psi)\le t\}$ pointwise. Taking probabilities yields the result.
-\end{proof}
-
-\begin{proposition}[Comparative statics: clause value rises with tail thickening]
-\label{prop:psi_value}
-Let $b^M_{\text{GDP}}(\psi)$ and $b^M_{\text{straight}}(\psi)$ denote peak proceeds under the GDP clause
-\eqref{eq:Hgdp} and straight debt \eqref{eq:Hstraight}. Suppose the clause is \emph{targeted} in the sense that
-its trigger $\bar g$ lies in a neighborhood of the default threshold $g^*(d)$ for the straight-debt maximizer.
-Then for sufficiently small but positive $\kappa$, the MSB gain
+\subsection{Tail shifts: conditions and a counterexample}\label{app:tails}
+If $L\ge0$, then $g(\psi_2)\le g(\psi_1)$ pointwise for $\psi_2\ge\psi_1$ in \eqref{eq:output}. Therefore $F_{\psi_2}(z)\ge F_{\psi_1}(z)$ for every $z$. Independence is unnecessary for this pointwise ordering. This fact alone gives no ordering of contingency gains.
+\begin{proposition}[A conditional local tail comparison]\label{prop:tails}
+Assume locally constant, globally maximizing normalized faces $x_S,x_G$, with $x_G\le\bar g$ and differentiable $F_\psi$. Suppose the probability above the trigger is unchanged, so $\partial_\psi F_\psi(\bar g)=0$, and
 \[
-\Delta b^M(\psi)\equiv b^M_{\text{GDP}}(\psi)-b^M_{\text{straight}}(\psi)
+ x_S\partial_\psi F_\psi(x_S)\ \ge\
+ x_G(1-\kappa)\partial_\psi F_\psi((1-\kappa)x_G).
 \]
-is weakly increasing in $\psi$ over a neighborhood of the baseline, and strictly increasing when the density
-near the threshold is positive and $\Pr(L>0)>0$.
+Then the \emph{absolute} MSB gain at fixed capacity $c$ is locally weakly increasing in $\psi$. Strict inequality gives a strictly increasing gain. These conditions restrict both issuable face values and the location of added tail mass; they are not consequences of first-order stochastic dominance.
 \end{proposition}
-
 \begin{proof}
-By Lemma~\ref{lem:fod_shift}, increasing $\psi$ increases probability mass in the left tail.
-Under straight debt, this increases the probability that $d>\alpha g$, reducing the survival term in
-\eqref{eq:price_proceeds_app} at the maximizer. Under the GDP clause, repayment is reduced in the trigger region $g<\bar g$, which (by the targeting assumption) overlaps with the marginal default set created by the $\psi$-shift. Therefore the derivative of the survival gain term in \eqref{eq:tradeoff_proof} with respect to $\psi$ is positive at small $\kappa$ because a thicker left tail creates more mass that can be moved from default to survival by the clause. The payoff reduction term increases more slowly for small $\kappa$ because it is first-order in $\kappa$ but does not scale with the default boundary shift in the same way. Hence $\Delta b^M(\psi)$ rises locally in $\psi$, with strictness under positive mass in the logistics state $L>0$ and positive density near the threshold.
+Differentiate straight proceeds $cx_S[1-F_\psi(x_S)]/R_f$ and clause proceeds from \eqref{eq:closed}. Their difference has derivative
+\[
+ \frac c{R_f}\left[x_S\partial_\psi F_\psi(x_S)
+ -x_G(1-\kappa)\partial_\psi F_\psi((1-\kappa)x_G)
+ -x_G\kappa\partial_\psi F_\psi(\bar g)\right],
+\]
+which has the stated sign. If optimizers vary smoothly, an envelope theorem can justify the same expression at each optimizer, but the displayed inequality still has to be established. It cannot be replaced by the statement that the left tail thickens.
 \end{proof}
+For a counterexample take $c=1$, $\kappa=.05$, $\bar g=.95$, and $g=.8$ with probability $p$, otherwise $g=1$. For $p\in[.3,.5]$, straight debt optimally issues face .8 and raises $.8/R_f$. The GDP clause issues $.8/.95$, raises $(.8/.95)(1-.05p)/R_f$, and its absolute advantage is $.8(.05)(1-p)/(.95R_f)$. Increasing $p$ thickens the left tail but \emph{reduces} the gain. The high-state probability falls, reducing the value of the additional above-trigger payment. Continuous approximations to these two separated masses preserve the strict comparison. This counterexample also clarifies why the logistics sweep is an illustration at $\kappa=.30$, not a theorem for arbitrary small relief.
 
-\subsection{Consistency of the numerical MSB analogue}
-Finally, the estimators \eqref{eq:qhat}--\eqref{eq:msbhat} converge to their population counterparts.
+\subsection{Consistency and what Lean verifies}
+For a fixed finite face grid, each proceeds estimate is an average of integrable i.i.d. repayments, so the strong law gives uniform convergence on that grid and convergence of the maximum. The revised algorithm maximizes the empirical curve over all sampled thresholds. For step contracts, tail-weighted empirical CDFs converge uniformly; on any compact face interval this yields uniform proceeds convergence. In the tail, $xH\ind\{g\ge xH\}\le g\ind\{g\ge x\min H\}$ and $\E[g]<\infty$ control large $x$ when $\min H>0$. Thus the empirical maximum is consistent for the continuous-face value. Convergence of the optimizing face itself requires an isolated population maximizer, which is not assumed for every table. The nonnegative temperature floor is handled by first restricting to $H\ge\epsilon>0$, then controlling $H<\epsilon$ with the same integrable resource envelope and taking $\epsilon\downarrow0$; the weighted half-line class admits a uniform law. No finite-sample unbiasedness of the maximum is implied.
 
-\begin{proposition}[Consistency of $\widehat b^M_N(\chi)$]
-\label{prop:consistency}
-Fix $\chi$ and assume $\mathbb{E}|H(g,\chi)|<\infty$.
-Then $\widehat q_N(d;\chi)\to q(d;\chi)$ uniformly on a finite grid $\mathcal{D}$ a.s.\ as $N\to\infty$, and
-$\widehat b^M_N(\chi)\to b^M(\chi)$ a.s.\ on $\mathcal{D}$.
-\end{proposition}
-
-\begin{proof}
-For each fixed $d\in\mathcal{D}$, $\widehat q_N(d;\chi)$ is an average of integrable i.i.d.\ random variables, so it converges a.s.\ by the strong law of large numbers. Uniformity over a finite grid follows by a union bound over $\mathcal{D}$. The maximized value then converges because $\max_{d\in\mathcal{D}}$ is a continuous mapping on $\mathbb{R}^{|\mathcal{D}|}$.
-\end{proof}
-
+The Lean project verifies the homogeneous default event, threshold geometry, generosity derivative, stationary-recursion algebra, capacity-payment inequalities, NPV capitalization identity, and the square certificates used above. It retains the original pointwise logistics ordering. The probabilistic resource bound, the uniform-distribution case split, the conditional comparative-static argument, convergence of Monte Carlo estimators, and the deferral fixed-point computation also require mathematical arguments or numerical checks outside the formalized subset. In particular, a distribution-free tail-value theorem or a general proof of interior optimality is not claimed to have been verified in Lean.
+\printbibliography
 \end{document}

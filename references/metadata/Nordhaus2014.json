@@ -1,0 +1,252 @@
+{
+  "key": "Nordhaus2014",
+  "original": {
+    "author": "Nordhaus, William D.",
+    "title": "The Climate Casino: Risk, Uncertainty, and Economics for a Warming World",
+    "publisher": "Yale University Press",
+    "year": "2014",
+    "address": "New Haven, CT"
+  },
+  "lookup_url": "https://api.crossref.org/works?query.title=The+Climate+Casino%3A+Risk%2C+Uncertainty%2C+and+Economics+for+a+Warming+World&rows=3",
+  "status_code": 200,
+  "metadata": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          3
+        ]
+      ],
+      "date-time": "2026-11-03T12:29:21Z",
+      "timestamp": 1793708961504,
+      "version": "4.6.1"
+    },
+    "reference-count": 2,
+    "publisher": "Informa UK Limited",
+    "issue": "8",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2014,
+              3,
+              19
+            ]
+          ],
+          "date-time": "2014-03-19T00:00:00Z",
+          "timestamp": 1395187200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://doi.org/10.1080/policies-text-data-mining"
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "www.tandfonline.com"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [
+      "Quantitative Finance"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2014,
+          8,
+          3
+        ]
+      ]
+    },
+    "DOI": "10.1080/14697688.2014.887853",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2014,
+          3,
+          19
+        ]
+      ],
+      "date-time": "2014-03-19T10:15:58Z",
+      "timestamp": 1395224158000
+    },
+    "page": "1323-1325",
+    "update-policy": "https://doi.org/10.1080/tandf_crossmark_01",
+    "source": "Crossref",
+    "is-referenced-by-count": 0,
+    "title": [
+      "The Climate Casino: Risk, Uncertainty and Economics for a Warming World"
+    ],
+    "prefix": "10.1080",
+    "volume": "14",
+    "author": [
+      {
+        "given": "Lloyd",
+        "family": "Kurtz",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Haas School of Business",
+            "place": [
+              "Berkeley, USA"
+            ]
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "301",
+    "published-online": {
+      "date-parts": [
+        [
+          2014,
+          3,
+          19
+        ]
+      ]
+    },
+    "reference": [
+      {
+        "key": "e_1_3_2_2_1",
+        "article-title": "Gambling with civilization",
+        "author": "Krugman P.",
+        "year": "2013",
+        "unstructured": "Krugman, P., Gambling with civilization. New York Review of Books, November 7, 2013.",
+        "journal-title": "New York Review of Books"
+      },
+      {
+        "key": "e_1_3_2_3_1",
+        "article-title": "Time is key to putting a price on climate risk",
+        "author": "Litterman R.",
+        "year": "2013",
+        "unstructured": "Litterman, R., Time is key to putting a price on climate risk. LiveScience, September 11, 2013.",
+        "journal-title": "LiveScience"
+      }
+    ],
+    "container-title": [
+      "Quantitative Finance"
+    ],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://www.tandfonline.com/doi/pdf/10.1080/14697688.2014.887853",
+        "content-type": "application/pdf",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://www.tandfonline.com/doi/full-xml/10.1080/14697688.2014.887853",
+        "content-type": "application/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://www.tandfonline.com/doi/pdf/10.1080/14697688.2014.887853",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          3
+        ]
+      ],
+      "date-time": "2026-11-03T11:36:38Z",
+      "timestamp": 1793705798000
+    },
+    "score": 49.544044,
+    "resource": {
+      "primary": {
+        "URL": "https://www.tandfonline.com/doi/full/10.1080/14697688.2014.887853"
+      }
+    },
+    "issued": {
+      "date-parts": [
+        [
+          2014,
+          3,
+          19
+        ]
+      ]
+    },
+    "references-count": 2,
+    "journal-issue": {
+      "issue": "8",
+      "published-print": {
+        "date-parts": [
+          [
+            2014,
+            8,
+            3
+          ]
+        ]
+      }
+    },
+    "alternative-id": [
+      "10.1080/14697688.2014.887853"
+    ],
+    "URL": "https://doi.org/10.1080/14697688.2014.887853",
+    "ISSN": [
+      "1469-7688",
+      "1469-7696"
+    ],
+    "issn-type": [
+      {
+        "value": "1469-7688",
+        "type": "print"
+      },
+      {
+        "value": "1469-7696",
+        "type": "electronic"
+      }
+    ],
+    "published": {
+      "date-parts": [
+        [
+          2014,
+          3,
+          19
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "The publishing and review policy for this title is described in its Aims & Scope.",
+        "order": 1,
+        "name": "peerreview_statement",
+        "label": "Peer Review Statement"
+      },
+      {
+        "value": "http://www.tandfonline.com/action/journalInformation?show=aimsScope&journalCode=rquf20",
+        "URL": "http://www.tandfonline.com/action/journalInformation?show=aimsScope&journalCode=rquf20",
+        "order": 2,
+        "name": "aims_and_scope_url",
+        "label": "Aim & Scope"
+      },
+      {
+        "value": "2014-03-19",
+        "order": 3,
+        "name": "published",
+        "label": "Published",
+        "group": {
+          "name": "publication_history",
+          "label": "Publication History"
+        }
+      }
+    ]
+  },
+  "title_similarity": 1.0
+}

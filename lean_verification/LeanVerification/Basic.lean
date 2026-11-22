@@ -1,39 +1,8 @@
 /-
-Formal verification (Lean 4 + mathlib) of the closed-form claims in
-
-  "Climate-Contingent Sovereign Finance: Extending Fiscal Limits to
-   Logistical Climate Risk Transmission to Global Assets"
-  (Manuscript MDY-2026-0066, revised version)
-
-Each theorem below is cross-referenced to an equation or formal statement of
-the revised manuscript.  Probabilistic statements are verified at the level of
-their measure-free content (pointwise event identities, survival-set geometry,
-exact derivatives of the proceeds functional given a differentiable CDF);
-purely numerical table entries are verified as rational/real inequalities.
-
-Verified without error:
-  * eq. (2)   default condition (ratio form)
-  * eq. (3) and Appendix A.2  risk-neutral pricing, with and without recovery
-  * eqs. (6)-(8)  transition wedge and Dietz--Venmans damage wedge
-  * Remark 1  homogeneity of degree one in (alpha, d)
-  * Section 5.5  Z = 1 payoff-equivalence of the disaster clause
-  * Lemma 2   FOSD shift from logistics amplification (pointwise core)
-  * Table 1   all annual-equivalent conversions
-  * Tables 2, 5  headline gain percentages
-
-Corrected in the revised manuscript after Lean checking:
-  * Lemma 1 (threshold default set): the original footnote claimed the lemma
-    covers step-down clauses; in fact H_GDP(g) = 1 - kappa 1{g < gbar} is
-    weakly non-DEcreasing, so it is excluded by the lemma's hypothesis, and
-    its survival set genuinely fails to be an upper interval for
-    d in (alpha*gbar, alpha*gbar/(1-kappa))  --  see
-    `stepClause_not_upper_set` below.  The corrected Lemma 1(ii) with the
-    exact threshold characterization is `stepClause_threshold_low` /
-    `stepClause_threshold_high`.
-  * Proof of Proposition 1 (trade-off decomposition): the survival-gain
-    term must carry the marginal payoff weight (1 - kappa); the weight is
-    unity only at kappa = 0 (the main-text sufficient condition).  See
-    `proceeds_generosity_hasDerivAt`.
+Second-revision formal subset. See README.md for the exact scope.
+Original source is retained under legacy/Basic_round1.lean. Obsolete
+face-recovery pricing and hard-coded first-revision gain certificates are
+removed from the active target. No sorry or custom axioms are used.
 -/
 import Mathlib
 
@@ -52,32 +21,11 @@ theorem default_condition_equiv (D Y a B : ℝ) (hY : 0 < Y) :
   rw [h]
   constructor <;> intro <;> linarith
 
-/-! ## Section 2, eq. (3) and Appendix A.2:
-risk-neutral pricing with fractional recovery `lam` (zero recovery: `lam = 0`).
-
-From `R(d) * ((1 - PD) + lam * PD) = R_f` one obtains
-`R(d) = R_f / (1 - (1-lam) * PD)` and proceeds
-`b(d) = d / R(d) = d * (1 - (1-lam) * PD) / R_f`. -/
-
-theorem recovery_yield (R Rf PD lam : ℝ)
-    (h : R * ((1 - PD) + lam * PD) = Rf)
-    (hden : 1 - (1 - lam) * PD ≠ 0) :
-    R = Rf / (1 - (1 - lam) * PD) := by
-  field_simp
-  linear_combination h
-
-theorem recovery_proceeds (dv R Rf PD lam : ℝ)
-    (hR : R = Rf / (1 - (1 - lam) * PD))
-    (hden : 1 - (1 - lam) * PD ≠ 0) (hRf : Rf ≠ 0) :
-    dv / R = dv * (1 - (1 - lam) * PD) / Rf := by
-  subst hR
-  field_simp
-
-/-- Zero-recovery special case: eq. (3), `R(d)(1 - PD) = R_f`. -/
-theorem pricing_basic (R Rf PD : ℝ) (h : R * ((1 - PD) + 0 * PD) = Rf)
-    (hden : 1 - (1 - 0) * PD ≠ 0) : R = Rf / (1 - PD) := by
-  have := recovery_yield R Rf PD 0 h hden
-  simpa using this
+/-- Zero-recovery promised-yield identity; default losses enter pricing once. -/
+theorem pricing_basic (R Rf PD : ℝ) (h : R * (1 - PD) = Rf)
+    (hden : 1 - PD ≠ 0) : R = Rf / (1 - PD) := by
+  apply (eq_div_iff hden).2
+  exact h
 
 /-! ## Section 2, eqs. (7)-(8): the Dietz--Venmans damage wedge.
 
@@ -144,10 +92,10 @@ theorem Hstep_monotone (kappa gbar : ℝ) (hk : 0 ≤ kappa) :
   intro g₁ g₂ hle
   unfold Hstep
   by_cases h1 : g₁ < gbar <;> by_cases h2 : g₂ < gbar <;>
-    simp only [h1, h2, if_true, if_false, if_pos, if_neg, le_refl] <;>
+    simp only [h1, h2, if_false, if_pos, le_refl] <;>
     first
       | linarith
-      | (exact absurd (lt_of_le_of_lt hle h2) h1)
+
 
 /-- COUNTEREXAMPLE (baseline calibration alpha = 0.16, kappa = 0.30,
 gbar = 0.95, face value d = 0.20 in (alpha*gbar, alpha*gbar/(1-kappa)) =
@@ -178,7 +126,7 @@ theorem stepClause_threshold_low (a dv kappa gbar : ℝ)
   · rw [if_pos hg, div_le_iff₀ ha]
     constructor <;> intro h <;> nlinarith
   · rw [if_neg hg]
-    push_neg at hg
+    push Not at hg
     have hsurv : dv * 1 ≤ a * g := by nlinarith
     have hthr : dv * (1 - kappa) / a ≤ g := by
       rw [div_le_iff₀ ha]
@@ -202,7 +150,7 @@ theorem stepClause_threshold_high (a dv kappa gbar : ℝ)
       nlinarith
     exact iff_of_false hlhs hrhs
   · rw [if_neg hg]
-    push_neg at hg
+    push Not at hg
     rw [div_le_iff₀ ha]
     constructor <;> intro h <;> nlinarith
 
@@ -241,11 +189,6 @@ theorem z1_same_range (hkz : (1 : ℝ) - kz ≠ 0) (dv' : ℝ) :
   field_simp
 
 end Z1
-
-/-- Table 5 rescaled optimizer: `0.106 / 0.65 ≈ 0.163`. -/
-theorem z1_optimizer_value :
-    (0.163 : ℝ) < 0.106 / 0.65 ∧ (0.106 : ℝ) / 0.65 < 0.1631 := by
-  constructor <;> norm_num
 
 /-! ## Lemma 2: logistics amplification shifts `g` down pointwise
 (the measure-free core of the FOSD statement).
@@ -370,28 +313,61 @@ theorem nonthreshold_window :
     (0.16 : ℝ) * 0.95 / (1 - 0.30) < 0.2172 := by
   refine ⟨by norm_num, by norm_num, by norm_num⟩
 
-/-! ## Headline gain percentages (internal consistency of Tables 2 and 5). -/
+/-! ## Second revision: stationary recursion and bounded recoveries.
+These identities certify algebra and pointwise bounds, not the probabilistic
+maximum, an estimated calibration, or the stationary deferral computation. -/
 
-/-- Table 2, psi = 0: GDP-clause gain `0.12320/0.11153 - 1 ≈ 10.5%`. -/
-theorem gain_psi0 :
-    (1.104 : ℝ) < 0.12320 / 0.11153 ∧ (0.12320 : ℝ) / 0.11153 < 1.105 := by
-  constructor <;> norm_num
+theorem stationary_solution (a phi : ℝ) (hphi : 1 - phi ≠ 0) :
+    phi * (a + a * phi / (1 - phi)) = a * phi / (1 - phi) := by
+  field_simp
+  <;> ring
 
-/-- Table 2, psi = 3: GDP-clause gain `0.12084/0.10803 - 1 ≈ 11.9%`. -/
-theorem gain_psi3 :
-    (1.118 : ℝ) < 0.12084 / 0.10803 ∧ (0.12084 : ℝ) / 0.10803 < 1.119 := by
-  constructor <;> norm_num
+theorem stationary_unique (a phi b : ℝ) (hphi : 1 - phi ≠ 0)
+    (h : b = phi * (a + b)) : b = a * phi / (1 - phi) := by
+  apply (eq_div_iff hphi).2
+  nlinarith
 
-/-- Table 5 (Z = 1): GDP-clause gain `0.08839/0.07842 - 1 ≈ 12.7%`. -/
-theorem gain_z1 :
-    (1.126 : ℝ) < 0.08839 / 0.07842 ∧ (0.08839 : ℝ) / 0.07842 < 1.128 := by
-  constructor <;> norm_num
+theorem stationary_gain (p q : ℝ) (hp : 1 - p ≠ 0)
+    (hq : 1 - q ≠ 0) (hq0 : q ≠ 0) :
+    (p / (1-p)) / (q / (1-q)) - 1 = (p-q) / (q*(1-p)) := by
+  field_simp
+  <;> ring
 
-/-- Figure 5 caption: straight-debt decline `0.10803/0.11153 - 1 ≈ -3.1%`,
-GDP-clause decline `0.12084/0.12320 - 1 ≈ -1.9%`. -/
-theorem fig5_declines :
-    (0.968 : ℝ) < 0.10803 / 0.11153 ∧ (0.10803 : ℝ) / 0.11153 < 0.969 ∧
-    (0.980 : ℝ) < 0.12084 / 0.12320 ∧ (0.12084 : ℝ) / 0.12320 < 0.9809 := by
-  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num⟩
+noncomputable def capacityPayment (promise cap rho : ℝ) : ℝ :=
+  if promise ≤ cap then promise else rho * cap
+
+theorem recovery_capacity_bound (promise cap rho : ℝ)
+    (hcap : 0 ≤ cap) (hrho : rho ≤ 1) :
+    capacityPayment promise cap rho ≤ cap := by
+  unfold capacityPayment
+  split_ifs with h
+  · exact h
+  · nlinarith
+
+theorem full_indexation_payment (c gbar g : ℝ) (hb : gbar ≠ 0) :
+    (c * gbar) * (g / gbar) = c * g := by
+  field_simp
+
+theorem deferral_npv (Rf dv h : ℝ) (hR : Rf ≠ 0) :
+    dv * h / Rf + (Rf * dv * (1-h)) / Rf^2 = dv / Rf := by
+  field_simp
+  <;> ring
+
+theorem uniform_boundary_certificate (r : ℝ) :
+    (1+r-r^2)/2 = (5:ℝ)/8 - (r-(1:ℝ)/2)^2/2 := by ring
+
+theorem uniform_middle_certificate (r : ℝ) :
+    (r+2)^2 ≤ 5*(1+r^2) := by
+  nlinarith [sq_nonneg (2*r-1)]
+
+theorem uniform_quadratic_certificate (r u : ℝ) :
+    8*(1+r^2)*((5:ℝ)/8 - u*((r+2)-(1+r^2)*u)/2)
+      = (2*(1+r^2)*u-(r+2))^2 + (2*r-1)^2 := by ring
+
+/-- Mean loss of an exponential log jump of mean .25 is .20, not .25. -/
+theorem mean_loss_arithmetic : (0.25:ℝ)/(1+0.25) = 0.20 := by norm_num
+
+/-- Expected log growth of the retained stress example including logistics. -/
+theorem stress_mean_log : (0.01:ℝ)-0.15*0.25-1.5*0.08*0.06 = -0.0347 := by norm_num
 
 end CarbonRisk

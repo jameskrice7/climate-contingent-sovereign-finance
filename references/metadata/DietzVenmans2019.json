@@ -1,0 +1,770 @@
+{
+  "key": "DietzVenmans2019",
+  "original": {
+    "author": "Dietz, Simon and Venmans, Frank",
+    "title": "Cumulative Carbon Emissions and Economic Policy: In Search of General Principles",
+    "journal": "Journal of Environmental Economics and Management",
+    "year": "2019",
+    "volume": "96",
+    "pages": "108--129",
+    "doi": "10.1016/j.jeem.2019.04.003"
+  },
+  "lookup_url": "https://api.crossref.org/works/10.1016/j.jeem.2019.04.003",
+  "status_code": 200,
+  "metadata": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          5
+        ]
+      ],
+      "date-time": "2026-11-05T11:37:07Z",
+      "timestamp": 1793878627821,
+      "version": "4.7.0"
+    },
+    "reference-count": 45,
+    "publisher": "Elsevier BV",
+    "license": [
+      {
+        "start": {
+          "date-parts": [
+            [
+              2019,
+              7,
+              1
+            ]
+          ],
+          "date-time": "2019-07-01T00:00:00Z",
+          "timestamp": 1561939200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/tdm/userlicense/1.0/"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2019,
+              7,
+              1
+            ]
+          ],
+          "date-time": "2019-07-01T00:00:00Z",
+          "timestamp": 1561939200000
+        },
+        "content-version": "tdm",
+        "delay-in-days": 0,
+        "URL": "https://www.elsevier.com/legal/tdmrep-license"
+      },
+      {
+        "start": {
+          "date-parts": [
+            [
+              2019,
+              5,
+              22
+            ]
+          ],
+          "date-time": "2019-05-22T00:00:00Z",
+          "timestamp": 1558483200000
+        },
+        "content-version": "vor",
+        "delay-in-days": 0,
+        "URL": "http://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "funder": [
+      {
+        "DOI": "10.13039/100008118",
+        "name": "Grantham Foundation for the Protection of the Environment",
+        "doi-asserted-by": "publisher",
+        "id": [
+          {
+            "id": "10.13039/100008118",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/501100002661",
+        "name": "Fonds De La Recherche Scientifique - FNRS",
+        "doi-asserted-by": "publisher",
+        "id": [
+          {
+            "id": "10.13039/501100002661",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      },
+      {
+        "DOI": "10.13039/501100000269",
+        "name": "Economic and Social Research Council",
+        "doi-asserted-by": "publisher",
+        "id": [
+          {
+            "id": "10.13039/501100000269",
+            "id-type": "DOI",
+            "asserted-by": "publisher"
+          }
+        ]
+      }
+    ],
+    "content-domain": {
+      "domain": [
+        "elsevier.com",
+        "sciencedirect.com"
+      ],
+      "crossmark-restriction": true
+    },
+    "short-container-title": [
+      "Journal of Environmental Economics and Management"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          2019,
+          7
+        ]
+      ]
+    },
+    "DOI": "10.1016/j.jeem.2019.04.003",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2019,
+          5,
+          22
+        ]
+      ],
+      "date-time": "2019-05-22T06:12:46Z",
+      "timestamp": 1558505566000
+    },
+    "page": "108-129",
+    "update-policy": "https://doi.org/10.1016/elsevier_cm_policy",
+    "source": "Crossref",
+    "is-referenced-by-count": 219,
+    "special_numbering": "C",
+    "title": [
+      "Cumulative carbon emissions and economic policy: In search of general principles"
+    ],
+    "prefix": "10.1016",
+    "volume": "96",
+    "author": [
+      {
+        "given": "Simon",
+        "family": "Dietz",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-4264-6606",
+        "authenticated-orcid": false,
+        "given": "Frank",
+        "family": "Venmans",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "78",
+    "reference": [
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib1",
+        "doi-asserted-by": "crossref",
+        "first-page": "684",
+        "DOI": "10.1038/nclimate2977",
+        "article-title": "Drivers of peak warming in a consumption-maximizing world",
+        "volume": "6",
+        "author": "Allen",
+        "year": "2016",
+        "journal-title": "Nat. Clim. Change"
+      },
+      {
+        "issue": "7242",
+        "key": "10.1016/j.jeem.2019.04.003_bib2",
+        "doi-asserted-by": "crossref",
+        "first-page": "1163",
+        "DOI": "10.1038/nature08019",
+        "article-title": "Warming caused by cumulative carbon emissions towards the trillionth tonne",
+        "volume": "458",
+        "author": "Allen",
+        "year": "2009",
+        "journal-title": "Nature"
+      },
+      {
+        "issue": "9",
+        "key": "10.1016/j.jeem.2019.04.003_bib3",
+        "doi-asserted-by": "crossref",
+        "first-page": "1935",
+        "DOI": "10.1016/j.jpubeco.2004.06.007",
+        "article-title": "Allocation of pollution abatement under learning by doing",
+        "volume": "89",
+        "author": "Bramoull",
+        "year": "2005",
+        "journal-title": "J. Public Econ."
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib4",
+        "series-title": "Economics of Natural and Environmental Resources",
+        "first-page": "441",
+        "article-title": "A polluted golden age",
+        "author": "Brock",
+        "year": "1973"
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib5",
+        "series-title": "Climate Change 2014: Mitigation of Climate Change. Contribution of Working Group III to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change",
+        "article-title": "Asessing transformation pathways,",
+        "author": "Clarke",
+        "year": "2014"
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib6",
+        "series-title": "Climate Change 2013: the Physical Science Basis. Contribution of Working Group I to the Fifth Assessment Report of the Intergovernmental Panel on Climate Change",
+        "article-title": "Long-term climate change: projections, commitments and irreversibility,",
+        "author": "Collins",
+        "year": "2013"
+      },
+      {
+        "issue": "8",
+        "key": "10.1016/j.jeem.2019.04.003_bib7",
+        "doi-asserted-by": "crossref",
+        "first-page": "084018",
+        "DOI": "10.1088/1748-9326/9/8/084018",
+        "article-title": "Commitment accounting of CO2 emissions",
+        "volume": "9",
+        "author": "Davis",
+        "year": "2014",
+        "journal-title": "Environ. Res. Lett."
+      },
+      {
+        "issue": "4",
+        "key": "10.1016/j.jeem.2019.04.003_bib8",
+        "doi-asserted-by": "crossref",
+        "first-page": "109",
+        "DOI": "10.1257/pol.20160240",
+        "article-title": "Discounting disentangled",
+        "volume": "10",
+        "author": "Drupp",
+        "year": "2018",
+        "journal-title": "Am. Econ. J. Econ. Policy"
+      },
+      {
+        "issue": "10",
+        "key": "10.1016/j.jeem.2019.04.003_bib9",
+        "doi-asserted-by": "crossref",
+        "first-page": "2501",
+        "DOI": "10.1175/2008JCLI2554.1",
+        "article-title": "Lifetime of anthropogenic climate change: millennial time scales of potential CO2 and surface temperature perturbations",
+        "volume": "22",
+        "author": "Eby",
+        "year": "2009",
+        "journal-title": "J. Clim."
+      },
+      {
+        "issue": "7",
+        "key": "10.1016/j.jeem.2019.04.003_bib10",
+        "doi-asserted-by": "crossref",
+        "first-page": "075002",
+        "DOI": "10.1088/1748-9326/10/7/075002",
+        "article-title": "Extending the relationship between global warming and cumulative carbon emissions to multi-millennial timescales",
+        "volume": "10",
+        "author": "Frlicher",
+        "year": "2015",
+        "journal-title": "Environ. Res. Lett."
+      },
+      {
+        "issue": "1",
+        "key": "10.1016/j.jeem.2019.04.003_bib11",
+        "doi-asserted-by": "crossref",
+        "first-page": "1",
+        "DOI": "10.1093/jeea/jvx010",
+        "article-title": "Consistent climate policies",
+        "volume": "16",
+        "author": "Gerlagh",
+        "year": "2018",
+        "journal-title": "J. Eur. Econ. Assoc."
+      },
+      {
+        "issue": "18",
+        "key": "10.1016/j.jeem.2019.04.003_bib12",
+        "doi-asserted-by": "crossref",
+        "first-page": "6844",
+        "DOI": "10.1175/JCLI-D-12-00476.1",
+        "article-title": "Constraining the ratio of global warming to cumulative CO2 emissions using CMIP5 simulations",
+        "volume": "26",
+        "author": "Gillett",
+        "year": "2013",
+        "journal-title": "J. Clim."
+      },
+      {
+        "issue": "1",
+        "key": "10.1016/j.jeem.2019.04.003_bib13",
+        "doi-asserted-by": "crossref",
+        "first-page": "41",
+        "DOI": "10.3982/ECTA10217",
+        "article-title": "Optimal taxes on fossil fuel in general equilibrium",
+        "volume": "82",
+        "author": "Golosov",
+        "year": "2014",
+        "journal-title": "Econometrica"
+      },
+      {
+        "issue": "1",
+        "key": "10.1016/j.jeem.2019.04.003_bib14",
+        "doi-asserted-by": "crossref",
+        "first-page": "29",
+        "DOI": "10.1038/ngeo2304",
+        "article-title": "Sensitivity of climate to cumulative carbon emissions due to compensation of ocean heat and carbon uptake",
+        "volume": "8",
+        "author": "Goodwin",
+        "year": "2015",
+        "journal-title": "Nat. Geosci."
+      },
+      {
+        "issue": "9",
+        "key": "10.1016/j.jeem.2019.04.003_bib15",
+        "doi-asserted-by": "crossref",
+        "first-page": "2418",
+        "DOI": "10.1175/2009JCLI3466.1",
+        "article-title": "Probing the fast and slow components of global warming by returning abruptly to preindustrial forcing",
+        "volume": "23",
+        "author": "Held",
+        "year": "2010",
+        "journal-title": "J. Clim."
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib16",
+        "series-title": "Climate Change 2013: the Physical Science Basis",
+        "article-title": "Summary for policymakers: contribution of working group I to the Fifth assessment Report of the intergovernmental Panel on climate change",
+        "author": "IPCC",
+        "year": "2013"
+      },
+      {
+        "issue": "5",
+        "key": "10.1016/j.jeem.2019.04.003_bib17",
+        "doi-asserted-by": "crossref",
+        "first-page": "2793",
+        "DOI": "10.5194/acp-13-2793-2013",
+        "article-title": "Carbon dioxide and climate impulse response functions for the computation of greenhouse gas metrics: a multi-model analysis",
+        "volume": "13",
+        "author": "Joos",
+        "year": "2013",
+        "journal-title": "Atmos. Chem. Phys."
+      },
+      {
+        "issue": "7",
+        "key": "10.1016/j.jeem.2019.04.003_bib18",
+        "doi-asserted-by": "crossref",
+        "first-page": "2520",
+        "DOI": "10.1002/2013GL059141",
+        "article-title": "Trajectory sensitivity of the transient climate response to cumulative carbon emissions",
+        "volume": "41",
+        "author": "Krasting",
+        "year": "2014",
+        "journal-title": "Geophys. Res. Lett."
+      },
+      {
+        "issue": "10",
+        "key": "10.1016/j.jeem.2019.04.003_bib19",
+        "doi-asserted-by": "crossref",
+        "first-page": "2947",
+        "DOI": "10.1257/aer.20150986",
+        "article-title": "Steering the climate system: using inertia to lower the cost of policy",
+        "volume": "107",
+        "author": "Lemoine",
+        "year": "2017",
+        "journal-title": "Am. Econ. Rev."
+      },
+      {
+        "issue": "1",
+        "key": "10.1016/j.jeem.2019.04.003_bib20",
+        "doi-asserted-by": "crossref",
+        "first-page": "39",
+        "DOI": "10.1007/s40641-015-0030-6",
+        "article-title": "The transient response to cumulative CO2 emissions: a review",
+        "volume": "2",
+        "author": "MacDougall",
+        "year": "2016",
+        "journal-title": "Current Climate Change Reports"
+      },
+      {
+        "issue": "10",
+        "key": "10.1016/j.jeem.2019.04.003_bib21",
+        "doi-asserted-by": "crossref",
+        "first-page": "4217",
+        "DOI": "10.1175/JCLI-D-14-00036.1",
+        "article-title": "The origin and limits of the near proportionality between climate warming and cumulative CO2 emissions",
+        "volume": "28",
+        "author": "MacDougall",
+        "year": "2015",
+        "journal-title": "J. Clim."
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib22",
+        "series-title": "Maddison Database 2010",
+        "author": "Maddison",
+        "year": "2010"
+      },
+      {
+        "issue": "4",
+        "key": "10.1016/j.jeem.2019.04.003_bib23",
+        "doi-asserted-by": "crossref",
+        "first-page": "L04705",
+        "DOI": "10.1029/2007GL032388",
+        "article-title": "Stabilizing climate requires near-zero emissions",
+        "volume": "35",
+        "author": "Matthews",
+        "year": "2008",
+        "journal-title": "Geophys. Res. Lett."
+      },
+      {
+        "issue": "7248",
+        "key": "10.1016/j.jeem.2019.04.003_bib24",
+        "doi-asserted-by": "crossref",
+        "first-page": "829",
+        "DOI": "10.1038/nature08047",
+        "article-title": "The proportionality of global warming to cumulative carbon emissions",
+        "volume": "459",
+        "author": "Matthews",
+        "year": "2009",
+        "journal-title": "Nature"
+      },
+      {
+        "issue": "11",
+        "key": "10.1016/j.jeem.2019.04.003_bib25",
+        "doi-asserted-by": "crossref",
+        "first-page": "7213",
+        "DOI": "10.5194/acp-17-7213-2017",
+        "article-title": "A modified impulse-response representation of the global near-surface air temperature and atmospheric concentration response to carbon dioxide emissions",
+        "volume": "17",
+        "author": "Millar",
+        "year": "2017",
+        "journal-title": "Atmos. Chem. Phys."
+      },
+      {
+        "issue": "6",
+        "key": "10.1016/j.jeem.2019.04.003_bib26",
+        "doi-asserted-by": "crossref",
+        "first-page": "2200",
+        "DOI": "10.1016/j.enpol.2008.02.029",
+        "article-title": "Cost development of future technologies for power generation: a study based on experience curves and complementary bottom-up assessments",
+        "volume": "36",
+        "author": "Neij",
+        "year": "2008",
+        "journal-title": "Energy Policy"
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib27",
+        "series-title": "A Question of Balance: Weighing the Options on Global Warming Policies",
+        "author": "Nordhaus",
+        "year": "2008"
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib28",
+        "series-title": "A Survey of Global Impacts of Climate Change: Replication, Survey Methods, and a Statistical Analysis",
+        "author": "Nordhaus",
+        "year": "2017"
+      },
+      {
+        "issue": "3",
+        "key": "10.1016/j.jeem.2019.04.003_bib29",
+        "doi-asserted-by": "crossref",
+        "first-page": "860",
+        "DOI": "10.1257/jel.51.3.860",
+        "article-title": "Climate change policy: what do the models tell us?",
+        "volume": "51",
+        "author": "Pindyck",
+        "year": "2013",
+        "journal-title": "J. Econ. Lit."
+      },
+      {
+        "issue": "2",
+        "key": "10.1016/j.jeem.2019.04.003_bib30",
+        "first-page": "493",
+        "article-title": "Intergenerational inequality aversion, growth, and the role of damages: Occam's rule for the global carbon tax",
+        "volume": "3",
+        "author": "Rezai",
+        "year": "2016",
+        "journal-title": "J. Assoc. Environ. Resour. Econom."
+      },
+      {
+        "issue": "12",
+        "key": "10.1016/j.jeem.2019.04.003_bib31",
+        "doi-asserted-by": "crossref",
+        "first-page": "124002",
+        "DOI": "10.1088/1748-9326/9/12/124002",
+        "article-title": "Maximum warming occurs about one decade after a carbon dioxide emission",
+        "volume": "9",
+        "author": "Ricke",
+        "year": "2014",
+        "journal-title": "Environ. Res. Lett."
+      },
+      {
+        "issue": "12",
+        "key": "10.1016/j.jeem.2019.04.003_bib32",
+        "doi-asserted-by": "crossref",
+        "first-page": "53",
+        "DOI": "10.1016/j.marchem.2005.11.001",
+        "article-title": "Determination of the rate constants for the carbon dioxide to bicarbonate inter-conversion in pH-buffered seawater systems",
+        "volume": "100",
+        "author": "Schulz",
+        "year": "2006",
+        "journal-title": "Mar. Chem."
+      },
+      {
+        "issue": "3",
+        "key": "10.1016/j.jeem.2019.04.003_bib33",
+        "doi-asserted-by": "crossref",
+        "first-page": "281",
+        "DOI": "10.1007/s10584-005-1146-9",
+        "article-title": "Alternatives to the global warming potential for comparing climate impacts of emissions of greenhouse gases",
+        "volume": "68",
+        "author": "Shine",
+        "year": "2005",
+        "journal-title": "Clim. Change"
+      },
+      {
+        "issue": "6",
+        "key": "10.1016/j.jeem.2019.04.003_bib34",
+        "doi-asserted-by": "crossref",
+        "first-page": "1704",
+        "DOI": "10.1073/pnas.0812721106",
+        "article-title": "Irreversible climate change due to carbon dioxide emissions",
+        "volume": "106",
+        "author": "Solomon",
+        "year": "2009",
+        "journal-title": "Proc. Natl. Acad. Sci. U. S. A."
+      },
+      {
+        "issue": "3",
+        "key": "10.1016/j.jeem.2019.04.003_bib35",
+        "doi-asserted-by": "crossref",
+        "first-page": "838",
+        "DOI": "10.1257/jel.51.3.838",
+        "article-title": "The structure of economic modeling of the potential impacts of climate change: grafting gross underestimation of risk onto already narrow science models",
+        "volume": "51",
+        "author": "Stern",
+        "year": "2013",
+        "journal-title": "J. Econ. Lit."
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib36",
+        "series-title": "Analytic Integrated Assessment and Uncertainty",
+        "author": "Traeger",
+        "year": "2015"
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib37",
+        "series-title": "World Population Prospects: the 2017 Revision, Key Findings and Advance Tables",
+        "author": "United Nations",
+        "year": "2017"
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib38",
+        "doi-asserted-by": "crossref",
+        "first-page": "75",
+        "DOI": "10.1016/j.jeem.2016.01.005",
+        "article-title": "A simple formula for the social cost of carbon",
+        "volume": "77",
+        "author": "van den Bijgaart",
+        "year": "2016",
+        "journal-title": "J. Environ. Econ. Manag."
+      },
+      {
+        "issue": "12",
+        "key": "10.1016/j.jeem.2019.04.003_bib39",
+        "doi-asserted-by": "crossref",
+        "first-page": "47",
+        "DOI": "10.1007/s10584-017-2132-8",
+        "article-title": "The safe carbon budget",
+        "volume": "147",
+        "author": "van der Ploeg",
+        "year": "2018",
+        "journal-title": "Clim. Change"
+      },
+      {
+        "issue": "1",
+        "key": "10.1016/j.jeem.2019.04.003_bib40",
+        "doi-asserted-by": "crossref",
+        "first-page": "1",
+        "DOI": "10.1162/rest.91.1.1",
+        "article-title": "On modeling and interpreting the economics of catastrophic climate change",
+        "volume": "91",
+        "author": "Weitzman",
+        "year": "2009",
+        "journal-title": "Rev. Econ. Stat."
+      },
+      {
+        "issue": "2",
+        "key": "10.1016/j.jeem.2019.04.003_bib41",
+        "doi-asserted-by": "crossref",
+        "first-page": "221",
+        "DOI": "10.1111/j.1467-9779.2011.01539.x",
+        "article-title": "GHG targets as insurance against catastrophic climate damages",
+        "volume": "14",
+        "author": "Weitzman",
+        "year": "2012",
+        "journal-title": "J. Public Econ. Theory"
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib42",
+        "series-title": "World Development Indicators",
+        "author": "World Bank",
+        "year": "2018"
+      },
+      {
+        "key": "10.1016/j.jeem.2019.04.003_bib43",
+        "first-page": "1219",
+        "article-title": "Economic growth and the environment",
+        "volume": "vol. 3",
+        "author": "Xepapadeas",
+        "year": "2005"
+      },
+      {
+        "issue": "38",
+        "key": "10.1016/j.jeem.2019.04.003_bib44",
+        "doi-asserted-by": "crossref",
+        "first-page": "16129",
+        "DOI": "10.1073/pnas.0805800106",
+        "article-title": "Setting cumulative emissions targets to reduce the risk of dangerous climate change",
+        "volume": "106",
+        "author": "Zickfeld",
+        "year": "2009",
+        "journal-title": "Proc. Natl. Acad. Sci. Unit. States Am."
+      },
+      {
+        "issue": "6",
+        "key": "10.1016/j.jeem.2019.04.003_bib45",
+        "doi-asserted-by": "crossref",
+        "first-page": "5782",
+        "DOI": "10.1175/JCLI-D-12-00584.1",
+        "article-title": "Long-term climate change commitment and reversibility: an EMIC intercomparison",
+        "volume": "26",
+        "author": "Zickfeld",
+        "year": "2013",
+        "journal-title": "J. Clim."
+      }
+    ],
+    "container-title": [
+      "Journal of Environmental Economics and Management"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S0095069618302122?httpAccept=text/xml",
+        "content-type": "text/xml",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      },
+      {
+        "URL": "https://api.elsevier.com/content/article/PII:S0095069618302122?httpAccept=text/plain",
+        "content-type": "text/plain",
+        "content-version": "vor",
+        "intended-application": "text-mining"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2025,
+          9,
+          25
+        ]
+      ],
+      "date-time": "2025-09-25T15:28:59Z",
+      "timestamp": 1758814139000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://linkinghub.elsevier.com/retrieve/pii/S0095069618302122"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          2019,
+          7
+        ]
+      ]
+    },
+    "references-count": 45,
+    "alternative-id": [
+      "S0095069618302122"
+    ],
+    "URL": "https://doi.org/10.1016/j.jeem.2019.04.003",
+    "relation": {},
+    "ISSN": [
+      "0095-0696"
+    ],
+    "issn-type": [
+      {
+        "value": "0095-0696",
+        "type": "print"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          2019,
+          7
+        ]
+      ]
+    },
+    "assertion": [
+      {
+        "value": "Elsevier",
+        "name": "publisher",
+        "label": "This article is maintained by"
+      },
+      {
+        "value": "Cumulative carbon emissions and economic policy: In search of general principles",
+        "name": "articletitle",
+        "label": "Article Title"
+      },
+      {
+        "value": "Journal of Environmental Economics and Management",
+        "name": "journaltitle",
+        "label": "Journal Title"
+      },
+      {
+        "value": "https://doi.org/10.1016/j.jeem.2019.04.003",
+        "name": "articlelink",
+        "label": "CrossRef DOI link to publisher maintained version"
+      },
+      {
+        "value": "article",
+        "name": "content_type",
+        "label": "Content Type"
+      },
+      {
+        "value": "© 2019 The Authors. Published by Elsevier Inc.",
+        "name": "copyright",
+        "label": "Copyright"
+      }
+    ]
+  },
+  "title_similarity": 1.0
+}

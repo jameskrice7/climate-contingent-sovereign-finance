@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,microtype,graphicx}
+\usepackage{needspace}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\input{../paper/generated/numbers.tex}
+\newcommand{\comment}[1]{\par\medskip\Needspace{7\baselineskip}\noindent\textbf{Comment.} \emph{#1}\par\smallskip}
+\newcommand{\response}{\noindent\textbf{Response.} }
+\title{Response to the Second-Round Reports\\\large MDY-2026-0066}
+\author{}
+\date{22 November 2026}
+\begin{document}
+\maketitle
+We thank the referees for identifying the remaining gaps between the contract definitions, the fiscal-limit interpretation, and the numerical exercises. The manuscript is now titled \emph{Climate-Contingent Sovereign Finance: Fiscal Limits, Disaster Risk, and Repayment Design}. The revision distinguishes permanent relief from carried-forward deferrals, reports the stationary recursion, implements disaster-loss thresholds and bounded recovery, and narrows analytical claims to the conditions actually established. It also separates illustrations from empirical estimates.
+
+This response addresses the detailed second-round comments supplied in text and, separately, the eight comments in the accompanying referee PDF. Comment descriptions below are paraphrases. References to named subsections, propositions, and tables refer to the current manuscript. The repository includes the first-round paper in commit \texttt{894faef}, the earlier response, the revised source and PDFs, and executable replication materials.
+
+\section*{Detailed second-round comments}
+\subsection*{1. One-period gains, the stationary fiscal limit, and deferrals}
+\comment{Report the stationary MSB and MSD gains, qualify the fixed-continuation comparisons, and distinguish forgiveness from NPV-neutral deferral.}
+\response We agree. The main step payoffs now explicitly represent permanent write-downs. The homogeneous borrowing factor is defined by
+\[
+\Phi_H=\max_x\frac{x}{R_f}\mathbb E[H\mathbf 1\{xH\le g\}],
+\]
+and repeated issuance with i.i.d. growth gives $b^M_\infty=\alpha\Phi_H/(1-\Phi_H)$ and $d^M_\infty=\alpha x_H^*/(1-\Phi_H)$. The stationary relative MSB gain is $(\Phi_G-\Phi_S)/[\Phi_S(1-\Phi_G)]$, so it is the one-period relative gain amplified by $1/(1-\Phi_G)$. MSD also reflects the changed optimizing face and is reported separately.
+
+In the stress case, the GDP clause's one-period MSB gain is \LegacyGDPOneGain\%, its stationary MSB gain is \LegacyGDPStationaryGain\%, and its stationary MSD gain is \LegacyGDPMSDGain\%. The disaster-loss clause gains \LegacyDisasterOneGain\% and \LegacyDisasterStationaryGain\% in one-period and stationary MSB. The design subsection now states that setting continuation borrowing to zero preserves comparisons only at a given continuation capacity. The calibration discussion says stationary levels are several times their one-period counterparts and gives the exact multiplier, replacing the order-of-magnitude claim.
+
+Appendix A introduces a separate stationary deferral model. Deferred service is capitalized at $R_f$, carried to the next period as inherited nondeferrable face, and priced with survival at both payment dates. Current default compares inherited service plus immediate new service with next-period surplus plus new issuance. We solve jointly for borrowing $B(a)$, survival, and issuance as functions of inherited claims. The table reports $B(0)$, gains against a matched straight-debt discretization, the fraction of the permanent-relief gain retained, and numerical refinements. The inherited-state figure shows $B(a)$. This is a stationary policy calculation, not a claim that deferrals preserve the scalar forgiveness recursion or that $B(0)$ is an invariant-distribution average. The five-year postponement and absorbing zero-recovery default are explicit additional assumptions, rather than a calibration of a particular CRDC's terms.
+
+\subsection*{2. Calibration and trigger interpretation}
+\comment{Separate advanced-economy and disaster-prone cases, correct the growth and disaster-loss arithmetic, and justify frequencies and the output trigger.}
+\response We retain the first-revision distribution as a clearly labeled \emph{stress case}, and add separate advanced-economy and small-state illustrations. Both have conditional log trend growth of 1.5\% annually. The advanced-economy case uses a 2.5\% five-year disaster probability; the small-state case uses 15\%, lower surplus capacity, and greater ordinary-growth volatility. These are contrasting illustrative assumptions, not estimated country calibrations. The common $R_f$ is a safe discount rate, not an observed Caribbean sovereign borrowing rate. Fiscal capacity and the chosen hazards are no longer presented as values directly estimated in the cited papers.
+
+The expected stress-case log growth is now stated explicitly: $.01-.15(.25)-1.5(.08)(.06)=-.0347$ per five years, or about $-.694\%$ annually. An exponential log loss with mean .25 implies a 20\% mean output loss, not 25\%. The 15\% disaster-loss trigger activates with probability $.15(.85)^4=7.83\%$ per five years; the mean loss among qualifying events is 32\%.
+
+The .08 logistics probability now denotes an active five-year exposure block, with .16 such blocks per decade in expectation; the unsupported one-or-two-disruptions rationale is removed. We distinguish expected log drag from the exact mean multiplicative output drag. The GDP threshold is described as a cumulative five-year contraction that can be relatively frequent under the assumed distribution, without calling it a severe-disaster region. Positive expected growth in the two additional cases and the adverse trend in the stress case are both reported.
+
+\subsection*{3. Tail comparative statics and the interior-relief proof}
+\comment{The tail-value proposition needs restrictions on issuable debt and above-trigger states; the interior-optimum proof should be rigorous.}
+\response The unrestricted tail proposition has been withdrawn. The replacement explicitly assumes locally constant optimizing normalized faces, unchanged probability above the trigger, and a weighted condition on the CDF shifts at the straight and relieved default boundaries. Its proof differentiates the two proceeds expressions and states precisely which inequality determines the sign. Downward stochastic dominance alone is insufficient.
+
+We also give a counterexample. With $g=.8$ with probability $p$ and $g=1$ otherwise, $\kappa=.05$, and trigger .95, for $p\in[.3,.5]$ the GDP-clause advantage is $.8(.05)(1-p)/(.95R_f)$. Increasing low-output probability therefore reduces the advantage. The numerical logistics sweep is now identified as a distribution-specific finding at the stated relief, rather than a verification of a general theorem.
+
+For interior generosity, the binding-trigger face $d=c\bar g$ yields a closed form $B(\kappa)$ and explicit first and second derivatives. We state sufficient conditions for an interior maximum on an interval where that face is globally maximizing. We additionally supply a complete uniform-growth example: normalized maximum proceeds are $5/8$ at $\kappa=1/2$ and $d=c\bar g$, versus $1/2$ for straight debt. All face-value branches are bounded explicitly using square certificates. This proves existence of a global interior optimum for the step design without claiming distribution-free strict quasi-concavity.
+
+\subsection*{4. Internal consistency}
+\comment{(a) The scalar MSD constraint is vacuous if proceeds need only be below MSB.}
+\response The constraint is now equality: the aggregator is evaluated only at portfolios achieving MSB. Single-instrument numerical tables specify their tie-breaking convention. We also state that the simulations compare individual contracts rather than solving the unrestricted portfolio problem.
+
+\comment{(b) Stress-dependent surplus capacity is unused, and its ranking implication is a conjecture; next-period surplus subscripts need correction.}
+\response The stress-dependent surplus and additional premium equations have moved to the unimplemented-extensions appendix. Capacity at $t+1$ consistently uses $\alpha_{t+1}$. The introduction, design discussion, and conclusion state that independent surplus shocks could favor the trigger observing that shock; they no longer assert that this extension strengthens the GDP-clause ranking. The main simulations hold surplus capacity and additional premia fixed.
+
+\comment{(c) The emissions coupon insures surprises, not an anticipated BAU path.}
+\response The contract subsection, quantitative subsection, and conclusion now make this distinction. If the emissions increment is known at issuance, the payoff is a constant and face rescaling reproduces straight debt. The table is explicitly insurance against unanticipated increments. A nonnegative floor avoids negative contractual repayments in extreme draws, and its implementation is stated.
+
+\comment{(d) Face-proportional recovery makes MSB unbounded.}
+\response The face-recovery extension has been removed from the active model. Recovery is now $\varrho cg$ in default, and a new table shows its effect on the instrument gains. All realized creditor payments remain bounded by capacity. At full capacity recovery the proceeds advantage disappears; for step contracts the population bound may be a supremum without a finite maximizing face, so no finite MSD is claimed in that limit. The original algebraic Lean recovery identities are preserved only in the legacy source and are no longer presented as verification of a well-posed optimization problem.
+
+\comment{(e) An additive collateral shift scales every instrument equally and does not establish complementarity; the planner problem and local condition are overstated.}
+\response The appendix now derives $b_H^M(h_c)=e^{\xi(1-h_c)}b_H^M(1)$ for every contract, and reports straight and disaster contracts alongside the GDP contract. A separately labeled default-risk-dependent eligibility assumption supplies an instrument-specific channel, without claiming it is estimated policy or a complementarity theorem. The incomplete planner equation is replaced by a verbal description of what a welfare problem would need. The premium-versus-safe-rate comparison is described as a local partial effect holding default and cash flows fixed.
+
+\section*{Minor points and implementation}
+\comment{Simplify and synchronize the abstract; refocus the title.}
+\response The abstract reports the GDP gain, the states where relief is valuable, and the smaller disaster-trigger gain. The title focuses on fiscal limits, disaster risk, and repayment design. The identical abstract is exported to \texttt{reviews/abstract\_for\_submission.txt}. We have not changed the journal portal; its metadata must be updated with this text at submission.
+
+\comment{Figure 1 should show the payoff cost, identify common-face comparisons, and connect to the rollover table.}
+\response The figure is regenerated from the model draws and reports default avoidance and the mass receiving relief despite already repaying. At $d=.13$, default falls from \FigDefaultStraight\% to \FigDefaultGdp\%, while the latter mass is \FigPaidInSurvivalMass\%. The caption compares discounted survival benefit (\FigSurvivalPayoffGain\ of GDP) with payoff cost (\FigSurvivalPayoffCost\ of GDP), and states that face value is common. The rollover discussion now refers directly to the figure.
+
+\comment{The fiscal-cost discussion should use the wider literature rather than a recreation of an OBR chart.}
+\response The recreated chart is omitted. The introduction discusses Agarwala et al. (2021), Barrage (2020), Bilal and K\"anzig (2026), and Seghini, D\'ees and de Gaye (2026), and uses Klusak et al. (2023) for ratings. These references motivate channels rather than the numerical parameters. The SSRN working paper's existence and authorship were checked on the Banque de France publication list; no numerical findings from inaccessible full text are attributed.
+
+\comment{Check reference details and whether sources support their claims.}
+\response The active bibliography has been rebuilt around 20 cited and checked sources. The audit accounts for all 82 supplied entries and five additions. It records retained, corrected, and removed entries, source URLs, and the supported claim. Concrete corrections include Mallucci's DOI/article number (103672), Seghini's article number (9), the Igan--Kim--Levy authors and WP number, the exact ICMA template, and the Barbados report (22/377). Unused, placeholder, mismatched, and unverified citations are removed from the active paper. Raw Crossref lookups include rate limits and false matches; they are retained as diagnostics and are not called successful verification. The source-by-source audit identifies the independent publisher, author, or official check used instead.
+
+\comment{Reduce the main-text roadmap and unused equations; clarify basis risk and pricing.}
+\response General SDF pricing, linear GDP indexation, carbon-budget considerations, surplus feedback, and extra-premium specifications have been shortened or moved to the appendices according to whether they support an actual result. The full-indexation benchmark remains in the main text because it attains the reported resource bound. The roadmap now lists the mechanisms actually implemented. Basis risk is defined on first use; the gain gap is explicitly design-specific. The paper recalls Igan, Kim and Levy (2021) and Roch and Rold\'an (2023), and distinguishes expected default losses from an additional premium so they are not counted twice.
+
+\comment{Implement the disaster threshold, report the risk-neutral bound, and distinguish full indexation from step relief.}
+\response The simulated disaster contract requires a 15\% loss, and a threshold sweep includes the event-only comparator. The bound $c\mathbb E[g]/R_f$ is proved, reported, and attained by full linear indexation. The step clause's interior optimum is not presented as an optimum of contingency in general. Certain disaster \emph{arrival} is also distinguished from a certain loss \emph{trigger}; only a constant payoff is equivalent to straight debt.
+
+\comment{Report uncertainty across seeds and remove overloaded notation.}
+\response The Monte Carlo comparison tables average 20 seeds with 200,000 draws each and report SEs of their mean; raw across-seed standard deviations and seed estimates are archived. Comparisons share primitive draws within each seed. All empirical default thresholds are considered, eliminating the old fixed-face-grid error. The transition wedge is $\mathcal T$, the contract mapping is $H$, the extra premium is $\varpi$, the recovery share is $\varrho$, and disaster probability is $p_{\rm dis}$. The undefined borrowing-factor symbol has been replaced by the explicit functional $\Phi_H$. Fiscal capacity timing is consistent throughout.
+
+\section*{Accompanying referee PDF: eight comments}
+\begin{enumerate}
+\item \textbf{Scope versus delivered contribution.} The paper now leads with the survival--payoff mechanism and acute disaster risk. Broad asset-market and policy transmission are no longer presented as quantified contributions.
+\item \textbf{Implemented versus proposed transmission chain.} The main text enumerates the implemented output, repayment, default, and pricing stages. Surplus and extra-premium feedback are moved to an appendix.
+\item \textbf{Empirical status of logistics exposure.} The loading is explicitly a reduced-form sensitivity parameter. No observed centrality measure or network regression is claimed, and persistence is not generated by an i.i.d. wedge.
+\item \textbf{Intertemporal fiscal sustainability.} Repeated-issuance MSB and MSD are computed analytically for permanent relief, and inherited claims are added in a stationary deferral extension. These do not constitute a full dynamic emissions, adaptation, and long-maturity equilibrium.
+\item \textbf{Central contribution of the survival--payoff condition.} It now organizes the introduction, analytical section, common-face figure, rollover table, and conclusion.
+\item \textbf{Meaning of fiscal space.} The introduction defines additional fiscal space as the difference in MSB relative to straight debt, with level and percentage measures, and separately reports MSD. It is not an estimate of observed debt headroom or welfare.
+\item \textbf{Empirical status and policy language.} The abstract and design section state that results are theoretical illustrations. No estimated spreads, disaster parameters, actual CRDC treatment effects, or optimal monetary interventions are claimed.
+\item \textbf{Cross-country calibration and testable predictions.} Separate advanced-economy and disaster-prone small-state cases provide contrasting economically interpretable scenarios. We do not label them country estimates or treat event-study predictions as evidence. A country-level empirical calibration remains outside the current paper and is acknowledged as such.
+\end{enumerate}
+
+\section*{Replication and verification}
+The repository contains the manuscript and response sources, generated inputs, results, pinned requirements, and build commands. Python checks and both Lean builds passed. The active formal subset is stated explicitly; solver convergence is documented separately. Both PDFs were compiled and visually checked.
+
+\end{document}

@@ -2,16 +2,16 @@ cff-version: 1.2.0
 message: "If you use these replication files, please cite the paper."
 title: "Replication files — Climate-Contingent Sovereign Finance"
 abstract: >-
-  Replication code for the quantitative results (Section 5 and Appendix C) of
+  Replication code and manuscript sources for the second revision of
   "Climate-Contingent Sovereign Finance" (MDY-2026-0066, revised version),
   together with a Lean 4 / mathlib project that machine-checks the
-  manuscript's closed-form claims.
+  specified algebraic and pointwise subset described in its README.
 authors:
   - family-names: Rice
     given-names: James K.
     affiliation: University of Essex
-version: "1.0.0"
-date-released: "2026-09-02"
+version: "2.0.0"
+date-released: "2026-11-22"
 license: MIT
 keywords:
   - sovereign debt

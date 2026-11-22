@@ -1,0 +1,18 @@
+⚠ [8248/8250] Built LeanVerification.Basic (27s)
+warning: LeanVerification/Basic.lean:120:36: unused variable `hk1`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: LeanVerification/Basic.lean:323:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerification/Basic.lean:331:5: unused variable `hq`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: LeanVerification/Basic.lean:334:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: LeanVerification/Basic.lean:354:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+✔ [8249/8250] Built LeanVerification (6.3s)
+Build completed successfully (8250 jobs).

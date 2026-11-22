@@ -1,0 +1,121 @@
+{
+  "key": "SargentWallace1981",
+  "original": {
+    "author": "Sargent, Thomas J. and Wallace, Neil",
+    "title": "Some Unpleasant Monetarist Arithmetic",
+    "journal": "Federal Reserve Bank of Minneapolis Quarterly Review",
+    "year": "1981",
+    "volume": "5",
+    "number": "3",
+    "pages": "1--17"
+  },
+  "lookup_url": "https://api.crossref.org/works?query.title=Some+Unpleasant+Monetarist+Arithmetic&rows=3",
+  "status_code": 200,
+  "metadata": {
+    "indexed": {
+      "date-parts": [
+        [
+          2022,
+          7,
+          29
+        ]
+      ],
+      "date-time": "2022-07-29T04:19:58Z",
+      "timestamp": 1659068398691
+    },
+    "reference-count": 0,
+    "publisher": "Princeton University Press",
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "published-print": {
+      "date-parts": [
+        [
+          2017,
+          10,
+          19
+        ]
+      ]
+    },
+    "abstract": "<p>This chapter is a variation on the theme that monetary and fiscal policies are interrelated and must necessarily be coordinated. The issue of coordination arises when one wants to know whether it is possible for monetary policy permanently to influence an economy's inflation rate. One can imagine a monetary authority sufficiently powerful vis-à-vis the fiscal authority that by the imposition of slower rates of growth of base money, both now and into the indefinite future, it can successfully constrain fiscal policy by telling the fiscal authority how much seigniorage it can expect now and in the future. In this setting, monetary and fiscal policies are coordinated by having the monetary authority discipline the fiscal authority. The chapter first describes a simple model that embodies unadulterated monetarism before discussing the Cagan-Bresciani-Turroni effect.</p>",
+    "DOI": "10.23943/princeton/9780691158709.003.0005",
+    "type": "book",
+    "created": {
+      "date-parts": [
+        [
+          2017,
+          11,
+          21
+        ]
+      ],
+      "date-time": "2017-11-21T12:51:28Z",
+      "timestamp": 1511268688000
+    },
+    "source": "Crossref",
+    "is-referenced-by-count": 1,
+    "title": [
+      "Some Unpleasant Monetarist Arithmetic"
+    ],
+    "prefix": "10.23943",
+    "author": [
+      {
+        "given": "Neil",
+        "family": "Wallace",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      }
+    ],
+    "member": "10341",
+    "container-title": [
+      "Princeton University Press"
+    ],
+    "original-title": [
+      "Some Unpleasant Monetarist Arithmetic"
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2022,
+          7,
+          28
+        ]
+      ],
+      "date-time": "2022-07-28T14:35:26Z",
+      "timestamp": 1659018926000
+    },
+    "score": 51.61397,
+    "resource": {
+      "primary": {
+        "URL": "https://academic.oup.com/princeton-scholarship-online/book/16164/chapter/171216245"
+      }
+    },
+    "issued": {
+      "date-parts": [
+        [
+          2017,
+          10,
+          19
+        ]
+      ]
+    },
+    "references-count": 0,
+    "URL": "https://doi.org/10.23943/princeton/9780691158709.003.0005",
+    "published": {
+      "date-parts": [
+        [
+          2017,
+          10,
+          19
+        ]
+      ]
+    }
+  },
+  "title_similarity": 1.0
+}

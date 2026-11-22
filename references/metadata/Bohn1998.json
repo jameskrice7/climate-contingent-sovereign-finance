@@ -1,0 +1,274 @@
+{
+  "key": "Bohn1998",
+  "original": {
+    "author": "Bohn, Henning",
+    "title": "The Behavior of U.S. Public Debt and Deficits",
+    "journal": "Quarterly Journal of Economics",
+    "year": "1998",
+    "volume": "113",
+    "number": "3",
+    "pages": "949--963",
+    "doi": "10.1162/003355398555793"
+  },
+  "lookup_url": "https://api.crossref.org/works/10.1162/003355398555793",
+  "status_code": 200,
+  "metadata": {
+    "indexed": {
+      "date-parts": [
+        [
+          2026,
+          11,
+          18
+        ]
+      ],
+      "date-time": "2026-11-18T19:41:33Z",
+      "timestamp": 1795030893009,
+      "version": "4.10.2"
+    },
+    "reference-count": 20,
+    "publisher": "Oxford University Press (OUP)",
+    "issue": "3",
+    "content-domain": {
+      "domain": [],
+      "crossmark-restriction": false
+    },
+    "short-container-title": [
+      "The Quarterly Journal of Economics"
+    ],
+    "published-print": {
+      "date-parts": [
+        [
+          1998,
+          8,
+          1
+        ]
+      ]
+    },
+    "DOI": "10.1162/003355398555793",
+    "type": "journal-article",
+    "created": {
+      "date-parts": [
+        [
+          2002,
+          7,
+          27
+        ]
+      ],
+      "date-time": "2002-07-27T07:55:01Z",
+      "timestamp": 1027756501000
+    },
+    "page": "949-963",
+    "source": "Crossref",
+    "is-referenced-by-count": 1123,
+    "title": [
+      "The Behavior of U. S. Public Debt and Deficits"
+    ],
+    "prefix": "10.1093",
+    "volume": "113",
+    "author": [
+      {
+        "given": "H.",
+        "family": "Bohn",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "member": "286",
+    "reference": [
+      {
+        "key": "p_1_98",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/0304-3932(95)01215-X"
+      },
+      {
+        "key": "p_2_99",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.2307/2951764"
+      },
+      {
+        "key": "p_3_100",
+        "doi-asserted-by": "crossref",
+        "first-page": "940",
+        "DOI": "10.1086/260807",
+        "author": "Barro Robert J",
+        "year": "1979",
+        "journal-title": "Journal of Political Economy"
+      },
+      {
+        "key": "p_4_101",
+        "first-page": "195",
+        "year": "1986",
+        "journal-title": "Scandinavian Journal of Economics"
+      },
+      {
+        "key": "p_5_102",
+        "doi-asserted-by": "crossref",
+        "unstructured": "- ``The Behavior of United States Deficits,'' in R. Gordon, ed., The American Business Cycle: Continuity and Change (Chicago, IL: University of Chicago Press, 1986b).",
+        "DOI": "10.7208/chicago/9780226304595.001.0001"
+      },
+      {
+        "key": "p_6_103",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/0014-2921(84)90067-9"
+      },
+      {
+        "key": "p_7_104",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/0304-3932(91)90013-E"
+      },
+      {
+        "key": "p_8_105",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.2307/1992692"
+      },
+      {
+        "key": "p_9_106",
+        "unstructured": "- ``Inference Problems in Assessing the Sustainability of Government Policy,'' University of California at Santa Barbara, 1994."
+      },
+      {
+        "key": "p_10_107",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.2307/2077862"
+      },
+      {
+        "key": "p_11_108",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/0889-1583(91)90004-A"
+      },
+      {
+        "key": "p_12_109",
+        "unstructured": "Hakkio, Craig, and Mark Rush, ``Co-Integration and the Government's Budget Deficit,'' Working Paper, Federal Reserve Bank of Kansas City, 1986."
+      },
+      {
+        "key": "p_13_110",
+        "unstructured": "Hamilton, James, Time Series Analysis (Princeton, NJ: Princeton University Press, 1994)."
+      },
+      {
+        "key": "p_14_111",
+        "first-page": "808",
+        "author": "Hamilton James",
+        "year": "1986",
+        "journal-title": "American Economic Review"
+      },
+      {
+        "key": "p_15_112",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/0304-3932(89)90049-4"
+      },
+      {
+        "key": "p_16_113",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.2307/1913610"
+      },
+      {
+        "key": "p_17_114",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.1016/0165-1889(88)90048-6"
+      },
+      {
+        "key": "p_18_115",
+        "first-page": "210",
+        "author": "Trehan Bharat",
+        "year": "1991",
+        "journal-title": "Journal of Money, Credit and Banking"
+      },
+      {
+        "key": "p_19_116",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.2307/1912934"
+      },
+      {
+        "key": "p_20_117",
+        "doi-asserted-by": "publisher",
+        "DOI": "10.2307/1992415"
+      }
+    ],
+    "container-title": [
+      "The Quarterly Journal of Economics"
+    ],
+    "original-title": [],
+    "language": "en",
+    "link": [
+      {
+        "URL": "http://academic.oup.com/qje/article-pdf/113/3/949/5236344/113-3-949.pdf",
+        "content-type": "unspecified",
+        "content-version": "vor",
+        "intended-application": "similarity-checking"
+      }
+    ],
+    "deposited": {
+      "date-parts": [
+        [
+          2017,
+          12,
+          16
+        ]
+      ],
+      "date-time": "2017-12-16T00:28:43Z",
+      "timestamp": 1513384123000
+    },
+    "score": 1,
+    "resource": {
+      "primary": {
+        "URL": "https://academic.oup.com/qje/article-lookup/doi/10.1162/003355398555793"
+      }
+    },
+    "subtitle": [],
+    "short-title": [],
+    "issued": {
+      "date-parts": [
+        [
+          1998,
+          8,
+          1
+        ]
+      ]
+    },
+    "references-count": 20,
+    "journal-issue": {
+      "issue": "3",
+      "published-print": {
+        "date-parts": [
+          [
+            1998,
+            8,
+            1
+          ]
+        ]
+      }
+    },
+    "URL": "https://doi.org/10.1162/003355398555793",
+    "relation": {},
+    "ISSN": [
+      "0033-5533",
+      "1531-4650"
+    ],
+    "issn-type": [
+      {
+        "value": "0033-5533",
+        "type": "print"
+      },
+      {
+        "value": "1531-4650",
+        "type": "electronic"
+      }
+    ],
+    "subject": [],
+    "published": {
+      "date-parts": [
+        [
+          1998,
+          8,
+          1
+        ]
+      ]
+    }
+  },
+  "title_similarity": 1.0
+}
