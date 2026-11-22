@@ -1,7 +1,7 @@
 # Reference audit
 
 `audit.csv` accounts for all 82 entries in the supplied bibliography and five
-new entries. The active manuscript cites 20 sources, each checked against a
+new entries. The active manuscript cites 23 sources, each checked against a
 publisher, an author publication page or paper, or an official institutional
 source. `retained_sources.json` records which claim each source supports and
 what it does not establish.

@@ -21,6 +21,7 @@ def main():
         assert row['max_deferred_state']<row['state_max']
         assert np.max(np.diff(row['borrowing']))<1e-10
     text=(ROOT/'paper/main.tex').read_text()
+    text+='\n'+'\n'.join(p.read_text() for p in sorted((ROOT/'paper/sections').glob('*.tex')))
     keys=set(k.strip() for m in re.findall(r'\\(?:paren|text)?cite\{([^}]+)\}',text) for k in m.split(','))
     bib=set(re.findall(r'@\w+\{([^,]+),',(ROOT/'paper/references.bib').read_text()))
     assert keys==bib

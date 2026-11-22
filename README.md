@@ -6,7 +6,8 @@ The calculations are theoretical illustrations, not estimated country effects.
 
 ## Read the revision
 
-- `paper/main.pdf`: revised paper; `paper/main.tex` and `references.bib`: sources.
+- `paper/main.pdf`: revised paper; `paper/main.tex`, `paper/sections/`, and
+  `paper/references.bib`: sources.
 - `reviews/response_round2.pdf` and `.tex`: response to the second-round comments
   and the separate eight-point referee report.
 - `reviews/abstract_for_submission.txt`: matching abstract to paste into ScholarOne.
@@ -20,7 +21,15 @@ The supplied paper and first-round response were uploaded first in commit
 `894faef`; that commit preserves the unedited source. `legacy/` retains the old
 simulation engine, old bibliography, and original Lean source for provenance.
 The original referee PDF and pasted report were read locally; reproducing the
-research does not require them.
+research does not require them. The compiled first-revision paper is preserved
+at `legacy/main_round1.pdf` for direct comparison.
+
+The paper retains the original overall length: 31 pages in the same 11-point,
+one-inch-margin format, with approximately 12,400 words excluding references
+versus 12,200 in the first revision. Fuller baseline exposition, results
+interpretation, and analytical appendices are retained while Section 3 remains
+focused on the mechanisms actually implemented. `generated/length_comparison.json`
+records the comparison; `python -m replication.compare_length` regenerates it.
 
 ## Reproduce
 
@@ -105,7 +114,7 @@ makes its extra assumption explicit.
 |---|---|
 | `model.py`, `results.json:cases` | One-period and stationary MSB/MSD; calibration arithmetic; resource bound |
 | `run.py:psi_sweep`, `mu_sweep`, `faces` | Logistics, trend-growth, and common-face comparisons |
-| `run.py:thresholds`, `recovery`, `temperature` | Loss thresholds, capacity recovery, and emissions surprises |
+| `run.py:thresholds`, `recovery`, `temperature`, `certain_event` | Loss thresholds, capacity recovery, emissions surprises, and certain-event checks |
 | `deferrals.py`, `results.json:deferrals` | Carried-forward claims, grids, convergence, and inherited-state figure |
 | `run.py:haircuts` | Common additive versus default-risk-dependent collateral assumptions |
 | `plots.py` | All four current figure files in `paper/generated/` |

@@ -98,5 +98,20 @@
     "url": "https://www.gov.uk/government/publications/climate-resilient-debt-clauses",
     "claim": "Official template describes cost-neutral suspension and deferral; no write-down attributed to it.",
     "checked": "2026-11-22"
+  },
+  "ChatterjeeEyigungor2012": {
+    "url": "https://www.aeaweb.org/articles?id=10.1257/aer.102.6.2674",
+    "claim": "Long-term sovereign-debt pricing and maturity motivation in the analytical appendix; no calibration is borrowed.",
+    "checked": "2026-11-22"
+  },
+  "LongstaffEtAl2011": {
+    "url": "https://www.aeaweb.org/articles?id=10.1257/mac.3.2.75",
+    "claim": "Common global factors in sovereign credit risk; not evidence of a causal pass-through from CRDCs to private investment values.",
+    "checked": "2026-11-22"
+  },
+  "GreenwoodVayanos2014": {
+    "url": "https://academic.oup.com/rfs/article-abstract/27/3/663/1581525",
+    "claim": "Bond supply, maturity, and duration-risk pricing; does not identify the illustrative collateral elasticity.",
+    "checked": "2026-11-22"
   }
 }

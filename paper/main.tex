@@ -49,6 +49,8 @@ Climate risk affects the resources available to service these claims. \textcite{
 
 The numerical scope is deliberately limited. The paper provides a theoretical model with illustrations, including separate advanced-economy and disaster-prone small-state cases. It does not estimate disaster arrival rates, production-network centrality, premia, or the welfare gains of actual clauses. Logistics enters through an i.i.d. output wedge; stress-dependent surplus capacity, private-asset transmission, and monetary policy remain analytical extensions. Section~\ref{sec:baseline} sets out fiscal limits, Section~\ref{sec:contracts} defines contracts and the implemented shocks, Section~\ref{sec:theory} states the analytical results, and Section~\ref{sec:numerical} reports the calculations. The appendices specify deferrals, recovery, further extensions, and proofs.
 
+\input{sections/introduction_context.tex}
+
 \section{Fiscal limits and climate-dependent resources}\label{sec:baseline}
 Let $g_{t+1}=Y_{t+1}/Y_t>0$ be gross output growth over a five-year period. Let $\alpha_{t+1}$ be the feasible primary surplus relative to next-period GDP, and $b^M_{t+1}$ maximum new borrowing at that date. Resources at $t+1$, relative to $Y_t$, are
 \begin{equation}\label{eq:capacity}
@@ -67,6 +69,8 @@ In the chronic-risk baseline, an emissions-dependent transition wedge $\mathcal 
  \qquad T_t=\zeta C_t,\qquad C_{t+1}=C_t+\Delta C_{t+1}.\nonumber
 \end{align}
 Here $e_t$ is emissions relative to a reference level, $c_E>0$, and $\varepsilon$ is a mean-zero growth shock. The transition wedge is denoted $\mathcal T$, reserving $H$ for contractual payoffs. The simulations use a constant drift or a surprise-dependent damage wedge; they do not solve for optimal emissions or reproduce a complete business-as-usual transition path. Carbon-budget and adaptation considerations are discussed in Appendix~\ref{app:extensions}.
+
+\input{sections/baseline_exposition.tex}
 
 \section{Contingent liabilities and acute risk}\label{sec:contracts}
 \subsection{Portfolio definitions}
@@ -122,6 +126,8 @@ Consider replacing a small fraction $\epsilon$ of straight debt by the GDP claus
 \end{equation}
 The first term values newly surviving repayments; the second values payments forgone in states that would already repay. Their difference, rather than default reduction alone, determines the issuance benefit. Figure~\ref{fig:loading} gives the finite-change version at a common face. Appendix~\ref{app:proofs} derives the corresponding formula at positive relief.
 
+\input{sections/analytical_exposition.tex}
+
 \subsection{One-off versus repeated issuance}
 \begin{remark}[Homogeneity and the stationary fiscal limit]\label{rem:homogeneity}
 For any contract whose payoff depends on exogenous states and not the scale of issuance, set $x=d/c$ and define
@@ -142,6 +148,8 @@ At fixed continuation capacity the relative MSB gain is $\Phi_G/\Phi_S-1$. If th
 \end{equation}
 Thus the proportional one-period gain is amplified by $1/(1-\Phi_G)$. MSD also depends on the change in optimal normalized face $x^*$ and has a distinct percentage gain. These formulae do not apply unchanged to deferrals: an inherited obligation becomes an additional state.
 
+\input{sections/stationary_exposition.tex}
+
 \subsection{An attainable upper bound}
 \begin{proposition}[Resource bound]\label{prop:bound}
 With risk-neutral pricing, zero recovery, and nonnegative contractual repayments, $b_H^M(c)\le c\E[g]/R_f$. Full linear indexation $H(g)=g/\bar g$ attains the bound at $d=c\bar g$.
@@ -156,6 +164,8 @@ The bound places the step-clause gains in context. An interior optimum in the st
 The one-period comparison sets $b^M_{t+1}=0$, so $c=\alpha$. This normalization preserves relative MSB comparisons only at a \emph{given} continuation capacity. We also report the full stationary recursion \eqref{eq:stationary}; the stationary comparison internalizes each contract's continuation capacity. Both exercises assume i.i.d. growth and permanent relief.
 
 Unless otherwise stated, the Monte Carlo comparison tables average estimates from \NumSeeds\ independent seeds (42--61), each with $N=\NumDraws$ draws. Common primitive draws are used across contracts within a seed, so differences are paired. Parentheses report the Monte Carlo standard error of the across-seed mean, $s/\sqrt{\NumSeeds}$; the underlying across-seed standard deviation $s$ is also archived. These are simulation errors conditional on the assumed model, not parameter uncertainty. Maximization can introduce finite-sample upward bias and make the maximizing face less stable than proceeds. The code evaluates every empirical default threshold $x=g/H$ and resolves exact ties toward the smaller face, eliminating the former fixed-grid error. Appendix~\ref{app:proofs} distinguishes consistency of this optimizer from the original finite-grid result. Stationary transforms are applied within each seed before averaging.
+
+\input{sections/quantitative_design.tex}
 
 \subsection{Parameters and their interpretation}\label{subsec:calibration}
 \begin{table}[t]
@@ -217,6 +227,8 @@ Table~\ref{tab:bound} reports the attainable full-indexation bound. Remaining be
 \caption{Proceeds and default probability at a common face value in the stress case (seed 42). The disaster contract applies the 15 percent loss threshold. The GDP curve has a distinct change at $d=\alpha\bar g=.152$; above that point its survival set can cease to be a single upper interval.}\label{fig:curves}
 \end{figure}
 
+\input{sections/limits_interpretation.tex}
+
 \subsection{Rollover needs, growth, capacity, and logistics}\label{subsec:sensitivity}
 \begin{table}[t]
 \centering\caption{Common-face comparisons in the stress case. These comparisons isolate the rollover need; they are not differences between separately optimized contracts.}\label{tab:faces}
@@ -243,7 +255,7 @@ With a fixed GDP trigger, slower growth can cause relief to activate in more sta
 \end{table}
 Table~\ref{tab:threshold} implements the loss threshold appearing in the contract definition. Removing small-disaster payments can improve targeting and increase proceeds, even though the total number of relief events falls. A high threshold can in turn miss events near the default boundary, so more selective triggers need not always help. The remaining gap to the GDP clause reflects missed non-disaster stress as well as the specified trigger and relief parameters. It is not evidence that disaster verification is intrinsically inferior once measurement costs and premia are included.
 
-If the \emph{trigger} is certain, the disaster payoff is a known constant and has exactly the same maximum proceeds as straight debt under unrestricted face rescaling. If every disaster event is certain but loss sizes remain variable, a positive loss threshold need not activate with certainty. The code reports both the event-only and loss-threshold cases under certain event arrival; only the former is covered by the payoff-equivalence result.
+\input{sections/certain_triggers.tex}
 
 \subsection{Recovery and carried-forward deferrals}\label{subsec:recovery}
 \begin{table}[t]
@@ -270,6 +282,8 @@ The value of the surprise coupon depends on how closely the global surprise trac
 
 The main risk-neutral prices omit novelty, ambiguity, liquidity, and measurement premia. \textcite{igan2021_premia_scdi} document substantial and persistent premia in existing state-contingent instruments, and \textcite{RochRoldan2023} show how ambiguity can reverse their welfare ranking. A contract-specific issuance discount can therefore offset the model's gain. Appendix~\ref{app:monetary} distinguishes a common additive collateral subsidy, which mechanically scales every contract's proceeds, from an explicitly assumed default-risk-dependent eligibility rule. Neither establishes an empirical complementarity between collateral support and contingency.
 
+\input{sections/pricing_interpretation.tex}
+
 \subsection{Generosity of the step clause}\label{subsec:kappa}
 \begin{figure}[!htbp]
 \centering\includegraphics[width=\textwidth]{generated/sensitivity.pdf}
@@ -285,6 +299,8 @@ One-period write-down gains understate the stationary gain when the same contrac
 Stress-dependent surplus capacity could change the preferred trigger: if a loss in capacity tracks a disaster or logistics shock beyond its effect on output, a trigger observing that shock may outperform a GDP-only rule. This is a conjecture requiring a joint capacity process. Production-network persistence, adaptation investment, and monetary support also require further modeling and data. The present logistics sweep varies an exposure parameter and cannot establish that measured network-central countries experience a particular spread response. Likewise, a coupon indexed to emissions surprises is not a hedge of deterministic warming known at issuance.
 
 The empirical agenda is to compare verified loss thresholds, output realizations, deferred-service schedules, recovery values, and contract-specific premia. Such evidence would determine which states contracts actually insure and whether the resulting fiscal space is valuable after servicing inherited claims. Coordinated mitigation addresses the erosion of the underlying tax base; contractual timing and payoff design address how a given resource base is financed.
+
+\input{sections/discussion_context.tex}
 
 \section*{Replication and code availability}
 The manuscript source, generated tables and figures, machine-readable results, uncertainty estimates, Python environment specification, and Lean project are available at \url{https://github.com/jameskrice7/climate-contingent-sovereign-finance}. All numerical objects in the current version are generated from the archived code. A single documented command regenerates the current numerical objects; the paper contains no manually copied simulation coordinates. The first-revision source and response are preserved in repository history. The formal verification checks the specified algebraic identities, threshold statements, derivatives, and certificate inequalities; it does not machine-prove the simulations, the stationary deferral solver, or all probabilistic and economic claims.
@@ -334,7 +350,9 @@ One can extend fiscal capacity to $\alpha_{i,t+1}=\bar\alpha_i-\chi_TD_T(T_{t+1}
 
 A reduced-form country premium might be written $\varpi_{i,t}=\theta_dPD_{i,t}+\theta_TT_t+\theta_\ell\ell_{i,t}+\theta_x\mathrm{FXFrag}_{i,t}$, where $\mathrm{FXFrag}$ measures currency mismatch and external funding vulnerability. Here $\varpi$ denotes an additional pricing wedge, not inflation. Expected default losses are already priced in survival-weighted payoffs; adding a PD term without specifying its role as an extra premium would double-count them. Neither these coefficients nor a network equation for $\ell$ are estimated or used in the main results.
 
-Private-asset transmission through sovereign financing conditions, persistent logistics shocks, state-dependent volatility, an endogenous safe rate, and a richer maturity structure are possible extensions. They require cash-flow processes, discount factors, and refinancing policies beyond the current apparatus. The deferral experiment is a specific two-vintage obligation model and does not solve all of those extensions.
+The following subsections develop maturity, adaptation, discounting, volatility, and private-asset transmission as analytical extensions. They preserve the broader macro-financial setting while separating it from the simulated contract comparisons. The deferral experiment is a specific two-vintage obligation model within this wider set of questions.
+
+\input{sections/extensions_detail.tex}
 
 \section{Collateral support as a pricing assumption}\label{app:monetary}
 The ECB's announced climate factor motivates attention to collateral valuation, without identifying the premium elasticities used here \parencite{ecb2025_climate_factor_pr}. Let $h_c$ denote a collateral haircut and let $PD_H(d)$ be the default probability under instrument $H$. For an extra pricing wedge of the form
@@ -357,6 +375,8 @@ Support now depends on the instrument's survival probability and can change its 
 \FitTable{\input{generated/haircut.tex}}
 \end{table}
 A planner considering monetary support would need to specify welfare, default costs, inflation costs, resource constraints, and separate policy mandates. Locally, holding default and cash flows fixed, a decline in an instrument's extra premium larger than the rise in the log safe rate raises proceeds. This partial derivative condition is not a global welfare or equilibrium result. No fully specified planner problem or theorem about collateral complementarity is claimed.
+
+\input{sections/monetary_context.tex}
 
 \section{Proofs and scope of the formal results}\label{app:proofs}
 \subsection{Thresholds and optimal relief}
@@ -419,5 +439,7 @@ For a counterexample take $c=1$, $\kappa=.05$, $\bar g=.95$, and $g=.8$ with pro
 For a fixed finite face grid, each proceeds estimate is an average of integrable i.i.d. repayments, so the strong law gives uniform convergence on that grid and convergence of the maximum. The revised algorithm maximizes the empirical curve over all sampled thresholds. For step contracts, tail-weighted empirical CDFs converge uniformly; on any compact face interval this yields uniform proceeds convergence. In the tail, $xH\ind\{g\ge xH\}\le g\ind\{g\ge x\min H\}$ and $\E[g]<\infty$ control large $x$ when $\min H>0$. Thus the empirical maximum is consistent for the continuous-face value. Convergence of the optimizing face itself requires an isolated population maximizer, which is not assumed for every table. The nonnegative temperature floor is handled by first restricting to $H\ge\epsilon>0$, then controlling $H<\epsilon$ with the same integrable resource envelope and taking $\epsilon\downarrow0$; the weighted half-line class admits a uniform law. No finite-sample unbiasedness of the maximum is implied.
 
 The Lean project verifies the homogeneous default event, threshold geometry, generosity derivative, stationary-recursion algebra, capacity-payment inequalities, NPV capitalization identity, and the square certificates used above. It retains the original pointwise logistics ordering. The probabilistic resource bound, the uniform-distribution case split, the conditional comparative-static argument, convergence of Monte Carlo estimators, and the deferral fixed-point computation also require mathematical arguments or numerical checks outside the formalized subset. In particular, a distribution-free tail-value theorem or a general proof of interior optimality is not claimed to have been verified in Lean.
+\input{sections/numerical_exposition.tex}
+
 \printbibliography
 \end{document}

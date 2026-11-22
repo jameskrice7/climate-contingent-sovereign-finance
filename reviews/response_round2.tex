@@ -2,6 +2,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,booktabs,microtype,graphicx}
 \usepackage{needspace}
+\setlength{\emergencystretch}{2em}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
 \input{../paper/generated/numbers.tex}
@@ -12,9 +13,9 @@
 \date{22 November 2026}
 \begin{document}
 \maketitle
-We thank the referees for identifying the remaining gaps between the contract definitions, the fiscal-limit interpretation, and the numerical exercises. The manuscript is now titled \emph{Climate-Contingent Sovereign Finance: Fiscal Limits, Disaster Risk, and Repayment Design}. The revision distinguishes permanent relief from carried-forward deferrals, reports the stationary recursion, implements disaster-loss thresholds and bounded recovery, and narrows analytical claims to the conditions actually established. It also separates illustrations from empirical estimates.
+We thank the referees for their constructive reports. The retitled manuscript, \emph{Climate-Contingent Sovereign Finance: Fiscal Limits, Disaster Risk, and Repayment Design}, distinguishes write-downs from deferrals, reports stationary fiscal limits, implements loss thresholds and bounded recovery, and clarifies its analytical and empirical scope.
 
-This response addresses the detailed second-round comments supplied in text and, separately, the eight comments in the accompanying referee PDF. Comment descriptions below are paraphrases. References to named subsections, propositions, and tables refer to the current manuscript. The repository includes the first-round paper in commit \texttt{894faef}, the earlier response, the revised source and PDFs, and executable replication materials.
+We address the detailed second-round comments and the separate eight-point report. Comments are paraphrased; references concern the current manuscript. The repository preserves the original source (commit \texttt{894faef}) and includes the revised paper, response, and replication materials.
 
 \section*{Detailed second-round comments}
 \subsection*{1. One-period gains, the stationary fiscal limit, and deferrals}
@@ -72,10 +73,10 @@ For interior generosity, the binding-trigger face $d=c\bar g$ yields a closed fo
 \response The recreated chart is omitted. The introduction discusses Agarwala et al. (2021), Barrage (2020), Bilal and K\"anzig (2026), and Seghini, D\'ees and de Gaye (2026), and uses Klusak et al. (2023) for ratings. These references motivate channels rather than the numerical parameters. The SSRN working paper's existence and authorship were checked on the Banque de France publication list; no numerical findings from inaccessible full text are attributed.
 
 \comment{Check reference details and whether sources support their claims.}
-\response The active bibliography has been rebuilt around 20 cited and checked sources. The audit accounts for all 82 supplied entries and five additions. It records retained, corrected, and removed entries, source URLs, and the supported claim. Concrete corrections include Mallucci's DOI/article number (103672), Seghini's article number (9), the Igan--Kim--Levy authors and WP number, the exact ICMA template, and the Barbados report (22/377). Unused, placeholder, mismatched, and unverified citations are removed from the active paper. Raw Crossref lookups include rate limits and false matches; they are retained as diagnostics and are not called successful verification. The source-by-source audit identifies the independent publisher, author, or official check used instead.
+\response The active bibliography has been rebuilt around 23 cited and checked sources. The audit accounts for all 82 supplied entries and five additions. It records retained, corrected, and removed entries, source URLs, and the supported claim. Concrete corrections include Mallucci's DOI/article number (103672), Seghini's article number (9), the Igan--Kim--Levy authors and WP number, the exact ICMA template, and the Barbados report (22/377). Unused, placeholder, mismatched, and unverified citations are removed from the active paper. Raw Crossref lookups include rate limits and false matches; they are retained as diagnostics and are not called successful verification. The source-by-source audit identifies the independent publisher, author, or official check used instead.
 
 \comment{Reduce the main-text roadmap and unused equations; clarify basis risk and pricing.}
-\response General SDF pricing, linear GDP indexation, carbon-budget considerations, surplus feedback, and extra-premium specifications have been shortened or moved to the appendices according to whether they support an actual result. The full-indexation benchmark remains in the main text because it attains the reported resource bound. The roadmap now lists the mechanisms actually implemented. Basis risk is defined on first use; the gain gap is explicitly design-specific. The paper recalls Igan, Kim and Levy (2021) and Roch and Rold\'an (2023), and distinguishes expected default losses from an additional premium so they are not counted twice.
+\response General SDF pricing, carbon-budget considerations, surplus feedback, and extra-premium specifications have been streamlined in the main text or developed in the appendices according to whether they support an actual result. The appendices retain fuller discussions of maturity, adaptation, private-asset transmission, and monetary policy, while the main text restores the economic exposition and interpretation of the results. The full-indexation benchmark remains in the main text because it attains the reported resource bound. The roadmap now lists the mechanisms actually implemented. Basis risk is defined on first use; the gain gap is explicitly design-specific. The paper recalls Igan, Kim and Levy (2021) and Roch and Rold\'an (2023), and distinguishes expected default losses from an additional premium so they are not counted twice.
 
 \comment{Implement the disaster threshold, report the risk-neutral bound, and distinguish full indexation from step relief.}
 \response The simulated disaster contract requires a 15\% loss, and a threshold sweep includes the event-only comparator. The bound $c\mathbb E[g]/R_f$ is proved, reported, and attained by full linear indexation. The step clause's interior optimum is not presented as an optimum of contingency in general. Certain disaster \emph{arrival} is also distinguished from a certain loss \emph{trigger}; only a constant payoff is equivalent to straight debt.
@@ -94,8 +95,5 @@ For interior generosity, the binding-trigger face $d=c\bar g$ yields a closed fo
 \item \textbf{Empirical status and policy language.} The abstract and design section state that results are theoretical illustrations. No estimated spreads, disaster parameters, actual CRDC treatment effects, or optimal monetary interventions are claimed.
 \item \textbf{Cross-country calibration and testable predictions.} Separate advanced-economy and disaster-prone small-state cases provide contrasting economically interpretable scenarios. We do not label them country estimates or treat event-study predictions as evidence. A country-level empirical calibration remains outside the current paper and is acknowledged as such.
 \end{enumerate}
-
-\section*{Replication and verification}
-The repository contains the manuscript and response sources, generated inputs, results, pinned requirements, and build commands. Python checks and both Lean builds passed. The active formal subset is stated explicitly; solver convergence is documented separately. Both PDFs were compiled and visually checked.
 
 \end{document}

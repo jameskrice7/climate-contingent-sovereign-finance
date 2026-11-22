@@ -1,0 +1,14 @@
+{
+  "original_source_commit": "894faef",
+  "original": {
+    "pages": 31,
+    "approx_words_excluding_references": 12158,
+    "pdf_sha256": "abf5b4f96862502cea869c12ee812b0b997b4bc1ce4612af639c4082a6324985"
+  },
+  "revised": {
+    "pages": 31,
+    "approx_words_excluding_references": 12429,
+    "pdf_sha256": "7572d73cb7a6674d6351a3ff045f9bd69e8852816324dfed144c642fabba69b6"
+  },
+  "method": "Alphabetic PDF tokens; bibliography excluded; appendices, captions, and mathematical labels included. Approximate word counts. Both 11pt with one-inch margins."
+}

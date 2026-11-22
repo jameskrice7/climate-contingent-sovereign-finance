@@ -59,7 +59,9 @@ def by_contract(rows):
 def cell(v, digits=2, scale=1, se=True):
     if isinstance(v,dict):
         se_digits=digits+1
-        return f"{v['mean']*scale:.{digits}f}" + (
+        mean=v['mean']*scale
+        mean=0. if round(mean,digits)==0 else mean
+        return f"{mean:.{digits}f}" + (
             rf"\,({v['se']*scale:.{se_digits}f})" if se else '')
     return f"{v*scale:.{digits}f}"
 
@@ -241,6 +243,11 @@ def make_tables(r):
         for k,v in x['estimates'].items():
             rows.append(['Strong' if x['strong'] else 'Weak',k,cell(v['one_msb'],4),cell(v['one_gain'])])
     table('temperature',['Coupling','Contract',r'$b_1^M$',r'Gain (\%)'],rows)
+    rows=[]
+    for k,v in r['certain_event'].items():
+        label='Event-only' if k=='Event-only' else ('Disaster loss' if k=='Disaster' else k)
+        rows.append([label,cell(v['one_msb'],4),cell(v['pd'],2,100),cell(v['one_gain'])])
+    table('certain',['Contract',r'$b_1^M$',r'$PD$ (\%)',r'Gain (\%)'],rows)
     rows=[]
     for x in r['haircuts']:
         if x['haircut'] not in [1,.5,0]:continue

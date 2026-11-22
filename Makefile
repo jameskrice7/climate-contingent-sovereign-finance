@@ -23,3 +23,4 @@ lean:
 	cd lean_verification && $(LAKE) build
 qa:
 	$(PYTHON) -m replication.render_pdfs
+	$(PYTHON) -m replication.compare_length
